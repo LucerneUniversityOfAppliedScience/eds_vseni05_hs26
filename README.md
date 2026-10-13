@@ -6,7 +6,26 @@ practise the basics with small exercises, and then build a project step by step:
 **bike, pedestrian and car traffic counts of the City of Zurich (2009–2026, ~40 million rows)** with
 **weather data** – from raw files to a shared **AI/BI dashboard**.
 
-![Workshop flow](docs/assets/workshop_flow.svg)
+```mermaid
+flowchart LR
+    subgraph DAB["Declarative Automation Bundle · databricks bundle deploy"]
+        direction LR
+        subgraph SRC["Sources"]
+            B["Bike & pedestrian counts<br/>Open Data Zurich"]
+            C["Car traffic counts<br/>Open Data Zurich"]
+            W["Weather<br/>Open-Meteo"]
+        end
+        V[("Volume<br/>mobility_raw.landing")]
+        BR["Bronze<br/>raw data 1:1"]
+        SI["Silver<br/>cleaned, hourly"]
+        GO["Gold<br/>daily, joined"]
+        D["AI/BI Dashboard"]
+        G["Genie"]
+        B & C & W -- setup job --> V --> BR --> SI --> GO
+        GO --> D
+        GO --> G
+    end
+```
 
 ## Learning goals
 
@@ -19,17 +38,14 @@ After the workshop you can …
 - build and publish an **AI/BI dashboard** and ask questions with **Genie**
 - interpret mobility data critically (data quality, correlation vs. causation)
 
-## Agenda (suggestion)
+## Contents
 
-| # | Part | Time | Material |
-|---|------|------|----------|
-| 0 | Intro: what is Databricks / a lakehouse? | 15' | slides |
-| 1 | **Setup**: Free Edition, CLI, deploy the bundle, load the data | 30' | [docs/01_setup_free_edition.md](docs/01_setup_free_edition.md), [docs/02_declarative_automation_bundles.md](docs/02_declarative_automation_bundles.md) |
-| 2 | **Getting started**: workspace, Unity Catalog, first data, Delta time travel | 45' | [src/01_getting_started](src/01_getting_started) |
-| 3 | **Basic exercises** (pick what suits you) | 60'+ | [src/02_exercises](src/02_exercises) |
-| 4 | **Project** "Bike vs. car in Zurich" – step by step to the dashboard | 3–4 h | [src/03_project/README.md](src/03_project/README.md) |
-| + | Bonus: NYC taxi – which trips could a bike replace? | 20' | [src/04_bonus](src/04_bonus) |
-| 5 | **MZMV**: upload the Mobility and Transport Microcensus and load it as bronze tables | 30' | [src/05_mzmv/README.md](src/05_mzmv/README.md) |
+1. **Setup** – [Free Edition & CLI](docs/01_setup_free_edition.md), [Declarative Automation Bundle](docs/02_declarative_automation_bundles.md)
+2. **Getting started** – [src/01_getting_started](src/01_getting_started)
+3. **Basic exercises** – [src/02_exercises](src/02_exercises) (see table below)
+4. **Project "Bike vs. car in Zurich"** – [step-by-step guide](src/03_project/README.md)
+5. **Bonus: NYC taxi** – [src/04_bonus](src/04_bonus)
+6. **MZMV** – [upload and load the Mobility and Transport Microcensus](src/05_mzmv/README.md)
 
 Solutions are published on **Thursday**.
 
