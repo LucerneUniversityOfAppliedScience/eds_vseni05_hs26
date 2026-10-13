@@ -4,21 +4,19 @@
 # MAGIC
 # MAGIC Run by the job `workshop_cleanup`. The job has **no schedule** – it only runs when you start it,
 # MAGIC and only if the parameter `confirm` is set to `yes`:
-# MAGIC
-# MAGIC ```bash
-# MAGIC databricks bundle run cleanup --params confirm=yes --profile <your-profile>
-# MAGIC ```
+# MAGIC *Jobs & Pipelines* → `workshop_cleanup` → *Run now with different parameters* → `confirm` = `yes`
+# MAGIC (CLI: `databricks bundle run cleanup --params confirm=yes`).
 # MAGIC
 # MAGIC | What | Action |
 # MAGIC |---|---|
 # MAGIC | catalog `mzmv` | dropped completely (`DROP CATALOG ... CASCADE`) |
 # MAGIC | all tables and views in the workshop schemas (`mobility_bronze`, `mobility_silver`, `mobility_gold`, `exercises`, `adventureworks`) | dropped |
-# MAGIC | tables of the reference pipeline (`mobility_pipeline`) | **not touched** – they are managed by the pipeline. Reset them with a *full refresh* of the pipeline, remove them with `databricks bundle destroy` |
+# MAGIC | tables of the reference pipeline (`mobility_pipeline`) | **not touched** – they are managed by the pipeline. Reset them with a *full refresh* of the pipeline, remove them by destroying the bundle |
 # MAGIC | all files in the volume `mobility_raw.landing` | deleted |
 # MAGIC
 # MAGIC The **schemas, the volume, the jobs and the dashboard stay** – they belong to the bundle. After a cleanup you can
-# MAGIC start fresh with the setup job. To remove *everything* including the bundle resources, run
-# MAGIC `databricks bundle destroy` afterwards.
+# MAGIC start fresh with the setup job. To remove *everything* including the bundle resources, click **Destroy** in the
+# MAGIC Deployments panel of the Git folder (CLI: `databricks bundle destroy`).
 
 # COMMAND ----------
 

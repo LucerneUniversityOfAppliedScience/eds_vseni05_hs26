@@ -40,7 +40,7 @@ After the workshop you can …
 
 ## Contents
 
-1. **Setup** – [Free Edition & CLI](docs/01_setup_free_edition.md), [Declarative Automation Bundle](docs/02_declarative_automation_bundles.md)
+1. **Setup** – [Quickstart](#quickstart--everything-in-the-browser) below
 2. **Getting started** – [src/01_getting_started](src/01_getting_started)
 3. **Basic exercises** – [src/02_exercises](src/02_exercises) (see table below)
 4. **Project "Bike vs. car in Zurich"** – [step-by-step guide](src/03_project/README.md)
@@ -49,28 +49,27 @@ After the workshop you can …
 
 Solutions are published on **Thursday**.
 
-## Quickstart
+## Quickstart – everything in the browser
 
-```bash
-# 1. Clone the repo
-git clone https://github.com/LucerneUniversityOfAppliedScience/eds_vseni05_hs26.git
-cd eds_vseni05_hs26
+No local installation needed – you only need a browser.
 
-# 2. Connect to your Free Edition workspace (browser login) – replace the URL with yours
-databricks auth login --host https://dbc-xxxxxxxx-xxxx.cloud.databricks.com --profile workshop
+1. **Create a free account:** [Databricks Free Edition](https://www.databricks.com/learn/free-edition) → *Sign up*.
+2. **Get the repo into your workspace:** **Workspace** → **Home** → **Create** → **Git folder** →
+   paste `https://github.com/LucerneUniversityOfAppliedScience/eds_vseni05_hs26.git` → **Create Git folder**.
+3. **Deploy the bundle:** in the new folder `eds_vseni05_hs26` open the **Deployments** panel (🚀 icon on the left) →
+   target `prod` → **Deploy**. This creates the schemas, the volume and the jobs.
+4. **Load the data:** in the same panel, next to the job `workshop_setup`, click **Run** (▶︎).
+   It downloads the data (≈ 100 MB) into your volume and takes about 5 minutes
+   (progress: **Jobs & Pipelines** → `workshop_setup`).
+5. **Start:** open `src/01_getting_started/01_databricks_basics` in the Git folder and attach it to **Serverless**.
 
-# 3. Validate and deploy the bundle (schemas, volume, jobs)
-databricks bundle validate --profile workshop
-databricks bundle deploy   --profile workshop
+**Problems?**
 
-# 4. Load the data (downloads ~100 MB from the GitHub release into your volume, ~3 min)
-databricks bundle run setup_data --profile workshop
-```
-
-Then open your workspace → **Workspace → Home → mobility_workshop → files → src** and start with
-`01_getting_started/01_databricks_basics`.
-
-No terminal? See **Option B (browser only)** in [docs/02_declarative_automation_bundles.md](docs/02_declarative_automation_bundles.md).
+| Problem | Solution |
+|---|---|
+| Job waits with "There are already 1 active runs" | Free Edition runs jobs one after the other – wait until the other one has finished |
+| `RESOURCE_EXHAUSTED: You have hit your limit for serverless compute` | the Free Edition compute quota is reached – try again later (it resets the next day at the latest) |
+| A notebook does not find a table | did the setup job finish successfully? did you run the previous step? |
 
 ## What the bundle creates
 
@@ -84,12 +83,9 @@ No terminal? See **Option B (browser only)** in [docs/02_declarative_automation_
 | Job | `mzmv_load` | unzips your uploaded MZMV ZIP and loads the SAS files as bronze tables |
 | Job | `workshop_cleanup` | removes all data again – only with `confirm=yes` |
 
-```bash
-# Reset everything (data only – schemas, volume and jobs stay):
-databricks bundle run cleanup --params confirm=yes --profile workshop
-# Remove the bundle resources as well:
-databricks bundle destroy --profile workshop
-```
+**Start over:** *Jobs & Pipelines* → `workshop_cleanup` → ▾ next to *Run now* → **Run now with different parameters** →
+set `confirm` to `yes`. This deletes all data (schemas, volume and jobs stay). Then run `workshop_setup` again.
+To remove the bundle resources as well, click **Destroy** in the Deployments panel of the Git folder.
 
 ## Repository structure
 
@@ -110,7 +106,6 @@ databricks bundle destroy --profile workshop
 │   └── 05_mzmv/                   # Mobility and Transport Microcensus: upload guide + load notebooks
 ├── data/                          # README only – the data is published as GitHub release asset
 ├── cheatsheets/                   # Python, pandas, PySpark, Matplotlib, … cheat sheets (PDF)
-└── docs/                          # setup guides and instructor notes
 ```
 
 ## Basic exercises
@@ -138,10 +133,6 @@ databricks bundle destroy --profile workshop
 | NYC Yellow Taxi Trips (bonus) | Databricks sample data `samples.nyctaxi.trips` | – |
 
 Details: [data/README.md](data/README.md).
-
-## For instructors
-
-Preparation checklist, reference results and common pitfalls: [docs/00_instructors.md](docs/00_instructors.md)
 
 ## Further reading
 

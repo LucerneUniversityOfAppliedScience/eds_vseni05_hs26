@@ -29,27 +29,18 @@ created automatically by the setup job `workshop_setup` (see the main README).
 
 ## Step 1 – Upload the ZIP file (≈ 5–15 min, depending on your connection)
 
-**Option A – browser (recommended):**
+**In the browser:**
 
 1. In your workspace open **Catalog** → `mzmv` → `raw` → **Volumes** → `landing`.
 2. Click **Upload to this volume** and select `MZMV.zip`. (Limit in the browser: 5 GB per file – the ZIP has 2.2 GB.)
 3. Wait until the upload is finished – do not close the browser tab.
 
-**Option B – CLI:**
-
-```bash
-databricks fs cp MZMV.zip dbfs:/Volumes/mzmv/raw/landing/MZMV.zip --profile workshop
-```
+*(Alternative with the Databricks CLI: `databricks fs cp MZMV.zip dbfs:/Volumes/mzmv/raw/landing/MZMV.zip`)*
 
 ## Step 2 – Run the job `mzmv_load` (≈ 5–10 min)
 
-**In the UI:** *Jobs & Pipelines* → `mzmv_load` → **Run now**.
-
-**Or with the CLI:**
-
-```bash
-databricks bundle run mzmv_load --profile workshop
-```
+*Jobs & Pipelines* → `mzmv_load` → **Run now** – or click **Run** (▶︎) next to `mzmv_load` in the Deployments panel
+of your Git folder.
 
 The job has two tasks:
 

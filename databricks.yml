@@ -29,8 +29,7 @@ variables:
 
 sync:
   exclude:
-    - docs/**         # not needed in the workspace
-    - cheatsheets/**  # files listed in .gitignore (e.g. data/) are excluded automatically
+    - cheatsheets/**  # not needed in the workspace; files in .gitignore (e.g. data/) are excluded automatically
 
 targets:
   # Default target: each student deploys into their own (Free Edition) workspace.

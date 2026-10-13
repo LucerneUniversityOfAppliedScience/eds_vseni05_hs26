@@ -45,7 +45,7 @@ zip_in_volume = f"{target_dir}/_download/workshop_data.zip"
 
 if not os.path.isdir(target_dir):
     raise FileNotFoundError(
-        f"Volume not found: {target_dir} – did you run 'databricks bundle deploy'?"
+        f"Volume not found: {target_dir} – did you deploy the bundle (Deployments panel → Deploy)?"
     )
 print(f"Target: {target_dir}")
 
