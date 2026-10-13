@@ -8,13 +8,13 @@ This guide shows how you upload the data into **your** Databricks workspace and 
 
 > ⚠️ **Data protection:** the MZMV data is provided under a data use agreement. It is **not** part of this repository
 > and must never be uploaded to GitHub, shared publicly or copied to other people's workspaces.
-> You receive the ZIP file from your lecturer.
+> You receive the ZIP file `MZMV_workshop.zip` (≈ 130 MB) from your lecturer.
 
 ## Overview
 
 ```
  your laptop                     Unity Catalog (catalog "mzmv")
- MZMV.zip (2.2 GB) ──upload──►  raw.landing   (volume)  MZMV.zip
+ MZMV_workshop.zip ─upload──►  raw.landing   (volume)  MZMV_workshop.zip
                                       │  job mzmv_load, task "unzip"
                                       ▼
                                 raw.files     (volume)  MZMV/MZMV2021_mit_Geo/..., MZMV/Zeitreihen1994-2021/...
@@ -27,15 +27,20 @@ This guide shows how you upload the data into **your** Databricks workspace and 
 The catalog `mzmv` with the schemas `raw`, `bronze`, `silver`, `gold` and the volumes `raw.landing` and `raw.files` is
 created automatically by the setup job `workshop_setup` (see the main README).
 
-## Step 1 – Upload the ZIP file (≈ 5–15 min, depending on your connection)
+## Step 1 – Upload the ZIP file (≈ 1–3 min)
 
 **In the browser:**
 
 1. In your workspace open **Catalog** → `mzmv` → `raw` → **Volumes** → `landing`.
-2. Click **Upload to this volume** and select `MZMV.zip`. (Limit in the browser: 5 GB per file – the ZIP has 2.2 GB.)
+2. Click **Upload to this volume** and select `MZMV_workshop.zip`.
 3. Wait until the upload is finished – do not close the browser tab.
 
-*(Alternative with the Databricks CLI: `databricks fs cp MZMV.zip dbfs:/Volumes/mzmv/raw/landing/MZMV.zip`)*
+*(Alternative with the Databricks CLI: `databricks fs cp MZMV_workshop.zip dbfs:/Volumes/mzmv/raw/landing/MZMV_workshop.zip`)*
+
+> **Which ZIP?** `MZMV_workshop.zip` contains exactly what the job loads by default: the SAS data of MZMV 2021 and of
+> the time series 1994–2021 plus documentation, questionnaires and SAS code. The complete original delivery
+> (`MZMV.zip`, 2.2 GB – additionally 2015, CSV, SPSS and route geometries) works with the same job; it only takes much
+> longer to upload (browser limit: 5 GB per file).
 
 ## Step 2 – Run the job `mzmv_load` (≈ 5–10 min)
 
