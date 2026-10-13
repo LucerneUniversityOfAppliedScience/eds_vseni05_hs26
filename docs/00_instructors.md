@@ -64,8 +64,17 @@ not perfect (new stations are not placed randomly → panel analysis as extensio
 
 ## Free Edition specifics
 
-- **Only one job run at a time** – a second run waits ("There are already 1 active runs").
-  Notebooks run interactively are not affected.
+See the official [Free Edition limitations](https://docs.databricks.com/aws/en/getting-started/free-edition-limitations).
+
+- **Fair-usage compute quota per account.** If it is exceeded, compute is shut down for the rest of the day
+  (in extreme cases the rest of the month); data and settings are kept. Every student has their own account, so one
+  normal run through the workshop is fine – but avoid re-running steps 2/3 (≈ 40 M rows) and the reference pipeline
+  over and over. Some limits can be raised with **LinkedIn verification** (button *Verify identity* in the top bar).
+- **Jobs:** officially max. 5 concurrent job tasks per account; in practice tasks of one run were queued one after the
+  other ("There are already 1 active runs"). Interactive notebooks are not affected.
+- **Lakeflow pipelines:** one active pipeline per type. A pipeline update can fail with
+  `RESOURCE_EXHAUSTED: You have hit your limit for serverless compute` when the account is busy – simply retry later.
+- **SQL warehouse:** exactly one, size 2X-Small (`Serverless Starter Warehouse`).
 - **Outbound internet is restricted to an allow-list.** GitHub, PyPI and Open-Meteo work;
   `data.stadt-zuerich.ch` and the NYC TLC CDN do not. That is why the data comes from the GitHub release.
 - **Catalogs** cannot be created via the API/bundle (no storage root), but `CREATE CATALOG` in SQL works

@@ -139,7 +139,7 @@ If you cannot install the CLI:
 2. Paste the repository URL `https://github.com/LucerneUniversityOfAppliedScience/eds_vseni05_hs26.git` → **Create Git folder**.
 3. Open the file `databricks.yml` in the new folder. Databricks recognises the bundle automatically.
 4. Open the **Deployments** icon (🚀) in the left panel of the editor, choose target `prod` → **Deploy**.
-5. After the deployment click **Run** (▶︎) next to the job `[Workshop] Setup: load data` in the same panel.
+5. After the deployment click **Run** (▶︎) next to the job `workshop_setup` in the same panel.
 6. Open the notebooks directly in the Git folder under `src/`.
 
 ---
@@ -172,5 +172,6 @@ If you cannot install the CLI:
 | `cannot configure default credentials` | `--profile workshop` missing or login expired → `databricks auth login ...` |
 | Setup job: `Volume not found` | run `bundle deploy` first, then `bundle run` |
 | Setup job: download fails | upload `workshop_data.zip` (from the GitHub release) manually to `/Volumes/workspace/mobility_raw/landing/_download/` and run the job again |
-| Job waits with "There are already 1 active runs" | Free Edition runs only one job at a time – wait until the other one has finished |
+| Job waits with "There are already 1 active runs" | Free Edition queues job tasks – wait until the other one has finished |
+| `RESOURCE_EXHAUSTED: You have hit your limit for serverless compute` | Free Edition fair-usage quota reached – retry later; if compute stays unavailable, it resets the next day. Verifying your identity via LinkedIn (*Verify identity* button) raises some limits |
 | Notebook does not find tables | previous step not completed? Catalog widget at the top of the notebook set to `workspace`? |

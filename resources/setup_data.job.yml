@@ -4,7 +4,7 @@
 resources:
   jobs:
     setup_data:
-      name: "[Workshop] Setup: load data"
+      name: workshop_setup
       parameters:
         - name: catalog
           default: ${var.catalog}

@@ -29,6 +29,7 @@ After the workshop you can …
 | 3 | **Basic exercises** (pick what suits you) | 60'+ | [src/02_exercises](src/02_exercises) |
 | 4 | **Project** "Bike vs. car in Zurich" – step by step to the dashboard | 3–4 h | [src/03_project/README.md](src/03_project/README.md) |
 | + | Bonus: NYC taxi – which trips could a bike replace? | 20' | [src/04_bonus](src/04_bonus) |
+| 5 | **MZMV**: upload the Mobility and Transport Microcensus and load it as bronze tables | 30' | [src/05_mzmv/README.md](src/05_mzmv/README.md) |
 
 Solutions are published on **Thursday**.
 
@@ -62,9 +63,10 @@ No terminal? See **Option B (browser only)** in [docs/02_declarative_automation_
 | Schemas | `workspace.mobility_raw` / `_bronze` / `_silver` / `_gold` | project layers |
 | Volume | `workspace.mobility_raw.landing` | all raw files |
 | Schemas | `workspace.exercises`, `workspace.adventureworks` | basic exercises |
-| Catalog | `mzmv` with schemas `raw` (+ volume `files`), `bronze`, `silver`, `gold` | for the MZMV (Mikrozensus Mobilität und Verkehr) part – created by the setup job |
-| Job | `[Workshop] Setup: load data` | creates `mzmv`, downloads the data, loads AdventureWorks |
-| Job | `[Workshop] Cleanup (manual, deletes all data)` | removes all data again – only with `confirm=yes` |
+| Catalog | `mzmv` with schemas `raw` (+ volumes `landing`, `files`), `bronze`, `silver`, `gold` | for the MZMV (Mikrozensus Mobilität und Verkehr) part – created by the setup job |
+| Job | `workshop_setup` | creates `mzmv`, downloads the data, loads AdventureWorks |
+| Job | `mzmv_load` | unzips your uploaded MZMV ZIP and loads the SAS files as bronze tables |
+| Job | `workshop_cleanup` | removes all data again – only with `confirm=yes` |
 
 ```bash
 # Reset everything (data only – schemas, volume and jobs stay):
@@ -81,13 +83,15 @@ databricks bundle destroy --profile workshop
 ├── resources/                     # what the bundle creates in the workspace
 │   ├── unity_catalog.yml          #   schemas + volume
 │   ├── setup_data.job.yml         #   job: create mzmv, download data, load AdventureWorks
+│   ├── mzmv_load.job.yml          #   job: unzip the MZMV ZIP, load SAS files as bronze tables
 │   └── cleanup.job.yml            #   job: delete all workshop data (manual)
 ├── src/
 │   ├── 00_setup/                  # notebooks used by the setup and cleanup jobs
 │   ├── 01_getting_started/        # first steps: workspace, Unity Catalog, Delta
 │   ├── 02_exercises/              # basic exercises e01–e08 (SQL, PySpark, file formats, window functions)
 │   ├── 03_project/                # project: step-by-step guide (README) + notebooks step_1 … step_5
-│   └── 04_bonus/                  # NYC taxi
+│   ├── 04_bonus/                  # NYC taxi
+│   └── 05_mzmv/                   # Mobility and Transport Microcensus: upload guide + load notebooks
 ├── data/                          # README only – the data is published as GitHub release asset
 ├── cheatsheets/                   # Python, pandas, PySpark, Matplotlib, … cheat sheets (PDF)
 └── docs/                          # setup guides and instructor notes

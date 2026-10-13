@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # 99 – Cleanup: remove all workshop data
 # MAGIC
-# MAGIC Run by the job `[Workshop] Cleanup (manual)`. The job has **no schedule** – it only runs when you start it,
+# MAGIC Run by the job `workshop_cleanup`. The job has **no schedule** – it only runs when you start it,
 # MAGIC and only if the parameter `confirm` is set to `yes`:
 # MAGIC
 # MAGIC ```bash
@@ -12,7 +12,8 @@
 # MAGIC | What | Action |
 # MAGIC |---|---|
 # MAGIC | catalog `mzmv` | dropped completely (`DROP CATALOG ... CASCADE`) |
-# MAGIC | all tables and views in the workshop schemas (`mobility_bronze`, `mobility_silver`, `mobility_gold`, `exercises`, `adventureworks`, `mobility_pipeline`) | dropped |
+# MAGIC | all tables and views in the workshop schemas (`mobility_bronze`, `mobility_silver`, `mobility_gold`, `exercises`, `adventureworks`) | dropped |
+# MAGIC | tables of the reference pipeline (`mobility_pipeline`) | **not touched** – they are managed by the pipeline. Reset them with a *full refresh* of the pipeline, remove them with `databricks bundle destroy` |
 # MAGIC | all files in the volume `mobility_raw.landing` | deleted |
 # MAGIC
 # MAGIC The **schemas, the volume, the jobs and the dashboard stay** – they belong to the bundle. After a cleanup you can
@@ -26,7 +27,7 @@ dbutils.widgets.text("catalog", "workspace", "Workshop catalog")
 dbutils.widgets.text("mzmv_catalog", "mzmv", "MZMV catalog")
 dbutils.widgets.text(
     "schemas",
-    "mobility_bronze,mobility_silver,mobility_gold,exercises,adventureworks,mobility_pipeline",
+    "mobility_bronze,mobility_silver,mobility_gold,exercises,adventureworks",
     "Schemas to empty",
 )
 

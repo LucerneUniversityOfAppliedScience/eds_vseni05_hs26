@@ -5,7 +5,7 @@
 resources:
   jobs:
     cleanup:
-      name: "[Workshop] Cleanup (manual, deletes all data)"
+      name: workshop_cleanup
       parameters:
         - name: confirm
           default: "no"

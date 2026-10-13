@@ -3,7 +3,7 @@
 # MAGIC # 01 – Setup: download the workshop data into the volume
 # MAGIC
 # MAGIC This notebook is normally run **automatically** by the job
-# MAGIC `[Workshop] Setup: load data` (see `resources/setup_data.job.yml`).
+# MAGIC `workshop_setup` (see `resources/setup_data.job.yml`).
 # MAGIC
 # MAGIC The data is too large for the Git repo, so it is published as a ZIP file in a
 # MAGIC **GitHub release**. This notebook downloads the ZIP and extracts it into the Unity Catalog volume

@@ -1,0 +1,31 @@
+# MZMV job: unzips the original MZMV ZIP (uploaded by you to /Volumes/mzmv/raw/landing)
+# and loads the SAS data files as bronze Delta tables into mzmv.bronze.
+# No schedule – start it after the upload:
+#   databricks bundle run mzmv_load --profile <your-profile>
+# Prerequisite: the setup job ran once (it creates the catalog mzmv with its schemas and volumes).
+resources:
+  jobs:
+    mzmv_load:
+      name: mzmv_load
+      parameters:
+        - name: catalog
+          default: mzmv
+        - name: zip_name
+          default: "*.zip"
+        - name: include
+          default: 2_DB_SAS,1_Beschreibung,6_SAS-Codes,7_Fragebogen
+        - name: datasets
+          default: mzmv2021,zeitreihen
+        - name: chunk_rows
+          default: "200000"
+      tasks:
+        - task_key: unzip
+          notebook_task:
+            notebook_path: ../src/05_mzmv/01_unzip.py
+        - task_key: load_bronze
+          depends_on:
+            - task_key: unzip
+          notebook_task:
+            notebook_path: ../src/05_mzmv/02_load_bronze.py
+      tags:
+        workshop: mzmv
