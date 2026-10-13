@@ -1,0 +1,32 @@
+# Setup job: downloads the workshop data (ZIP from a GitHub release) into the
+# Unity Catalog volume, loads the AdventureWorks tables and creates the mzmv catalog. Run once after the first deploy:
+#   databricks bundle run setup_data --profile <your-profile>
+resources:
+  jobs:
+    setup_data:
+      name: "[Workshop] Setup: load data"
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: data_url
+          default: ${var.data_url}
+        - name: mzmv_catalog
+          default: mzmv
+        - name: mzmv_schemas
+          default: raw,bronze,silver,gold
+        - name: target_dir
+          default: /Volumes/${var.catalog}/${resources.volumes.landing_volume.schema_name}/${resources.volumes.landing_volume.name}
+      tasks:
+        - task_key: create_mzmv_catalog
+          notebook_task:
+            notebook_path: ../src/00_setup/00_create_catalogs.py
+        - task_key: copy_data
+          notebook_task:
+            notebook_path: ../src/00_setup/01_download_data.py
+        - task_key: load_adventureworks
+          depends_on:
+            - task_key: copy_data
+          notebook_task:
+            notebook_path: ../src/00_setup/02_load_adventureworks.py
+      tags:
+        workshop: mobility

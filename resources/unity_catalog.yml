@@ -1,0 +1,40 @@
+# Unity Catalog objects for the workshop.
+resources:
+  schemas:
+    raw_schema:
+      name: mobility_raw
+      catalog_name: ${var.catalog}
+      comment: "Raw files (landing zone) – files exactly as delivered by the source"
+
+    bronze_schema:
+      name: mobility_bronze
+      catalog_name: ${var.catalog}
+      comment: "Project bronze layer – raw data loaded 1:1 into Delta tables"
+
+    silver_schema:
+      name: mobility_silver
+      catalog_name: ${var.catalog}
+      comment: "Project silver layer – cleaned, typed and enriched data"
+
+    gold_schema:
+      name: mobility_gold
+      catalog_name: ${var.catalog}
+      comment: "Project gold layer – aggregated, analysis-ready tables (dashboard source)"
+
+    exercises_schema:
+      name: exercises
+      catalog_name: ${var.catalog}
+      comment: "Tables created by the basic exercises (src/02_exercises)"
+
+    adventureworks_schema:
+      name: adventureworks
+      catalog_name: ${var.catalog}
+      comment: "AdventureWorks sample database (loaded by the setup job) for the SQL exercises"
+
+  volumes:
+    landing_volume:
+      name: landing
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.raw_schema.name}
+      volume_type: MANAGED
+      comment: "Landing zone for all workshop files (copied by the setup job)"

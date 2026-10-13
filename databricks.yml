@@ -1,0 +1,44 @@
+# Declarative Automation Bundle (DAB) for the workshop "Databricks for Sustainable Mobility".
+#
+# One command sets up the whole environment in your Databricks workspace:
+#
+#   databricks bundle deploy  --profile <your-profile>
+#   databricks bundle run setup_data --profile <your-profile>
+#
+# The workspace host is NOT hard-coded here – it comes from your CLI profile
+# (~/.databrickscfg). This way the same file works for every student.
+# Docs: https://docs.databricks.com/dev-tools/bundles/
+
+bundle:
+  name: mobility_workshop
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog that hosts all workshop schemas
+    default: workspace          # Free Edition default catalog
+  data_url:
+    description: Public URL of the workshop data ZIP (GitHub release asset)
+    default: https://github.com/LucerneUniversityOfAppliedScience/eds_vseni05_hs26/releases/download/data-v1/workshop_data.zip
+  warehouse_id:
+    description: SQL warehouse used by the AI/BI dashboard
+    lookup:
+      warehouse: Serverless Starter Warehouse   # default warehouse in Free Edition
+
+sync:
+  exclude:
+    - docs/**         # not needed in the workspace
+    - cheatsheets/**  # files listed in .gitignore (e.g. data/) are excluded automatically
+
+targets:
+  # Default target: each student deploys into their own (Free Edition) workspace.
+  # Production mode: no name prefixes, pipelines run in production mode.
+  prod:
+    mode: production
+    default: true
+    workspace:
+      root_path: ~/${bundle.name}    # -> /Workspace/Users/<you>/mobility_workshop
+    presets:
+      trigger_pause_status: PAUSED   # all schedules/triggers stay disabled

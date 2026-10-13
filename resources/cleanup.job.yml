@@ -1,0 +1,21 @@
+# Cleanup job: removes all workshop data (mzmv catalog, tables, volume files).
+# No schedule – it only runs when started manually, and only with confirm=yes:
+#   databricks bundle run cleanup --params confirm=yes --profile <your-profile>
+# Schemas, volume, jobs and dashboard remain (they belong to the bundle -> `databricks bundle destroy`).
+resources:
+  jobs:
+    cleanup:
+      name: "[Workshop] Cleanup (manual, deletes all data)"
+      parameters:
+        - name: confirm
+          default: "no"
+        - name: catalog
+          default: ${var.catalog}
+        - name: mzmv_catalog
+          default: mzmv
+      tasks:
+        - task_key: cleanup
+          notebook_task:
+            notebook_path: ../src/00_setup/99_cleanup.py
+      tags:
+        workshop: mobility

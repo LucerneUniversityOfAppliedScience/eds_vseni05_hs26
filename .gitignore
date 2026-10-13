@@ -218,3 +218,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Databricks
+.databricks/
+.bundle/
+
+# Workshop data: too large for Git -> published as GitHub release asset (see data/README.md)
+data/**
+!data/README.md
+!data/build_data_zip.sh
+
+# Solutions: published on Thursday (remove these two lines and commit)
+solutions/
+resources/solution_*.yml
+dist/
