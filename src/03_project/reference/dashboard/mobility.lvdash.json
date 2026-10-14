@@ -4,7 +4,7 @@
       "name": "ds_daily",
       "displayName": "Daily traffic and weather",
       "queryLines": [
-        "SELECT date, year, is_weekend, bikes_per_station, pedestrians_per_station, vehicles_per_site, temp_mean_c, precipitation_mm, IF(is_rainy_day, 'rainy (>= 1 mm)', 'dry') AS weather, CASE WHEN is_rainy_day THEN 1 ELSE 0 END AS rainy_day FROM workspace.mobility_pipeline.daily_traffic WHERE year BETWEEN 2011 AND 2026 ORDER BY date"
+        "SELECT date, year, is_weekend, dayofweek(date) AS weekday_num, date_format(date, 'EEE') AS weekday, bikes_per_station, pedestrians_per_station, vehicles_per_site, temp_mean_c, precipitation_mm, IF(is_rainy_day, 'rainy (>= 1 mm)', 'dry') AS weather, CASE WHEN is_rainy_day THEN 1 ELSE 0 END AS rainy_day FROM workspace.mobility_pipeline.daily_traffic WHERE year BETWEEN 2011 AND 2026 ORDER BY date"
       ]
     },
     {
@@ -109,10 +109,6 @@
                     {
                       "name": "avg(bikes_per_station)",
                       "expression": "AVG(`bikes_per_station`)"
-                    },
-                    {
-                      "name": "monthly(date)",
-                      "expression": "DATE_TRUNC(\"MONTH\", `date`)"
                     }
                   ],
                   "disaggregated": false
@@ -134,14 +130,13 @@
                       "places": 1
                     }
                   }
-                },
-                "period": {
-                  "fieldName": "monthly(date)"
                 }
               },
               "frame": {
                 "showTitle": true,
-                "title": "Bikes per station and day"
+                "title": "Bikes per station and day",
+                "description": "Average over the selected period",
+                "showDescription": true
               }
             }
           },
@@ -164,10 +159,6 @@
                     {
                       "name": "avg(vehicles_per_site)",
                       "expression": "AVG(`vehicles_per_site`)"
-                    },
-                    {
-                      "name": "monthly(date)",
-                      "expression": "DATE_TRUNC(\"MONTH\", `date`)"
                     }
                   ],
                   "disaggregated": false
@@ -189,14 +180,13 @@
                       "places": 1
                     }
                   }
-                },
-                "period": {
-                  "fieldName": "monthly(date)"
                 }
               },
               "frame": {
                 "showTitle": true,
-                "title": "Vehicles per site and day"
+                "title": "Vehicles per site and day",
+                "description": "Average over the selected period",
+                "showDescription": true
               }
             }
           },
@@ -219,10 +209,6 @@
                     {
                       "name": "sum(rainy_day)",
                       "expression": "SUM(`rainy_day`)"
-                    },
-                    {
-                      "name": "monthly(date)",
-                      "expression": "DATE_TRUNC(\"MONTH\", `date`)"
                     }
                   ],
                   "disaggregated": false
@@ -236,14 +222,13 @@
                 "value": {
                   "fieldName": "sum(rainy_day)",
                   "displayName": "Rainy days (>= 1 mm)"
-                },
-                "period": {
-                  "fieldName": "monthly(date)"
                 }
               },
               "frame": {
                 "showTitle": true,
-                "title": "Rainy days (>= 1 mm)"
+                "title": "Rainy days (>= 1 mm)",
+                "description": "Sum over the selected period",
+                "showDescription": true
               }
             }
           },
@@ -609,8 +594,8 @@
                   "datasetName": "ds_daily",
                   "fields": [
                     {
-                      "name": "weekday_num",
-                      "expression": "DAYOFWEEK(`date`)"
+                      "name": "weekday",
+                      "expression": "`weekday`"
                     },
                     {
                       "name": "avg(bikes_per_station)",
@@ -626,11 +611,23 @@
               "widgetType": "bar",
               "encodings": {
                 "x": {
-                  "fieldName": "weekday_num",
+                  "fieldName": "weekday",
                   "scale": {
-                    "type": "categorical"
+                    "type": "categorical",
+                    "sort": {
+                      "by": "custom-order",
+                      "orderedValues": [
+                        "Mon",
+                        "Tue",
+                        "Wed",
+                        "Thu",
+                        "Fri",
+                        "Sat",
+                        "Sun"
+                      ]
+                    }
                   },
-                  "displayName": "Day of week (1 = Sunday)"
+                  "displayName": "Day of week"
                 },
                 "y": {
                   "fieldName": "avg(bikes_per_station)",
@@ -671,7 +668,7 @@
         },
         {
           "widget": {
-            "name": "map_locations",
+            "name": "map_bike",
             "queries": [
               {
                 "name": "main_query",
@@ -687,10 +684,6 @@
                       "expression": "`lon`"
                     },
                     {
-                      "name": "mode",
-                      "expression": "`mode`"
-                    },
-                    {
                       "name": "location_name",
                       "expression": "`location_name`"
                     },
@@ -699,7 +692,12 @@
                       "expression": "SUM(`avg_daily_count`)"
                     }
                   ],
-                  "disaggregated": false
+                  "disaggregated": false,
+                  "filters": [
+                    {
+                      "expression": "`mode` = 'Bike'"
+                    }
+                  ]
                 }
               }
             ],
@@ -723,21 +721,21 @@
                   "displayName": "Average per day"
                 },
                 "color": {
-                  "fieldName": "mode",
+                  "fieldName": "sum(avg_daily_count)",
                   "scale": {
-                    "type": "categorical",
-                    "mappings": [
-                      {
-                        "value": "Bike",
-                        "color": "#0B6E4F"
-                      },
-                      {
-                        "value": "Car",
-                        "color": "#C8553D"
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "custom-sequential",
+                      "colors": {
+                        "start": "#E8F3EE",
+                        "end": "#0B6E4F"
                       }
-                    ]
+                    }
                   },
-                  "displayName": "Mode"
+                  "displayName": "Average per day",
+                  "legend": {
+                    "hide": true
+                  }
                 }
               },
               "mark": {
@@ -745,14 +743,102 @@
               },
               "frame": {
                 "showTitle": true,
-                "title": "Counting locations 2025 (size = average daily volume)"
+                "title": "Bike counting locations 2025 (size = average daily volume)"
               }
             }
           },
           "position": {
             "x": 0,
             "y": 28,
-            "width": 12,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "map_car",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_locations",
+                  "fields": [
+                    {
+                      "name": "lat",
+                      "expression": "`lat`"
+                    },
+                    {
+                      "name": "lon",
+                      "expression": "`lon`"
+                    },
+                    {
+                      "name": "location_name",
+                      "expression": "`location_name`"
+                    },
+                    {
+                      "name": "sum(avg_daily_count)",
+                      "expression": "SUM(`avg_daily_count`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "filters": [
+                    {
+                      "expression": "`mode` = 'Car'"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "symbol-map",
+              "encodings": {
+                "coordinates": {
+                  "latitude": {
+                    "fieldName": "lat"
+                  },
+                  "longitude": {
+                    "fieldName": "lon"
+                  }
+                },
+                "size": {
+                  "fieldName": "sum(avg_daily_count)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Average per day"
+                },
+                "color": {
+                  "fieldName": "sum(avg_daily_count)",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "custom-sequential",
+                      "colors": {
+                        "start": "#F6E1DB",
+                        "end": "#C8553D"
+                      }
+                    }
+                  },
+                  "displayName": "Average per day",
+                  "legend": {
+                    "hide": true
+                  }
+                }
+              },
+              "mark": {
+                "opacity": 0.75
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Car counting locations 2025 (size = average daily volume)"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 28,
+            "width": 6,
             "height": 8
           }
         }

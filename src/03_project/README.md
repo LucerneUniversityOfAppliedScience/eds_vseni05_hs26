@@ -52,6 +52,11 @@ You combine four open data sources of the City of Zurich and Open-Meteo, build a
 **Goal:** one page that answers the project question at a glance. Requirement: steps 2–4 completed
 (the dashboard reads the `mobility_gold` tables).
 
+For orientation – this is the reference dashboard (deployed with the bundle, see step 8). Yours may look different:
+
+![Reference dashboard, part 1](assets/dashboard_1.webp)
+![Reference dashboard, part 2](assets/dashboard_2.webp)
+
 ### 6.1 Create the dashboard and the datasets
 
 1. Left sidebar → **Dashboards** → **Create dashboard**. Rename it (click the title), e.g. *Bike vs. car in Zurich*.
