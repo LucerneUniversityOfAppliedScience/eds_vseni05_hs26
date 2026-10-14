@@ -141,8 +141,7 @@ def load_sas_file(path: str, table: str):
 
     file_label = (meta.file_label or "").replace("'", "")
     spark.sql(f"COMMENT ON TABLE {table} IS 'MZMV bronze table loaded 1:1 from {os.path.basename(path)}. {file_label}'")
-    print(f"{table:<45} {rows:>9,} rows  {len(schema.fields):>4} columns  {time.time() - started:5.0f} s")
-    return table
+    return f"{table:<45} {rows:>9,} rows  {len(schema.fields):>4} columns  {time.time() - started:5.0f} s"
 
 # COMMAND ----------
 
@@ -155,14 +154,19 @@ jobs = [
 ]
 print(f"Loading {len(jobs)} tables with {parallel_tables} in parallel ...")
 
-loaded, failed = [], []
+# Progress is printed here in the main thread – output of worker threads is not shown in the notebook.
+loaded, failed, start = [], [], time.time()
 with ThreadPoolExecutor(max_workers=parallel_tables) as pool:
     futures = {pool.submit(load_sas_file, path, table): table for path, table in jobs}
-    for future in as_completed(futures):
+    for n, future in enumerate(as_completed(futures), start=1):
         try:
-            loaded.append(future.result())
+            result = future.result()
+            loaded.append(futures[future])
+            print(f"[{n:>2}/{len(jobs)}] {result}", flush=True)
         except Exception as e:  # keep loading the other tables, report at the end
             failed.append((futures[future], str(e).splitlines()[0][:200]))
+            print(f"[{n:>2}/{len(jobs)}] FAILED {futures[future]}", flush=True)
+print(f"Total time: {(time.time() - start) / 60:.1f} min")
 
 if failed:
     for table, error in failed:

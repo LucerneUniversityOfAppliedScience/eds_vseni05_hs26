@@ -4,9 +4,32 @@ The **Mobility and Transport Microcensus** (*Mikrozensus Mobilität und Verkehr,
 Office (FSO/BFS) and the Federal Office for Spatial Development (ARE) is the most important survey on travel behaviour
 in Switzerland: households, persons, vehicles, trips (*Wege*) and stages (*Etappen*), every five years since 1994.
 
-This guide shows how you upload the data into **your** Databricks workspace and turn it into bronze Delta tables.
+This guide shows how you upload the data into **your** Databricks workspace and turn it into Delta tables.
+You get two files from your lecturer: `wege21.sas7bdat` (one table, for the class) and `MZMV_workshop.zip`
+(all tables, for at home).
 
-You receive the ZIP file `MZMV_workshop.zip` (≈ 130 MB) from your lecturer.
+| Where | What | Time |
+|---|---|---|
+| **In class** | One file from upload → bronze → silver: [00_class_example_one_file.py](00_class_example_one_file.py) | ≈ 15 min |
+| **At home** | All tables with the job `02_mzmv_load`, then the silver exercise | ≈ 30 min loading + your work |
+
+---
+
+# In class: one file from upload to silver
+
+1. **Upload** `wege21.sas7bdat`: *Catalog* → `mzmv` → `raw` → *Volumes* → `landing` → **Upload to this volume**.
+2. Open [00_class_example_one_file.py](00_class_example_one_file.py), attach it to **Serverless** and run it cell by cell:
+   read the SAS file → **bronze** table `mzmv.bronze.example_wege21` (1:1, with column descriptions) →
+   **silver** table `mzmv.silver.example_trips_2021` (renamed, special codes → NULL, decoded) → weighted modal split 2021.
+
+---
+
+# At home: load all MZMV tables
+
+Loading all 39 tables takes **≈ 30 minutes** on Free Edition – start the job and let it run (you can close the
+browser tab, the job keeps running):
+
+![Bronze load of all tables: ≈ 30 minutes](assets/bronze_load_duration.png)
 
 ## Overview
 
@@ -40,7 +63,7 @@ created automatically by the setup job `01_workshop_setup` (see the main README)
 > (`MZMV.zip`, 2.2 GB – additionally 2015, CSV, SPSS and route geometries) works with the same job; it only takes much
 > longer to upload (browser limit: 5 GB per file).
 
-## Step 2 – Run the job `02_mzmv_load` (≈ 10 min)
+## Step 2 – Run the job `02_mzmv_load` (≈ 30 min)
 
 *Jobs & Pipelines* → `02_mzmv_load` → **Run now** – or click **Run** (▶︎) next to `02_mzmv_load` in the Deployments panel
 of your Git folder.

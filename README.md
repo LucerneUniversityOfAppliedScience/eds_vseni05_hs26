@@ -45,7 +45,7 @@ After the workshop you can …
 3. **Basic exercises** – [src/02_exercises](src/02_exercises) (see table below)
 4. **Project "Bike vs. car in Zurich"** – [step-by-step guide](src/03_project/README.md)
 5. **Bonus: NYC taxi** – [src/04_bonus](src/04_bonus)
-6. **MZMV** – [upload and load the Mobility and Transport Microcensus](src/05_mzmv/README.md)
+6. **MZMV** – [in class: one file from upload to silver; at home: load all tables](src/05_mzmv/README.md)
 7. **Clean up** – [start over or remove everything](#clean-up)
 
 Every task comes with collapsible **hints** and the **solution** right below your code cell – try it yourself first!
@@ -84,7 +84,8 @@ No local installation needed – you only need a browser.
 | Job | `02_mzmv_load` | unzips your uploaded MZMV ZIP and loads the SAS files as bronze tables |
 | Job | `99_workshop_cleanup` | removes all data again – only with `confirm=yes` |
 
-**MZMV:** upload `MZMV_workshop.zip` to `mzmv.raw.landing`, then run `02_mzmv_load` – see the [MZMV guide](src/05_mzmv/README.md).
+**MZMV:** in class you upload one file and follow `src/05_mzmv/00_class_example_one_file`. At home you upload
+`MZMV_workshop.zip` to `mzmv.raw.landing` and run `02_mzmv_load` (≈ 30 min) – see the [MZMV guide](src/05_mzmv/README.md).
 
 ## Clean up
 
@@ -116,7 +117,7 @@ Finally you can delete the Git folder itself.
 │   ├── 02_exercises/              # basic exercises e01–e08 (SQL, PySpark, file formats, window functions)
 │   ├── 03_project/                # project: step-by-step guide (README) + notebooks step_1 … step_5
 │   ├── 04_bonus/                  # NYC taxi
-│   └── 05_mzmv/                   # Mobility and Transport Microcensus: upload guide + load notebooks
+│   └── 05_mzmv/                   # Mobility and Transport Microcensus: class example, load job notebooks, silver exercise
 ├── data/                          # README only – the data is published as GitHub release asset
 ├── cheatsheets/                   # Python, pandas, PySpark, Matplotlib, … cheat sheets (PDF)
 ```
