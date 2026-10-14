@@ -6,9 +6,7 @@ in Switzerland: households, persons, vehicles, trips (*Wege*) and stages (*Etapp
 
 This guide shows how you upload the data into **your** Databricks workspace and turn it into bronze Delta tables.
 
-> ⚠️ **Data protection:** the MZMV data is provided under a data use agreement. It is **not** part of this repository
-> and must never be uploaded to GitHub, shared publicly or copied to other people's workspaces.
-> You receive the ZIP file `MZMV_workshop.zip` (≈ 130 MB) from your lecturer.
+You receive the ZIP file `MZMV_workshop.zip` (≈ 130 MB) from your lecturer.
 
 ## Overview
 
