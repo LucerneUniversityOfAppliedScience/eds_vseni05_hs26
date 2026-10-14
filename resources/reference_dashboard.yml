@@ -1,11 +1,9 @@
-# Reference solution of project step 6.
-# AI/BI dashboard on the project's gold tables. Queries in the .lvdash.json use bare table names;
-# catalog/schema are set here. Switch dataset_schema to mobility_pipeline to use the pipeline output instead.
+# Reference solution of project step 6: AI/BI dashboard on the output of the reference pipeline.
+# The queries in the .lvdash.json use fully qualified names (workspace.mobility_pipeline.<table>),
+# so the dashboard works as soon as the pipeline mobility_pipeline has run once.
 resources:
   dashboards:
     mobility_dashboard:
       display_name: "Bike vs car in Zurich"
       file_path: ../src/03_project/reference/dashboard/mobility.lvdash.json
       warehouse_id: ${var.warehouse_id}
-      dataset_catalog: ${var.catalog}
-      dataset_schema: ${resources.schemas.gold_schema.name}

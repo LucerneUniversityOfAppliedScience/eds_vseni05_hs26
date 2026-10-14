@@ -4,32 +4,28 @@
       "name": "ds_daily",
       "displayName": "Daily traffic and weather",
       "queryLines": [
-        "SELECT date, year, is_weekend, bikes_per_station, pedestrians_per_station, vehicles_per_site, ",
-        "temp_mean_c, precipitation_mm, IF(is_rainy_day, 'rainy (>= 1 mm)', 'dry') AS weather, ",
-        "CASE WHEN is_rainy_day THEN 1 ELSE 0 END AS rainy_day ",
-        "FROM daily_traffic WHERE year BETWEEN 2011 AND 2026 ORDER BY date"
+        "SELECT date, year, is_weekend, bikes_per_station, pedestrians_per_station, vehicles_per_site, temp_mean_c, precipitation_mm, IF(is_rainy_day, 'rainy (>= 1 mm)', 'dry') AS weather, CASE WHEN is_rainy_day THEN 1 ELSE 0 END AS rainy_day FROM workspace.mobility_pipeline.daily_traffic WHERE year BETWEEN 2011 AND 2026 ORDER BY date"
       ]
     },
     {
       "name": "ds_yearly",
       "displayName": "Yearly trend",
       "queryLines": [
-        "SELECT make_date(year, 1, 1) AS year_start, avg_daily_bikes_per_station, avg_daily_vehicles_per_site, ",
-        "avg_active_bike_stations FROM yearly_trend ORDER BY year"
+        "SELECT make_date(year, 1, 1) AS year_start, avg_daily_bikes_per_station, avg_daily_vehicles_per_site, avg_active_bike_stations FROM workspace.mobility_pipeline.yearly_trend ORDER BY year"
       ]
     },
     {
       "name": "ds_profile",
       "displayName": "Hourly profile 2025",
       "queryLines": [
-        "SELECT mode, day_type, hour, avg_per_location FROM hourly_profile ORDER BY hour"
+        "SELECT mode, day_type, hour, avg_per_location FROM workspace.mobility_pipeline.hourly_profile ORDER BY hour"
       ]
     },
     {
       "name": "ds_locations",
       "displayName": "Counting locations 2025",
       "queryLines": [
-        "SELECT mode, location_name, lat, lon, avg_daily_count FROM location_map"
+        "SELECT mode, location_name, lat, lon, avg_daily_count FROM workspace.mobility_pipeline.location_map"
       ]
     }
   ],

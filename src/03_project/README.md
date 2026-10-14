@@ -165,4 +165,5 @@ A complete reference is part of this repo and deployed with the bundle:
 - **Pipeline:** [reference/pipeline](reference/pipeline/transformations) → *Jobs & Pipelines* → `mobility_pipeline` → **Start**
   (writes to the schema `mobility_pipeline`; the first run needs a few minutes).
 - **Dashboard as code:** [reference/dashboard/mobility.lvdash.json](reference/dashboard/mobility.lvdash.json) →
-  *Dashboards* → `Bike vs car in Zurich` (shows data once your gold tables from step 4 exist).
+  *Dashboards* → `Bike vs car in Zurich`. It reads the tables of the reference pipeline (`workspace.mobility_pipeline`),
+  so **start the pipeline once first** – otherwise the dashboard shows "table not found".
