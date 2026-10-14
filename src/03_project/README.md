@@ -153,6 +153,7 @@ In steps 2–4 you ran notebooks by hand. In practice this runs **automatically*
   `databricks bundle deploy`.
 
 Try it yourself: **Jobs & Pipelines → Create → ETL pipeline**, and rewrite one of your silver tables in SQL.
+
 This is what the reference pipeline looks like after a run – the same bronze → silver → gold flow you built by hand,
 but declarative: four sources loaded incrementally (Auto Loader), data quality rules (*expectations*) on the silver
 tables and the gold tables for the dashboard:
