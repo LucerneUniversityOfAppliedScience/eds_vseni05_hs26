@@ -74,35 +74,13 @@ raise NotImplementedError("Step 2: fix the problem")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `COUNT`, `.select()`, `.printSchema()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC print(f"Row count: {df_raw.count()}")  # → 1 row!
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.functions import explode, col, expr
-# MAGIC
-# MAGIC df_exploded = df_raw.select(explode(col("root.Page")).alias("offer"))
-# MAGIC print(f"Number of offers: {df_exploded.count():,}")
-# MAGIC df_exploded.printSchema()
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC display(df_exploded.limit(5))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COUNT</code>, <code>.select()</code>, <code>.printSchema()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>print(f&quot;Row count: {df_raw.count()}&quot;)  # → 1 row!</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.functions import explode, col, expr
+# MAGIC 
+# MAGIC df_exploded = df_raw.select(explode(col(&quot;root.Page&quot;)).alias(&quot;offer&quot;))
+# MAGIC print(f&quot;Number of offers: {df_exploded.count():,}&quot;)
+# MAGIC df_exploded.printSchema()</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>display(df_exploded.limit(5))</code></pre></details>
 
 # COMMAND ----------
 
@@ -123,28 +101,10 @@ raise NotImplementedError("Step 3: write to Bronze")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `LIMIT`, `.saveAsTable()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_exploded.write.mode("overwrite").saveAsTable(BRONZE_TABLE)
-# MAGIC print(f"Bronze table written: {BRONZE_TABLE}")
-# MAGIC ```
-# MAGIC
-# MAGIC ```sql
-# MAGIC SELECT * FROM workspace.exercises.bronze_travel_offers_raw LIMIT 5
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LIMIT</code>, <code>.saveAsTable()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_exploded.write.mode(&quot;overwrite&quot;).saveAsTable(BRONZE_TABLE)
+# MAGIC print(f&quot;Bronze table written: {BRONZE_TABLE}&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT * FROM workspace.exercises.bronze_travel_offers_raw LIMIT 5</code></pre></details>
 
 # COMMAND ----------
 
@@ -195,49 +155,31 @@ raise NotImplementedError("Step 4: flatten to Silver")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `LIMIT`, `TRY_CAST`, `.select()`, `.saveAsTable()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_bronze = spark.table(BRONZE_TABLE)
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LIMIT</code>, <code>TRY_CAST</code>, <code>.select()</code>, <code>.saveAsTable()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_bronze = spark.table(BRONZE_TABLE)
+# MAGIC 
 # MAGIC # Use try_cast so empty strings become NULL instead of raising
 # MAGIC # (Serverless Spark has ANSI mode on; plain .cast() fails on malformed input)
 # MAGIC df_silver = df_bronze.select(
-# MAGIC     col("offer.Position.Hotel.Name").alias("hotel_name"),
-# MAGIC     col("offer.Position.Hotel.Class").alias("hotel_class"),
-# MAGIC     expr("try_cast(offer.Position.Hotel.Lat as double)").alias("lat"),
-# MAGIC     expr("try_cast(offer.Position.Hotel.Lon as double)").alias("lon"),
-# MAGIC     col("offer.Position.Destination.Country.Name").alias("country_name"),
-# MAGIC     col("offer.Position.Destination.Region.Name").alias("region_name"),
-# MAGIC     col("offer.Position.Destination.Location.Name").alias("location_name"),
-# MAGIC     expr("try_cast(offer.Position.Price.Value as double)").alias("price"),
-# MAGIC     col("offer.Position.Price.Currency").alias("currency"),
-# MAGIC     expr("try_cast(offer.Position.Duration.Value as int)").alias("duration_days"),
-# MAGIC     col("offer.Position.Package.DepartureDate.Value").alias("departure_date"),
-# MAGIC     col("offer.Position.Package.TourOperator.Name").alias("tour_operator"),
-# MAGIC     col("offer.Position.Package.MealPlan.Name").alias("meal_plan"),
-# MAGIC     expr("try_cast(offer.Position.Package.Hotelrating.Rating as double)").alias("rating"),
+# MAGIC     col(&quot;offer.Position.Hotel.Name&quot;).alias(&quot;hotel_name&quot;),
+# MAGIC     col(&quot;offer.Position.Hotel.Class&quot;).alias(&quot;hotel_class&quot;),
+# MAGIC     expr(&quot;try_cast(offer.Position.Hotel.Lat as double)&quot;).alias(&quot;lat&quot;),
+# MAGIC     expr(&quot;try_cast(offer.Position.Hotel.Lon as double)&quot;).alias(&quot;lon&quot;),
+# MAGIC     col(&quot;offer.Position.Destination.Country.Name&quot;).alias(&quot;country_name&quot;),
+# MAGIC     col(&quot;offer.Position.Destination.Region.Name&quot;).alias(&quot;region_name&quot;),
+# MAGIC     col(&quot;offer.Position.Destination.Location.Name&quot;).alias(&quot;location_name&quot;),
+# MAGIC     expr(&quot;try_cast(offer.Position.Price.Value as double)&quot;).alias(&quot;price&quot;),
+# MAGIC     col(&quot;offer.Position.Price.Currency&quot;).alias(&quot;currency&quot;),
+# MAGIC     expr(&quot;try_cast(offer.Position.Duration.Value as int)&quot;).alias(&quot;duration_days&quot;),
+# MAGIC     col(&quot;offer.Position.Package.DepartureDate.Value&quot;).alias(&quot;departure_date&quot;),
+# MAGIC     col(&quot;offer.Position.Package.TourOperator.Name&quot;).alias(&quot;tour_operator&quot;),
+# MAGIC     col(&quot;offer.Position.Package.MealPlan.Name&quot;).alias(&quot;meal_plan&quot;),
+# MAGIC     expr(&quot;try_cast(offer.Position.Package.Hotelrating.Rating as double)&quot;).alias(&quot;rating&quot;),
 # MAGIC )
-# MAGIC
-# MAGIC df_silver.write.mode("overwrite").saveAsTable(SILVER_TABLE)
-# MAGIC print(f"Silver table written: {SILVER_TABLE}")
-# MAGIC ```
-# MAGIC
-# MAGIC ```sql
-# MAGIC SELECT * FROM workspace.exercises.silver_travel_offers LIMIT 10
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC df_silver.write.mode(&quot;overwrite&quot;).saveAsTable(SILVER_TABLE)
+# MAGIC print(f&quot;Silver table written: {SILVER_TABLE}&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT * FROM workspace.exercises.silver_travel_offers LIMIT 10</code></pre></details>
 
 # COMMAND ----------
 

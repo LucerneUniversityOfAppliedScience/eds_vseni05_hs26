@@ -67,25 +67,11 @@ raise NotImplementedError("Task 1: read the parquet file")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_pop = spark.read.parquet(PARQUET_PATH)
-# MAGIC
-# MAGIC print(f"Rows: {df_pop.count():,}")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_pop = spark.read.parquet(PARQUET_PATH)
+# MAGIC 
+# MAGIC print(f&quot;Rows: {df_pop.count():,}&quot;)</code></pre></details>
 
 # COMMAND ----------
 
@@ -104,27 +90,9 @@ raise NotImplementedError("Task 2: inspect the data")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.printSchema()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_pop.limit(10).display()
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC df_pop.printSchema()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.printSchema()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_pop.limit(10).display()</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_pop.printSchema()</code></pre></details>
 
 # COMMAND ----------
 
@@ -148,37 +116,23 @@ raise NotImplementedError("Task 3: define bs_schema and re-read the file")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.printSchema()`, `.schema()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.types import StructType, StructField, StringType, LongType
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.printSchema()</code>, <code>.schema()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.types import StructType, StructField, StringType, LongType
+# MAGIC 
 # MAGIC bs_schema = StructType([
-# MAGIC     StructField("datum",                StringType(), True),
-# MAGIC     StructField("gemeinde",             StringType(), True),
-# MAGIC     StructField("geschlecht",           StringType(), True),
-# MAGIC     StructField("staatsangehoerigkeit", StringType(), True),
-# MAGIC     StructField("anzahl",               LongType(),   True),
-# MAGIC     StructField("jahr",                 StringType(), True),
-# MAGIC     StructField("wohnviertel_name",     StringType(), True),
-# MAGIC     StructField("wohnviertel_id",       StringType(), True),
+# MAGIC     StructField(&quot;datum&quot;,                StringType(), True),
+# MAGIC     StructField(&quot;gemeinde&quot;,             StringType(), True),
+# MAGIC     StructField(&quot;geschlecht&quot;,           StringType(), True),
+# MAGIC     StructField(&quot;staatsangehoerigkeit&quot;, StringType(), True),
+# MAGIC     StructField(&quot;anzahl&quot;,               LongType(),   True),
+# MAGIC     StructField(&quot;jahr&quot;,                 StringType(), True),
+# MAGIC     StructField(&quot;wohnviertel_name&quot;,     StringType(), True),
+# MAGIC     StructField(&quot;wohnviertel_id&quot;,       StringType(), True),
 # MAGIC ])
-# MAGIC
+# MAGIC 
 # MAGIC df_pop = spark.read.schema(bs_schema).parquet(PARQUET_PATH)
-# MAGIC df_pop.printSchema()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC df_pop.printSchema()</code></pre></details>
 
 # COMMAND ----------
 
@@ -199,30 +153,16 @@ raise NotImplementedError("Task 4: save as Delta table")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.saveAsTable()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC (
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.saveAsTable()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>(
 # MAGIC     df_pop
 # MAGIC     .write
-# MAGIC     .mode("overwrite")
+# MAGIC     .mode(&quot;overwrite&quot;)
 # MAGIC     .saveAsTable(TABLE_POP)
 # MAGIC )
-# MAGIC
-# MAGIC print(f"Saved: {TABLE_POP}  ({spark.table(TABLE_POP).count():,} rows)")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC print(f&quot;Saved: {TABLE_POP}  ({spark.table(TABLE_POP).count():,} rows)&quot;)</code></pre></details>
 
 # COMMAND ----------
 
@@ -241,31 +181,17 @@ raise NotImplementedError("Task 5: query for Iran, 1980")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_iran_1980 = spark.sql(f"""
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_iran_1980 = spark.sql(f&quot;&quot;&quot;
 # MAGIC     SELECT *
 # MAGIC     FROM {TABLE_POP}
-# MAGIC     WHERE staatsangehoerigkeit = 'Iran'
-# MAGIC       AND jahr = '1980'
-# MAGIC """)
-# MAGIC
-# MAGIC print(f"Rows found: {df_iran_1980.count()}")
-# MAGIC df_iran_1980.display()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC     WHERE staatsangehoerigkeit = &#x27;Iran&#x27;
+# MAGIC       AND jahr = &#x27;1980&#x27;
+# MAGIC &quot;&quot;&quot;)
+# MAGIC 
+# MAGIC print(f&quot;Rows found: {df_iran_1980.count()}&quot;)
+# MAGIC df_iran_1980.display()</code></pre></details>
 
 # COMMAND ----------
 
@@ -286,34 +212,20 @@ raise NotImplementedError("Task 6: aggregate by country and year")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `GROUP BY`, `ORDER BY`, `SUM`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_by_country = spark.sql(f"""
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>SUM</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_by_country = spark.sql(f&quot;&quot;&quot;
 # MAGIC     SELECT
 # MAGIC         staatsangehoerigkeit,
 # MAGIC         jahr,
 # MAGIC         SUM(anzahl) AS anzahl
 # MAGIC     FROM {TABLE_POP}
-# MAGIC     WHERE staatsangehoerigkeit != 'Schweiz'
+# MAGIC     WHERE staatsangehoerigkeit != &#x27;Schweiz&#x27;
 # MAGIC     GROUP BY staatsangehoerigkeit, jahr
 # MAGIC     ORDER BY anzahl DESC
-# MAGIC """)
-# MAGIC
-# MAGIC df_by_country.limit(10).display()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC &quot;&quot;&quot;)
+# MAGIC 
+# MAGIC df_by_country.limit(10).display()</code></pre></details>
 
 # COMMAND ----------
 
@@ -331,30 +243,16 @@ raise NotImplementedError("Task 7: save aggregation table")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.saveAsTable()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC (
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.saveAsTable()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>(
 # MAGIC     df_by_country
 # MAGIC     .write
-# MAGIC     .mode("overwrite")
+# MAGIC     .mode(&quot;overwrite&quot;)
 # MAGIC     .saveAsTable(TABLE_AGG)
 # MAGIC )
-# MAGIC
-# MAGIC print(f"Saved: {TABLE_AGG}  ({spark.table(TABLE_AGG).count():,} rows)")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC print(f&quot;Saved: {TABLE_AGG}  ({spark.table(TABLE_AGG).count():,} rows)&quot;)</code></pre></details>
 
 # COMMAND ----------
 
@@ -379,40 +277,26 @@ raise NotImplementedError("Task 8: load and display aggregation for visualizatio
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `GROUP BY`, `ORDER BY`, `LIMIT`, `IN`, `SUM`, `.join()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC # Determine top 10 nationalities by total anzahl
-# MAGIC top10 = spark.sql(f"""
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, <code>IN</code>, <code>SUM</code>, <code>.join()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># Determine top 10 nationalities by total anzahl
+# MAGIC top10 = spark.sql(f&quot;&quot;&quot;
 # MAGIC     SELECT staatsangehoerigkeit
 # MAGIC     FROM {TABLE_AGG}
 # MAGIC     GROUP BY staatsangehoerigkeit
 # MAGIC     ORDER BY SUM(anzahl) DESC
 # MAGIC     LIMIT 10
-# MAGIC """).toPandas()["staatsangehoerigkeit"].tolist()
-# MAGIC
+# MAGIC &quot;&quot;&quot;).toPandas()[&quot;staatsangehoerigkeit&quot;].tolist()
+# MAGIC 
 # MAGIC # Load the aggregation table filtered to top 10
-# MAGIC df_top10 = spark.sql(f"""
+# MAGIC df_top10 = spark.sql(f&quot;&quot;&quot;
 # MAGIC     SELECT staatsangehoerigkeit, jahr, anzahl
 # MAGIC     FROM {TABLE_AGG}
-# MAGIC     WHERE staatsangehoerigkeit IN ({", ".join(f"'{c}'" for c in top10)})
+# MAGIC     WHERE staatsangehoerigkeit IN ({&quot;, &quot;.join(f&quot;&#x27;{c}&#x27;&quot; for c in top10)})
 # MAGIC     ORDER BY jahr, anzahl DESC
-# MAGIC """)
-# MAGIC
-# MAGIC df_top10.display()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC &quot;&quot;&quot;)
+# MAGIC 
+# MAGIC df_top10.display()</code></pre></details>
 
 # COMMAND ----------
 
@@ -435,32 +319,18 @@ raise NotImplementedError("Task 9: filter for women in Basel, 2010")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_women_2010 = spark.sql(f"""
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_women_2010 = spark.sql(f&quot;&quot;&quot;
 # MAGIC     SELECT *
 # MAGIC     FROM {TABLE_POP}
-# MAGIC     WHERE gemeinde    = 'Basel'
-# MAGIC       AND geschlecht  = 'W'
-# MAGIC       AND jahr        = '2010'
-# MAGIC """)
-# MAGIC
-# MAGIC print(f"Rows: {df_women_2010.count():,}")
-# MAGIC df_women_2010.limit(5).display()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC     WHERE gemeinde    = &#x27;Basel&#x27;
+# MAGIC       AND geschlecht  = &#x27;W&#x27;
+# MAGIC       AND jahr        = &#x27;2010&#x27;
+# MAGIC &quot;&quot;&quot;)
+# MAGIC 
+# MAGIC print(f&quot;Rows: {df_women_2010.count():,}&quot;)
+# MAGIC df_women_2010.limit(5).display()</code></pre></details>
 
 # COMMAND ----------
 
@@ -480,33 +350,19 @@ raise NotImplementedError("Task 10: display women data for visualization")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `GROUP BY`, `ORDER BY`, `SUM`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_women_2010_by_country = spark.sql(f"""
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>SUM</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_women_2010_by_country = spark.sql(f&quot;&quot;&quot;
 # MAGIC     SELECT staatsangehoerigkeit, SUM(anzahl) AS anzahl
 # MAGIC     FROM {TABLE_POP}
-# MAGIC     WHERE gemeinde   = 'Basel'
-# MAGIC       AND geschlecht = 'W'
-# MAGIC       AND jahr       = '2010'
+# MAGIC     WHERE gemeinde   = &#x27;Basel&#x27;
+# MAGIC       AND geschlecht = &#x27;W&#x27;
+# MAGIC       AND jahr       = &#x27;2010&#x27;
 # MAGIC     GROUP BY staatsangehoerigkeit
 # MAGIC     ORDER BY anzahl DESC
-# MAGIC """)
-# MAGIC
-# MAGIC df_women_2010_by_country.display()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC &quot;&quot;&quot;)
+# MAGIC 
+# MAGIC df_women_2010_by_country.display()</code></pre></details>
 
 # COMMAND ----------
 

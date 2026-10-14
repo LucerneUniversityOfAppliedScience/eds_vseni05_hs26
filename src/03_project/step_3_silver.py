@@ -163,72 +163,51 @@ raise NotImplementedError("Task 3.4")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
-# MAGIC
-# MAGIC Three steps: (1) `select` the typed columns – timestamp truncated to the hour, NULL counts replaced by 0, the two `has_..._data` flags; (2) `groupBy("station_id", "ts_hour")` and `sum` the counts, `max` the flags; (3) add `bikes = bikes_in + bikes_out` and call `add_time_columns`.
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
-# MAGIC
-# MAGIC ```python
-# MAGIC zero = F.lit(0)
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint 1 – the idea</b></summary><p style='margin:6px 0'>Three steps: (1) <code>select</code> the typed columns – timestamp truncated to the hour, NULL counts replaced by 0, the two <code>has_..._data</code> flags; (2) <code>groupBy(&quot;station_id&quot;, &quot;ts_hour&quot;)</code> and <code>sum</code> the counts, <code>max</code> the flags; (3) add <code>bikes = bikes_in + bikes_out</code> and call <code>add_time_columns</code>.</p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🧩 Hint 2 – code skeleton</b></summary><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>zero = F.lit(0)
 # MAGIC df_bike_hourly = (
-# MAGIC     spark.table(f"{BRONZE}.bike_counts")
+# MAGIC     spark.table(f&quot;{BRONZE}.bike_counts&quot;)
 # MAGIC     .select(
-# MAGIC         F.col("FK_STANDORT").cast("int").alias("station_id"),
-# MAGIC         F.date_trunc("hour", F.to_timestamp("DATUM", "yyyy-MM-dd'T'HH:mm")).alias("ts_hour"),
-# MAGIC         F.coalesce("VELO_IN", zero).alias("bikes_in"),
-# MAGIC         F.coalesce("VELO_OUT", zero).alias("bikes_out"),
-# MAGIC         (F.coalesce("FUSS_IN", zero) + F.coalesce("FUSS_OUT", zero)).alias("pedestrians"),
-# MAGIC         (F.col("VELO_IN").isNotNull() | F.col("VELO_OUT").isNotNull()).alias("has_bike_data"),
-# MAGIC         ___  # same for FUSS_IN / FUSS_OUT -> has_pedestrian_data
+# MAGIC         F.col(&quot;FK_STANDORT&quot;).cast(&quot;int&quot;).alias(&quot;station_id&quot;),
+# MAGIC         F.date_trunc(&quot;hour&quot;, F.to_timestamp(&quot;DATUM&quot;, &quot;yyyy-MM-dd&#x27;T&#x27;HH:mm&quot;)).alias(&quot;ts_hour&quot;),
+# MAGIC         F.coalesce(&quot;VELO_IN&quot;, zero).alias(&quot;bikes_in&quot;),
+# MAGIC         F.coalesce(&quot;VELO_OUT&quot;, zero).alias(&quot;bikes_out&quot;),
+# MAGIC         (F.coalesce(&quot;FUSS_IN&quot;, zero) + F.coalesce(&quot;FUSS_OUT&quot;, zero)).alias(&quot;pedestrians&quot;),
+# MAGIC         (F.col(&quot;VELO_IN&quot;).isNotNull() | F.col(&quot;VELO_OUT&quot;).isNotNull()).alias(&quot;has_bike_data&quot;),
+# MAGIC         ___  # same for FUSS_IN / FUSS_OUT -&gt; has_pedestrian_data
 # MAGIC     )
-# MAGIC     .groupBy("station_id", "ts_hour")
-# MAGIC     .agg(F.sum("bikes_in").alias("bikes_in"), ___, F.max("has_bike_data").alias("has_bike_data"), ___)
-# MAGIC     .withColumn("bikes", F.col("bikes_in") + F.col("bikes_out"))
+# MAGIC     .groupBy(&quot;station_id&quot;, &quot;ts_hour&quot;)
+# MAGIC     .agg(F.sum(&quot;bikes_in&quot;).alias(&quot;bikes_in&quot;), ___, F.max(&quot;has_bike_data&quot;).alias(&quot;has_bike_data&quot;), ___)
+# MAGIC     .withColumn(&quot;bikes&quot;, F.col(&quot;bikes_in&quot;) + F.col(&quot;bikes_out&quot;))
 # MAGIC )
-# MAGIC save(add_time_columns(df_bike_hourly), "bike_counts_hourly")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC zero = F.lit(0)
-# MAGIC
+# MAGIC save(add_time_columns(df_bike_hourly), &quot;bike_counts_hourly&quot;)</code></pre></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>zero = F.lit(0)
+# MAGIC 
 # MAGIC df_bike_hourly = (
-# MAGIC     spark.table(f"{BRONZE}.bike_counts")
+# MAGIC     spark.table(f&quot;{BRONZE}.bike_counts&quot;)
 # MAGIC     .select(
-# MAGIC         F.col("FK_STANDORT").cast("int").alias("station_id"),
-# MAGIC         F.date_trunc("hour", F.to_timestamp("DATUM", "yyyy-MM-dd'T'HH:mm")).alias("ts_hour"),
-# MAGIC         F.coalesce("VELO_IN", zero).alias("bikes_in"),
-# MAGIC         F.coalesce("VELO_OUT", zero).alias("bikes_out"),
-# MAGIC         (F.coalesce("FUSS_IN", zero) + F.coalesce("FUSS_OUT", zero)).alias("pedestrians"),
-# MAGIC         (F.col("VELO_IN").isNotNull() | F.col("VELO_OUT").isNotNull()).alias("has_bike_data"),
-# MAGIC         (F.col("FUSS_IN").isNotNull() | F.col("FUSS_OUT").isNotNull()).alias("has_pedestrian_data"),
+# MAGIC         F.col(&quot;FK_STANDORT&quot;).cast(&quot;int&quot;).alias(&quot;station_id&quot;),
+# MAGIC         F.date_trunc(&quot;hour&quot;, F.to_timestamp(&quot;DATUM&quot;, &quot;yyyy-MM-dd&#x27;T&#x27;HH:mm&quot;)).alias(&quot;ts_hour&quot;),
+# MAGIC         F.coalesce(&quot;VELO_IN&quot;, zero).alias(&quot;bikes_in&quot;),
+# MAGIC         F.coalesce(&quot;VELO_OUT&quot;, zero).alias(&quot;bikes_out&quot;),
+# MAGIC         (F.coalesce(&quot;FUSS_IN&quot;, zero) + F.coalesce(&quot;FUSS_OUT&quot;, zero)).alias(&quot;pedestrians&quot;),
+# MAGIC         (F.col(&quot;VELO_IN&quot;).isNotNull() | F.col(&quot;VELO_OUT&quot;).isNotNull()).alias(&quot;has_bike_data&quot;),
+# MAGIC         (F.col(&quot;FUSS_IN&quot;).isNotNull() | F.col(&quot;FUSS_OUT&quot;).isNotNull()).alias(&quot;has_pedestrian_data&quot;),
 # MAGIC     )
-# MAGIC     .filter(F.col("ts_hour").isNotNull() & F.col("station_id").isNotNull())
-# MAGIC     .groupBy("station_id", "ts_hour")
+# MAGIC     .filter(F.col(&quot;ts_hour&quot;).isNotNull() &amp; F.col(&quot;station_id&quot;).isNotNull())
+# MAGIC     .groupBy(&quot;station_id&quot;, &quot;ts_hour&quot;)
 # MAGIC     .agg(
-# MAGIC         F.sum("bikes_in").alias("bikes_in"),
-# MAGIC         F.sum("bikes_out").alias("bikes_out"),
-# MAGIC         F.sum("pedestrians").alias("pedestrians"),
-# MAGIC         F.max("has_bike_data").alias("has_bike_data"),
-# MAGIC         F.max("has_pedestrian_data").alias("has_pedestrian_data"),
+# MAGIC         F.sum(&quot;bikes_in&quot;).alias(&quot;bikes_in&quot;),
+# MAGIC         F.sum(&quot;bikes_out&quot;).alias(&quot;bikes_out&quot;),
+# MAGIC         F.sum(&quot;pedestrians&quot;).alias(&quot;pedestrians&quot;),
+# MAGIC         F.max(&quot;has_bike_data&quot;).alias(&quot;has_bike_data&quot;),
+# MAGIC         F.max(&quot;has_pedestrian_data&quot;).alias(&quot;has_pedestrian_data&quot;),
 # MAGIC     )
-# MAGIC     .withColumn("bikes", F.col("bikes_in") + F.col("bikes_out"))
+# MAGIC     .withColumn(&quot;bikes&quot;, F.col(&quot;bikes_in&quot;) + F.col(&quot;bikes_out&quot;))
 # MAGIC )
-# MAGIC
-# MAGIC save(add_time_columns(df_bike_hourly), "bike_counts_hourly")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC save(add_time_columns(df_bike_hourly), &quot;bike_counts_hourly&quot;)</code></pre></details>
 
 # COMMAND ----------
 
@@ -257,54 +236,33 @@ raise NotImplementedError("Task 3.5")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
-# MAGIC
-# MAGIC First `filter` the valid rows (`AnzFahrzeugeStatus` in `Gemessen`/`Imputiert`, `AnzFahrzeuge` not NULL), then select `site_id`, `ts_hour` (first 19 characters of `MessungDatZeit` → timestamp) and `vehicles`, then `groupBy("site_id", "ts_hour")` and sum the vehicles of both directions.
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
-# MAGIC
-# MAGIC ```python
-# MAGIC df_car_hourly = (
-# MAGIC     spark.table(f"{BRONZE}.car_counts")
-# MAGIC     .filter(F.col("AnzFahrzeugeStatus").isin(___, ___) & F.col("AnzFahrzeuge").isNotNull())
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint 1 – the idea</b></summary><p style='margin:6px 0'>First <code>filter</code> the valid rows (<code>AnzFahrzeugeStatus</code> in <code>Gemessen</code>/<code>Imputiert</code>, <code>AnzFahrzeuge</code> not NULL), then select <code>site_id</code>, <code>ts_hour</code> (first 19 characters of <code>MessungDatZeit</code> → timestamp) and <code>vehicles</code>, then <code>groupBy(&quot;site_id&quot;, &quot;ts_hour&quot;)</code> and sum the vehicles of both directions.</p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🧩 Hint 2 – code skeleton</b></summary><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_car_hourly = (
+# MAGIC     spark.table(f&quot;{BRONZE}.car_counts&quot;)
+# MAGIC     .filter(F.col(&quot;AnzFahrzeugeStatus&quot;).isin(___, ___) &amp; F.col(&quot;AnzFahrzeuge&quot;).isNotNull())
 # MAGIC     .select(
-# MAGIC         F.col("ZSID").alias("site_id"),
-# MAGIC         F.to_timestamp(F.substring("MessungDatZeit", 1, ___), "yyyy-MM-dd'T'HH:mm:ss").alias("ts_hour"),
-# MAGIC         F.col("AnzFahrzeuge").alias("vehicles"),
+# MAGIC         F.col(&quot;ZSID&quot;).alias(&quot;site_id&quot;),
+# MAGIC         F.to_timestamp(F.substring(&quot;MessungDatZeit&quot;, 1, ___), &quot;yyyy-MM-dd&#x27;T&#x27;HH:mm:ss&quot;).alias(&quot;ts_hour&quot;),
+# MAGIC         F.col(&quot;AnzFahrzeuge&quot;).alias(&quot;vehicles&quot;),
 # MAGIC     )
 # MAGIC     .groupBy(___, ___)
-# MAGIC     .agg(F.sum("vehicles").alias("vehicles"))
+# MAGIC     .agg(F.sum(&quot;vehicles&quot;).alias(&quot;vehicles&quot;))
 # MAGIC )
-# MAGIC save(add_time_columns(df_car_hourly), "car_counts_hourly")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_car_hourly = (
-# MAGIC     spark.table(f"{BRONZE}.car_counts")
-# MAGIC     .filter(F.col("AnzFahrzeugeStatus").isin("Gemessen", "Imputiert") & F.col("AnzFahrzeuge").isNotNull())
+# MAGIC save(add_time_columns(df_car_hourly), &quot;car_counts_hourly&quot;)</code></pre></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_car_hourly = (
+# MAGIC     spark.table(f&quot;{BRONZE}.car_counts&quot;)
+# MAGIC     .filter(F.col(&quot;AnzFahrzeugeStatus&quot;).isin(&quot;Gemessen&quot;, &quot;Imputiert&quot;) &amp; F.col(&quot;AnzFahrzeuge&quot;).isNotNull())
 # MAGIC     .select(
-# MAGIC         F.col("ZSID").alias("site_id"),
-# MAGIC         F.to_timestamp(F.substring("MessungDatZeit", 1, 19), "yyyy-MM-dd'T'HH:mm:ss").alias("ts_hour"),
-# MAGIC         F.col("AnzFahrzeuge").alias("vehicles"),
+# MAGIC         F.col(&quot;ZSID&quot;).alias(&quot;site_id&quot;),
+# MAGIC         F.to_timestamp(F.substring(&quot;MessungDatZeit&quot;, 1, 19), &quot;yyyy-MM-dd&#x27;T&#x27;HH:mm:ss&quot;).alias(&quot;ts_hour&quot;),
+# MAGIC         F.col(&quot;AnzFahrzeuge&quot;).alias(&quot;vehicles&quot;),
 # MAGIC     )
-# MAGIC     .groupBy("site_id", "ts_hour")
-# MAGIC     .agg(F.sum("vehicles").alias("vehicles"))
+# MAGIC     .groupBy(&quot;site_id&quot;, &quot;ts_hour&quot;)
+# MAGIC     .agg(F.sum(&quot;vehicles&quot;).alias(&quot;vehicles&quot;))
 # MAGIC )
-# MAGIC
-# MAGIC save(add_time_columns(df_car_hourly), "car_counts_hourly")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC save(add_time_columns(df_car_hourly), &quot;car_counts_hourly&quot;)</code></pre></details>
 
 # COMMAND ----------
 

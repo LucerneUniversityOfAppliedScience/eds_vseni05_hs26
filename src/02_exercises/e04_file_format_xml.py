@@ -40,45 +40,15 @@ raise NotImplementedError("Step 1: read XML and write to Bronze")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `LIMIT`, `.saveAsTable()`, `.printSchema()`, `.count()`, `.option()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_countries_raw = (spark.read
-# MAGIC     .format("xml")
-# MAGIC     .option("rowTag", "country")
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LIMIT</code>, <code>.saveAsTable()</code>, <code>.printSchema()</code>, <code>.count()</code>, <code>.option()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_countries_raw = (spark.read
+# MAGIC     .format(&quot;xml&quot;)
+# MAGIC     .option(&quot;rowTag&quot;, &quot;country&quot;)
 # MAGIC     .load(XML_PATH))
-# MAGIC
-# MAGIC df_countries_raw.printSchema()
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC print(f"Number of countries: {df_countries_raw.count()}")
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC display(df_countries_raw.limit(5))
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC df_countries_raw.write.mode("overwrite").saveAsTable("workspace.exercises.bronze_countries_raw")
-# MAGIC print("Bronze table written: workspace.exercises.bronze_countries_raw")
-# MAGIC ```
-# MAGIC
-# MAGIC ```sql
-# MAGIC SELECT * FROM workspace.exercises.bronze_countries_raw LIMIT 5
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC df_countries_raw.printSchema()</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>print(f&quot;Number of countries: {df_countries_raw.count()}&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>display(df_countries_raw.limit(5))</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_countries_raw.write.mode(&quot;overwrite&quot;).saveAsTable(&quot;workspace.exercises.bronze_countries_raw&quot;)
+# MAGIC print(&quot;Bronze table written: workspace.exercises.bronze_countries_raw&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT * FROM workspace.exercises.bronze_countries_raw LIMIT 5</code></pre></details>
 
 # COMMAND ----------
 
@@ -119,54 +89,32 @@ raise NotImplementedError("Step 2: flatten to Silver")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `GROUP BY`, `ORDER BY`, `LIMIT`, `COUNT`, `.select()`, `.saveAsTable()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.functions import col
-# MAGIC
-# MAGIC df_countries_silver = spark.table("workspace.exercises.bronze_countries_raw").select(
-# MAGIC     col("id").cast("int").alias("id"),
-# MAGIC     col("name"),
-# MAGIC     col("iso3"),
-# MAGIC     col("iso2"),
-# MAGIC     col("capital"),
-# MAGIC     col("region"),
-# MAGIC     col("subregion"),
-# MAGIC     col("latitude").cast("double").alias("latitude"),
-# MAGIC     col("longitude").cast("double").alias("longitude"),
-# MAGIC     col("currency"),
-# MAGIC     col("currency_name"),
-# MAGIC     col("phone_code"),
-# MAGIC     col("tld"),
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, <code>COUNT</code>, <code>.select()</code>, <code>.saveAsTable()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.functions import col
+# MAGIC 
+# MAGIC df_countries_silver = spark.table(&quot;workspace.exercises.bronze_countries_raw&quot;).select(
+# MAGIC     col(&quot;id&quot;).cast(&quot;int&quot;).alias(&quot;id&quot;),
+# MAGIC     col(&quot;name&quot;),
+# MAGIC     col(&quot;iso3&quot;),
+# MAGIC     col(&quot;iso2&quot;),
+# MAGIC     col(&quot;capital&quot;),
+# MAGIC     col(&quot;region&quot;),
+# MAGIC     col(&quot;subregion&quot;),
+# MAGIC     col(&quot;latitude&quot;).cast(&quot;double&quot;).alias(&quot;latitude&quot;),
+# MAGIC     col(&quot;longitude&quot;).cast(&quot;double&quot;).alias(&quot;longitude&quot;),
+# MAGIC     col(&quot;currency&quot;),
+# MAGIC     col(&quot;currency_name&quot;),
+# MAGIC     col(&quot;phone_code&quot;),
+# MAGIC     col(&quot;tld&quot;),
 # MAGIC )
-# MAGIC
-# MAGIC df_countries_silver.write.mode("overwrite").saveAsTable("workspace.exercises.silver_countries")
-# MAGIC print("Silver table written: workspace.exercises.silver_countries")
-# MAGIC ```
-# MAGIC
-# MAGIC ```sql
-# MAGIC SELECT * FROM workspace.exercises.silver_countries LIMIT 10
-# MAGIC ```
-# MAGIC
-# MAGIC ```sql
-# MAGIC -- Quick check: countries per region
+# MAGIC 
+# MAGIC df_countries_silver.write.mode(&quot;overwrite&quot;).saveAsTable(&quot;workspace.exercises.silver_countries&quot;)
+# MAGIC print(&quot;Silver table written: workspace.exercises.silver_countries&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT * FROM workspace.exercises.silver_countries LIMIT 10</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>-- Quick check: countries per region
 # MAGIC SELECT region, count(*) AS num_countries
 # MAGIC FROM workspace.exercises.silver_countries
 # MAGIC GROUP BY region
-# MAGIC ORDER BY num_countries DESC
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC ORDER BY num_countries DESC</code></pre></details>
 
 # COMMAND ----------
 

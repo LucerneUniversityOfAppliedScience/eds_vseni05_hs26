@@ -122,32 +122,20 @@ raise NotImplementedError("Task 3.2")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
-# MAGIC
-# MAGIC `union_years("wege")` already returns all six years in one DataFrame. Then one `select` with `F.col(...).cast(...).alias(...)` for the IDs and `valid(...)` for the coded columns.
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
-# MAGIC
-# MAGIC ```python
-# MAGIC df_trips = union_years("wege").select(
-# MAGIC     "survey_year",
-# MAGIC     F.col("hhnr").cast("long").alias("household_id"),
-# MAGIC     F.col("zpnr").cast(___).alias("person_id"),
-# MAGIC     F.col("wp").alias("person_weight"),
-# MAGIC     F.col("wegnr").cast("int").alias(___),
-# MAGIC     valid("w_zweck").cast("int").alias("purpose_code"),
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint 1 – the idea</b></summary><p style='margin:6px 0'><code>union_years(&quot;wege&quot;)</code> already returns all six years in one DataFrame. Then one <code>select</code> with <code>F.col(...).cast(...).alias(...)</code> for the IDs and <code>valid(...)</code> for the coded columns.</p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🧩 Hint 2 – code skeleton</b></summary><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_trips = union_years(&quot;wege&quot;).select(
+# MAGIC     &quot;survey_year&quot;,
+# MAGIC     F.col(&quot;hhnr&quot;).cast(&quot;long&quot;).alias(&quot;household_id&quot;),
+# MAGIC     F.col(&quot;zpnr&quot;).cast(___).alias(&quot;person_id&quot;),
+# MAGIC     F.col(&quot;wp&quot;).alias(&quot;person_weight&quot;),
+# MAGIC     F.col(&quot;wegnr&quot;).cast(&quot;int&quot;).alias(___),
+# MAGIC     valid(&quot;w_zweck&quot;).cast(&quot;int&quot;).alias(&quot;purpose_code&quot;),
 # MAGIC     ___,  # main_mode_code, mode_group_code
-# MAGIC     valid("w_distanz").alias("distance_km"),
+# MAGIC     valid(&quot;w_distanz&quot;).alias(&quot;distance_km&quot;),
 # MAGIC     ___,  # duration_min
 # MAGIC )
-# MAGIC display(df_trips.groupBy("survey_year").count().orderBy("survey_year"))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC display(df_trips.groupBy(&quot;survey_year&quot;).count().orderBy(&quot;survey_year&quot;))</code></pre></details>
 
 # COMMAND ----------
 
@@ -171,24 +159,12 @@ raise NotImplementedError("Task 3.3")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
-# MAGIC
-# MAGIC Call `add_label` three times – each call returns a new DataFrame with one additional label column. Then `save(df_trips, "trips")`.
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
-# MAGIC
-# MAGIC ```python
-# MAGIC df_trips = add_label(df_trips, "purpose_code", "ZWECK", "purpose")
-# MAGIC df_trips = add_label(df_trips, ___, "WMITTELB", ___)
-# MAGIC df_trips = add_label(df_trips, ___, ___, "mode_group")
-# MAGIC save(df_trips, ___)
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint 1 – the idea</b></summary><p style='margin:6px 0'>Call <code>add_label</code> three times – each call returns a new DataFrame with one additional label column. Then <code>save(df_trips, &quot;trips&quot;)</code>.</p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🧩 Hint 2 – code skeleton</b></summary><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_trips = add_label(df_trips, &quot;purpose_code&quot;, &quot;ZWECK&quot;, &quot;purpose&quot;)
+# MAGIC df_trips = add_label(df_trips, ___, &quot;WMITTELB&quot;, ___)
+# MAGIC df_trips = add_label(df_trips, ___, ___, &quot;mode_group&quot;)
+# MAGIC save(df_trips, ___)</code></pre></details>
 
 # COMMAND ----------
 

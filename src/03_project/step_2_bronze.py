@@ -70,42 +70,21 @@ raise NotImplementedError("Task 2.2")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
-# MAGIC
-# MAGIC Exactly the same as Task 2.1 – only the folder (`motorized_traffic_counts`) and the table name (`car_counts`) change.
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
-# MAGIC
-# MAGIC ```python
-# MAGIC df_car = spark.read.parquet(f"{LANDING}/___/")
-# MAGIC add_metadata(df_car).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{BRONZE}.___")
-# MAGIC print(spark.table(f"{BRONZE}.car_counts").count())
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_car = spark.read.parquet(f"{LANDING}/motorized_traffic_counts/")
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint 1 – the idea</b></summary><p style='margin:6px 0'>Exactly the same as Task 2.1 – only the folder (<code>motorized_traffic_counts</code>) and the table name (<code>car_counts</code>) change.</p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🧩 Hint 2 – code skeleton</b></summary><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_car = spark.read.parquet(f&quot;{LANDING}/___/&quot;)
+# MAGIC add_metadata(df_car).write.mode(&quot;overwrite&quot;).option(&quot;overwriteSchema&quot;, &quot;true&quot;).saveAsTable(f&quot;{BRONZE}.___&quot;)
+# MAGIC print(spark.table(f&quot;{BRONZE}.car_counts&quot;).count())</code></pre></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_car = spark.read.parquet(f&quot;{LANDING}/motorized_traffic_counts/&quot;)
+# MAGIC 
 # MAGIC (
 # MAGIC     add_metadata(df_car)
-# MAGIC     .write.mode("overwrite")
-# MAGIC     .option("overwriteSchema", "true")
-# MAGIC     .saveAsTable(f"{BRONZE}.car_counts")
+# MAGIC     .write.mode(&quot;overwrite&quot;)
+# MAGIC     .option(&quot;overwriteSchema&quot;, &quot;true&quot;)
+# MAGIC     .saveAsTable(f&quot;{BRONZE}.car_counts&quot;)
 # MAGIC )
-# MAGIC
-# MAGIC print(f"{BRONZE}.car_counts: {spark.table(f'{BRONZE}.car_counts').count():,} rows")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC print(f&quot;{BRONZE}.car_counts: {spark.table(f&#x27;{BRONZE}.car_counts&#x27;).count():,} rows&quot;)</code></pre></details>
 
 # COMMAND ----------
 
@@ -129,48 +108,27 @@ raise NotImplementedError("Task 2.3")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
-# MAGIC
-# MAGIC Read the CSV with `spark.read.format("csv").option("header", "true").load(path)` – without `inferSchema`, so every column stays a string. Write a small function `load_csv_to_bronze(folder, table)` and call it twice.
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
-# MAGIC
-# MAGIC ```python
-# MAGIC def load_csv_to_bronze(folder, table):
-# MAGIC     df = spark.read.format("csv").option("header", "___").load(f"{LANDING}/{folder}/")
-# MAGIC     add_metadata(df).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{BRONZE}.{table}")
-# MAGIC
-# MAGIC load_csv_to_bronze("bike_pedestrian_stations", "___")
-# MAGIC load_csv_to_bronze("___", "weather")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC def load_csv_to_bronze(folder: str, table: str):
-# MAGIC     df = spark.read.format("csv").option("header", "true").load(f"{LANDING}/{folder}/")
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint 1 – the idea</b></summary><p style='margin:6px 0'>Read the CSV with <code>spark.read.format(&quot;csv&quot;).option(&quot;header&quot;, &quot;true&quot;).load(path)</code> – without <code>inferSchema</code>, so every column stays a string. Write a small function <code>load_csv_to_bronze(folder, table)</code> and call it twice.</p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🧩 Hint 2 – code skeleton</b></summary><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>def load_csv_to_bronze(folder, table):
+# MAGIC     df = spark.read.format(&quot;csv&quot;).option(&quot;header&quot;, &quot;___&quot;).load(f&quot;{LANDING}/{folder}/&quot;)
+# MAGIC     add_metadata(df).write.mode(&quot;overwrite&quot;).option(&quot;overwriteSchema&quot;, &quot;true&quot;).saveAsTable(f&quot;{BRONZE}.{table}&quot;)
+# MAGIC 
+# MAGIC load_csv_to_bronze(&quot;bike_pedestrian_stations&quot;, &quot;___&quot;)
+# MAGIC load_csv_to_bronze(&quot;___&quot;, &quot;weather&quot;)</code></pre></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>def load_csv_to_bronze(folder: str, table: str):
+# MAGIC     df = spark.read.format(&quot;csv&quot;).option(&quot;header&quot;, &quot;true&quot;).load(f&quot;{LANDING}/{folder}/&quot;)
 # MAGIC     (
 # MAGIC         add_metadata(df)
-# MAGIC         .write.mode("overwrite")
-# MAGIC         .option("overwriteSchema", "true")
-# MAGIC         .saveAsTable(f"{BRONZE}.{table}")
+# MAGIC         .write.mode(&quot;overwrite&quot;)
+# MAGIC         .option(&quot;overwriteSchema&quot;, &quot;true&quot;)
+# MAGIC         .saveAsTable(f&quot;{BRONZE}.{table}&quot;)
 # MAGIC     )
-# MAGIC     print(f"{BRONZE}.{table}: {spark.table(f'{BRONZE}.{table}').count():,} rows")
-# MAGIC
-# MAGIC
-# MAGIC load_csv_to_bronze("bike_pedestrian_stations", "bike_stations")
-# MAGIC load_csv_to_bronze("weather", "weather")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC     print(f&quot;{BRONZE}.{table}: {spark.table(f&#x27;{BRONZE}.{table}&#x27;).count():,} rows&quot;)
+# MAGIC 
+# MAGIC 
+# MAGIC load_csv_to_bronze(&quot;bike_pedestrian_stations&quot;, &quot;bike_stations&quot;)
+# MAGIC load_csv_to_bronze(&quot;weather&quot;, &quot;weather&quot;)</code></pre></details>
 
 # COMMAND ----------
 

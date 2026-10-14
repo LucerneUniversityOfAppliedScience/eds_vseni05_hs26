@@ -32,28 +32,14 @@ SELECT * FROM samples.nyctaxi.trips LIMIT 10;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ROUND`, `COUNT`, `AVG`, `MIN`, `MAX`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC -- Exercise 1
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ROUND</code>, <code>COUNT</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>-- Exercise 1
 -- MAGIC SELECT COUNT(*)                                   AS trips,
 -- MAGIC        MIN(tpep_pickup_datetime)                  AS first_trip,
 -- MAGIC        MAX(tpep_pickup_datetime)                  AS last_trip,
 -- MAGIC        ROUND(AVG(trip_distance) * 1.609, 2)       AS avg_distance_km
--- MAGIC FROM samples.nyctaxi.trips;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM samples.nyctaxi.trips;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -70,26 +56,12 @@ SELECT * FROM samples.nyctaxi.trips LIMIT 10;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `CASE WHEN`, `ROUND`, `AVG`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC -- Exercise 2
--- MAGIC SELECT ROUND(AVG(CASE WHEN trip_distance * 1.609 < 3 THEN 1 ELSE 0 END) * 100, 1) AS share_below_3km_pct
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>CASE WHEN</code>, <code>ROUND</code>, <code>AVG</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>-- Exercise 2
+-- MAGIC SELECT ROUND(AVG(CASE WHEN trip_distance * 1.609 &lt; 3 THEN 1 ELSE 0 END) * 100, 1) AS share_below_3km_pct
 -- MAGIC FROM samples.nyctaxi.trips
--- MAGIC WHERE trip_distance > 0;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE trip_distance &gt; 0;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -105,30 +77,16 @@ SELECT * FROM samples.nyctaxi.trips LIMIT 10;
 -- your code here
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `GROUP BY`, `ORDER BY`, `BETWEEN`, `HOUR`, `TIMESTAMPDIFF`, `ROUND`, `COUNT`, `AVG`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC -- Exercise 3
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>BETWEEN</code>, <code>HOUR</code>, <code>TIMESTAMPDIFF</code>, <code>ROUND</code>, <code>COUNT</code>, <code>AVG</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>-- Exercise 3
 -- MAGIC SELECT hour(tpep_pickup_datetime) AS pickup_hour,
 -- MAGIC        ROUND(AVG(trip_distance * 1.609
 -- MAGIC                  / (timestampdiff(SECOND, tpep_pickup_datetime, tpep_dropoff_datetime) / 3600)), 1) AS avg_speed_kmh,
 -- MAGIC        COUNT(*) AS trips
 -- MAGIC FROM samples.nyctaxi.trips
--- MAGIC WHERE trip_distance > 0
+-- MAGIC WHERE trip_distance &gt; 0
 -- MAGIC   AND timestampdiff(SECOND, tpep_pickup_datetime, tpep_dropoff_datetime) BETWEEN 60 AND 3 * 3600
 -- MAGIC GROUP BY ALL
--- MAGIC ORDER BY pickup_hour;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY pickup_hour;</code></pre></details>
 

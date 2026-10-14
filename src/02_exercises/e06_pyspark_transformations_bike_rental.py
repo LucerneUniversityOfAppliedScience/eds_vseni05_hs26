@@ -139,46 +139,24 @@ raise NotImplementedError("Task 1c: add user_display via coalesce, show(8)")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `COALESCE`, `COUNT`, `F.col()`, `F.coalesce()`, `F.lit()`, `.withColumn()`, `.filter()`, `.select()`, `.fillna()`, `.dropna()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC # 1a — count NULLs
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COALESCE</code>, <code>COUNT</code>, <code>F.col()</code>, <code>F.coalesce()</code>, <code>F.lit()</code>, <code>.withColumn()</code>, <code>.filter()</code>, <code>.select()</code>, <code>.fillna()</code>, <code>.dropna()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># 1a — count NULLs
 # MAGIC df_raw = spark.table(TABLE)
-# MAGIC for col_name in ["user_id", "distance_km"]:
+# MAGIC for col_name in [&quot;user_id&quot;, &quot;distance_km&quot;]:
 # MAGIC     n = df_raw.filter(F.col(col_name).isNull()).count()
-# MAGIC     print(f"{col_name}: {n} NULLs")
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC # 1b — create df_clean
+# MAGIC     print(f&quot;{col_name}: {n} NULLs&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># 1b — create df_clean
 # MAGIC df_clean = (
 # MAGIC     df_raw
-# MAGIC     .fillna({"distance_km": 0.0})
-# MAGIC     .dropna(subset=["user_id"])
+# MAGIC     .fillna({&quot;distance_km&quot;: 0.0})
+# MAGIC     .dropna(subset=[&quot;user_id&quot;])
 # MAGIC )
-# MAGIC print(f"Rows: {df_raw.count()} → after cleanup: {df_clean.count()}")
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC # 1c — coalesce for display
+# MAGIC print(f&quot;Rows: {df_raw.count()} → after cleanup: {df_clean.count()}&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># 1c — coalesce for display
 # MAGIC (df_raw
-# MAGIC  .withColumn("user_display", F.coalesce(F.col("user_id"), F.lit("anonymous")))
-# MAGIC  .select("user_id", "user_display")
+# MAGIC  .withColumn(&quot;user_display&quot;, F.coalesce(F.col(&quot;user_id&quot;), F.lit(&quot;anonymous&quot;)))
+# MAGIC  .select(&quot;user_id&quot;, &quot;user_display&quot;)
 # MAGIC  .show(8)
-# MAGIC )
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC )</code></pre></details>
 
 # COMMAND ----------
 
@@ -207,34 +185,20 @@ raise NotImplementedError("Task 2: parse timestamp → df_ts with hour, weekday_
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `HOUR`, `F.to_timestamp()`, `F.hour()`, `F.dayofweek()`, `F.date_format()`, `F.to_date()`, `.groupBy()`, `.withColumn()`, `.orderBy()`, `.select()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_ts = (
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>HOUR</code>, <code>F.to_timestamp()</code>, <code>F.hour()</code>, <code>F.dayofweek()</code>, <code>F.date_format()</code>, <code>F.to_date()</code>, <code>.groupBy()</code>, <code>.withColumn()</code>, <code>.orderBy()</code>, <code>.select()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_ts = (
 # MAGIC     df_raw
-# MAGIC     .withColumn("start_ts",    F.to_timestamp("start_ts_str", "yyyy-MM-dd HH:mm:ss"))
-# MAGIC     .withColumn("hour",        F.hour("start_ts"))
-# MAGIC     .withColumn("weekday_num", ((F.dayofweek("start_ts") + 5) % 7).cast("int"))
-# MAGIC     .withColumn("weekday_name", F.date_format("start_ts", "EEEE"))
-# MAGIC     .withColumn("date",         F.to_date("start_ts"))
+# MAGIC     .withColumn(&quot;start_ts&quot;,    F.to_timestamp(&quot;start_ts_str&quot;, &quot;yyyy-MM-dd HH:mm:ss&quot;))
+# MAGIC     .withColumn(&quot;hour&quot;,        F.hour(&quot;start_ts&quot;))
+# MAGIC     .withColumn(&quot;weekday_num&quot;, ((F.dayofweek(&quot;start_ts&quot;) + 5) % 7).cast(&quot;int&quot;))
+# MAGIC     .withColumn(&quot;weekday_name&quot;, F.date_format(&quot;start_ts&quot;, &quot;EEEE&quot;))
+# MAGIC     .withColumn(&quot;date&quot;,         F.to_date(&quot;start_ts&quot;))
 # MAGIC )
-# MAGIC df_ts.select("start_ts_str", "start_ts", "hour", "weekday_num", "weekday_name", "date").show(6)
-# MAGIC
+# MAGIC df_ts.select(&quot;start_ts_str&quot;, &quot;start_ts&quot;, &quot;hour&quot;, &quot;weekday_num&quot;, &quot;weekday_name&quot;, &quot;date&quot;).show(6)
+# MAGIC 
 # MAGIC # Follow-up: trips per weekday
-# MAGIC df_ts.groupBy("weekday_name").count().orderBy("weekday_name").show()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC df_ts.groupBy(&quot;weekday_name&quot;).count().orderBy(&quot;weekday_name&quot;).show()</code></pre></details>
 
 # COMMAND ----------
 
@@ -271,40 +235,26 @@ raise NotImplementedError("Task 3: add duration_min, trip_category, is_peak_hour
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `HOUR`, `F.to_timestamp()`, `F.unix_timestamp()`, `F.when()`, `F.col()`, `.groupBy()`, `.withColumn()`, `.filter()`, `.orderBy()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_cat = (
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>HOUR</code>, <code>F.to_timestamp()</code>, <code>F.unix_timestamp()</code>, <code>F.when()</code>, <code>F.col()</code>, <code>.groupBy()</code>, <code>.withColumn()</code>, <code>.filter()</code>, <code>.orderBy()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_cat = (
 # MAGIC     df_ts
-# MAGIC     .withColumn("end_ts",      F.to_timestamp("end_ts_str", "yyyy-MM-dd HH:mm:ss"))
-# MAGIC     .withColumn("duration_min",
-# MAGIC         ((F.unix_timestamp("end_ts") - F.unix_timestamp("start_ts")) / 60).cast("int"))
-# MAGIC     .withColumn("trip_category",
-# MAGIC         F.when(F.col("duration_min") < 15, "quick")
-# MAGIC          .when(F.col("duration_min") < 45, "normal")
-# MAGIC          .otherwise("long"))
-# MAGIC     .withColumn("is_peak_hour",
-# MAGIC         F.col("hour").between(7, 9) | F.col("hour").between(17, 19))
+# MAGIC     .withColumn(&quot;end_ts&quot;,      F.to_timestamp(&quot;end_ts_str&quot;, &quot;yyyy-MM-dd HH:mm:ss&quot;))
+# MAGIC     .withColumn(&quot;duration_min&quot;,
+# MAGIC         ((F.unix_timestamp(&quot;end_ts&quot;) - F.unix_timestamp(&quot;start_ts&quot;)) / 60).cast(&quot;int&quot;))
+# MAGIC     .withColumn(&quot;trip_category&quot;,
+# MAGIC         F.when(F.col(&quot;duration_min&quot;) &lt; 15, &quot;quick&quot;)
+# MAGIC          .when(F.col(&quot;duration_min&quot;) &lt; 45, &quot;normal&quot;)
+# MAGIC          .otherwise(&quot;long&quot;))
+# MAGIC     .withColumn(&quot;is_peak_hour&quot;,
+# MAGIC         F.col(&quot;hour&quot;).between(7, 9) | F.col(&quot;hour&quot;).between(17, 19))
 # MAGIC )
-# MAGIC df_cat.groupBy("trip_category", "is_peak_hour").count().orderBy("trip_category").show()
-# MAGIC
+# MAGIC df_cat.groupBy(&quot;trip_category&quot;, &quot;is_peak_hour&quot;).count().orderBy(&quot;trip_category&quot;).show()
+# MAGIC 
 # MAGIC # Follow-up: peak share of quick trips
-# MAGIC quick = df_cat.filter(F.col("trip_category") == "quick")
-# MAGIC peak_pct = quick.filter(F.col("is_peak_hour")).count() / quick.count()
-# MAGIC print(f"Quick trips during peak hours: {peak_pct:.1%}")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC quick = df_cat.filter(F.col(&quot;trip_category&quot;) == &quot;quick&quot;)
+# MAGIC peak_pct = quick.filter(F.col(&quot;is_peak_hour&quot;)).count() / quick.count()
+# MAGIC print(f&quot;Quick trips during peak hours: {peak_pct:.1%}&quot;)</code></pre></details>
 
 # COMMAND ----------
 
@@ -332,38 +282,24 @@ raise NotImplementedError("Task 4: origin, city_upper, station_code, route")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `COUNT`, `F.concat_ws()`, `F.upper()`, `F.split()`, `F.desc()`, `.groupBy()`, `.withColumn()`, `.orderBy()`, `.select()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC (df_raw
-# MAGIC  .withColumn("origin",       F.concat_ws(" / ", "city", "station_from"))
-# MAGIC  .withColumn("city_upper",   F.upper("city"))
-# MAGIC  .withColumn("station_code", F.split("station_from", "-").getItem(0))
-# MAGIC  .withColumn("route",        F.concat_ws(" → ", "station_from", "station_to"))
-# MAGIC  .select("origin", "city_upper", "station_code", "route")
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COUNT</code>, <code>F.concat_ws()</code>, <code>F.upper()</code>, <code>F.split()</code>, <code>F.desc()</code>, <code>.groupBy()</code>, <code>.withColumn()</code>, <code>.orderBy()</code>, <code>.select()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>(df_raw
+# MAGIC  .withColumn(&quot;origin&quot;,       F.concat_ws(&quot; / &quot;, &quot;city&quot;, &quot;station_from&quot;))
+# MAGIC  .withColumn(&quot;city_upper&quot;,   F.upper(&quot;city&quot;))
+# MAGIC  .withColumn(&quot;station_code&quot;, F.split(&quot;station_from&quot;, &quot;-&quot;).getItem(0))
+# MAGIC  .withColumn(&quot;route&quot;,        F.concat_ws(&quot; → &quot;, &quot;station_from&quot;, &quot;station_to&quot;))
+# MAGIC  .select(&quot;origin&quot;, &quot;city_upper&quot;, &quot;station_code&quot;, &quot;route&quot;)
 # MAGIC  .show(8)
 # MAGIC )
-# MAGIC
+# MAGIC 
 # MAGIC # Follow-up: most common routes
 # MAGIC (df_raw
-# MAGIC  .withColumn("route", F.concat_ws(" → ", "station_from", "station_to"))
-# MAGIC  .groupBy("route").count()
-# MAGIC  .orderBy(F.desc("count"))
+# MAGIC  .withColumn(&quot;route&quot;, F.concat_ws(&quot; → &quot;, &quot;station_from&quot;, &quot;station_to&quot;))
+# MAGIC  .groupBy(&quot;route&quot;).count()
+# MAGIC  .orderBy(F.desc(&quot;count&quot;))
 # MAGIC  .show(5)
-# MAGIC )
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC )</code></pre></details>
 
 # COMMAND ----------
 
@@ -397,39 +333,25 @@ raise NotImplementedError("Task 5: regexp_extract bike, uid, dist; rlike is_know
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `F.regexp_extract()`, `F.col()`, `.withColumn()`, `.filter()`, `.select()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC (df_raw
-# MAGIC  .withColumn("bike_extracted", F.regexp_extract("notes", r"bike=(B\d+)",    1))
-# MAGIC  .withColumn("uid_extracted",  F.regexp_extract("notes", r"uid=(\w+)",      1))
-# MAGIC  .withColumn("dist_extracted", F.regexp_extract("notes", r"dist=([\d.]+)",  1))
-# MAGIC  .withColumn("is_known_user",  F.col("notes").rlike(r"uid=U\d{4}\b"))
-# MAGIC  .select("notes", "bike_extracted", "uid_extracted", "dist_extracted", "is_known_user")
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>F.regexp_extract()</code>, <code>F.col()</code>, <code>.withColumn()</code>, <code>.filter()</code>, <code>.select()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>(df_raw
+# MAGIC  .withColumn(&quot;bike_extracted&quot;, F.regexp_extract(&quot;notes&quot;, r&quot;bike=(B\d+)&quot;,    1))
+# MAGIC  .withColumn(&quot;uid_extracted&quot;,  F.regexp_extract(&quot;notes&quot;, r&quot;uid=(\w+)&quot;,      1))
+# MAGIC  .withColumn(&quot;dist_extracted&quot;, F.regexp_extract(&quot;notes&quot;, r&quot;dist=([\d.]+)&quot;,  1))
+# MAGIC  .withColumn(&quot;is_known_user&quot;,  F.col(&quot;notes&quot;).rlike(r&quot;uid=U\d{4}\b&quot;))
+# MAGIC  .select(&quot;notes&quot;, &quot;bike_extracted&quot;, &quot;uid_extracted&quot;, &quot;dist_extracted&quot;, &quot;is_known_user&quot;)
 # MAGIC  .show(10, truncate=False)
 # MAGIC )
-# MAGIC
+# MAGIC 
 # MAGIC # Follow-up: cross-check bike_id vs bike_extracted
 # MAGIC from pyspark.sql import functions as F
 # MAGIC mismatches = (df_raw
-# MAGIC  .withColumn("bike_extracted", F.regexp_extract("notes", r"bike=(B\d+)", 1))
-# MAGIC  .filter(F.col("bike_id") != F.col("bike_extracted"))
+# MAGIC  .withColumn(&quot;bike_extracted&quot;, F.regexp_extract(&quot;notes&quot;, r&quot;bike=(B\d+)&quot;, 1))
+# MAGIC  .filter(F.col(&quot;bike_id&quot;) != F.col(&quot;bike_extracted&quot;))
 # MAGIC  .count()
 # MAGIC )
-# MAGIC print(f"Mismatches bike_id vs extracted: {mismatches}")
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC print(f&quot;Mismatches bike_id vs extracted: {mismatches}&quot;)</code></pre></details>
 
 # COMMAND ----------
 
@@ -488,54 +410,28 @@ raise NotImplementedError("Task 6b: dropDuplicates(['user_id', 'start_ts_str'])"
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `WITH`, `F.rand()`, `F.col()`, `F.concat()`, `F.lit()`, `.withColumn()`, `.filter()`, `.orderBy()`, `.dropDuplicates()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC # Inject duplicates — do not modify
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>WITH</code>, <code>F.rand()</code>, <code>F.col()</code>, <code>F.concat()</code>, <code>F.lit()</code>, <code>.withColumn()</code>, <code>.filter()</code>, <code>.orderBy()</code>, <code>.dropDuplicates()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># Inject duplicates — do not modify
 # MAGIC import random as _rnd
 # MAGIC _rnd.seed(99)
 # MAGIC df_with_dups = df_raw.union(
 # MAGIC     df_raw.orderBy(F.rand(seed=99)).limit(200)
 # MAGIC )
-# MAGIC print(f"Rows with duplicates: {df_with_dups.count()}")
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC # 6a — exact deduplication
+# MAGIC print(f&quot;Rows with duplicates: {df_with_dups.count()}&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># 6a — exact deduplication
 # MAGIC df_deduped = df_with_dups.dropDuplicates()
-# MAGIC print(f"After dropDuplicates(): {df_deduped.count()} rows (original: 1500)")
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC # Inject soft duplicates — do not modify
+# MAGIC print(f&quot;After dropDuplicates(): {df_deduped.count()} rows (original: 1500)&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># Inject soft duplicates — do not modify
 # MAGIC df_soft_dups = df_with_dups.union(
 # MAGIC     df_raw
-# MAGIC     .filter(F.col("user_id").isNotNull())
+# MAGIC     .filter(F.col(&quot;user_id&quot;).isNotNull())
 # MAGIC     .orderBy(F.rand(seed=7))
 # MAGIC     .limit(50)
-# MAGIC     .withColumn("trip_id", F.concat(F.col("trip_id"), F.lit("_v2")))
+# MAGIC     .withColumn(&quot;trip_id&quot;, F.concat(F.col(&quot;trip_id&quot;), F.lit(&quot;_v2&quot;)))
 # MAGIC )
-# MAGIC print(f"Rows with soft duplicates: {df_soft_dups.count()}")
-# MAGIC ```
-# MAGIC
-# MAGIC ```python
-# MAGIC # 6b — soft deduplication by natural key
-# MAGIC df_soft_deduped = df_soft_dups.dropDuplicates(["user_id", "start_ts_str"])
-# MAGIC print(f"After dropDuplicates(['user_id','start_ts_str']): {df_soft_deduped.count()} rows")
-# MAGIC # Rows with NULL user_id are all kept since NULL != NULL in deduplication logic
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC print(f&quot;Rows with soft duplicates: {df_soft_dups.count()}&quot;)</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code># 6b — soft deduplication by natural key
+# MAGIC df_soft_deduped = df_soft_dups.dropDuplicates([&quot;user_id&quot;, &quot;start_ts_str&quot;])
+# MAGIC print(f&quot;After dropDuplicates([&#x27;user_id&#x27;,&#x27;start_ts_str&#x27;]): {df_soft_deduped.count()} rows&quot;)
+# MAGIC # Rows with NULL user_id are all kept since NULL != NULL in deduplication logic</code></pre></details>
 
 # COMMAND ----------
 
@@ -566,42 +462,28 @@ raise NotImplementedError("Task 7: single fluent pipeline from raw → summary")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `F.to_timestamp()`, `F.unix_timestamp()`, `F.when()`, `F.col()`, `F.date_format()`, `F.count()`, `F.round()`, `F.avg()`, `.groupBy()`, `.agg()`, `.withColumn()`, `.orderBy()`, `.fillna()`, `.dropna()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC (spark.table(TABLE)
-# MAGIC  .withColumn("start_ts",    F.to_timestamp("start_ts_str", "yyyy-MM-dd HH:mm:ss"))
-# MAGIC  .withColumn("end_ts",      F.to_timestamp("end_ts_str",   "yyyy-MM-dd HH:mm:ss"))
-# MAGIC  .fillna({"distance_km": 0.0})
-# MAGIC  .dropna(subset=["user_id"])
-# MAGIC  .withColumn("duration_min",
-# MAGIC      ((F.unix_timestamp("end_ts") - F.unix_timestamp("start_ts")) / 60).cast("int"))
-# MAGIC  .withColumn("trip_category",
-# MAGIC      F.when(F.col("duration_min") < 15, "quick")
-# MAGIC       .when(F.col("duration_min") < 45, "normal")
-# MAGIC       .otherwise("long"))
-# MAGIC  .withColumn("weekday_name", F.date_format("start_ts", "EEE"))
-# MAGIC  .groupBy("city", "trip_category", "weekday_name")
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>F.to_timestamp()</code>, <code>F.unix_timestamp()</code>, <code>F.when()</code>, <code>F.col()</code>, <code>F.date_format()</code>, <code>F.count()</code>, <code>F.round()</code>, <code>F.avg()</code>, <code>.groupBy()</code>, <code>.agg()</code>, <code>.withColumn()</code>, <code>.orderBy()</code>, <code>.fillna()</code>, <code>.dropna()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>(spark.table(TABLE)
+# MAGIC  .withColumn(&quot;start_ts&quot;,    F.to_timestamp(&quot;start_ts_str&quot;, &quot;yyyy-MM-dd HH:mm:ss&quot;))
+# MAGIC  .withColumn(&quot;end_ts&quot;,      F.to_timestamp(&quot;end_ts_str&quot;,   &quot;yyyy-MM-dd HH:mm:ss&quot;))
+# MAGIC  .fillna({&quot;distance_km&quot;: 0.0})
+# MAGIC  .dropna(subset=[&quot;user_id&quot;])
+# MAGIC  .withColumn(&quot;duration_min&quot;,
+# MAGIC      ((F.unix_timestamp(&quot;end_ts&quot;) - F.unix_timestamp(&quot;start_ts&quot;)) / 60).cast(&quot;int&quot;))
+# MAGIC  .withColumn(&quot;trip_category&quot;,
+# MAGIC      F.when(F.col(&quot;duration_min&quot;) &lt; 15, &quot;quick&quot;)
+# MAGIC       .when(F.col(&quot;duration_min&quot;) &lt; 45, &quot;normal&quot;)
+# MAGIC       .otherwise(&quot;long&quot;))
+# MAGIC  .withColumn(&quot;weekday_name&quot;, F.date_format(&quot;start_ts&quot;, &quot;EEE&quot;))
+# MAGIC  .groupBy(&quot;city&quot;, &quot;trip_category&quot;, &quot;weekday_name&quot;)
 # MAGIC  .agg(
-# MAGIC      F.count("*").alias("trips"),
-# MAGIC      F.round(F.avg("distance_km"), 1).alias("avg_km"),
+# MAGIC      F.count(&quot;*&quot;).alias(&quot;trips&quot;),
+# MAGIC      F.round(F.avg(&quot;distance_km&quot;), 1).alias(&quot;avg_km&quot;),
 # MAGIC  )
-# MAGIC  .orderBy("city", "trip_category", "weekday_name")
+# MAGIC  .orderBy(&quot;city&quot;, &quot;trip_category&quot;, &quot;weekday_name&quot;)
 # MAGIC  .show(20)
-# MAGIC )
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC )</code></pre></details>
 
 # COMMAND ----------
 
@@ -627,48 +509,34 @@ from pyspark.sql.functions import pandas_udf
 raise NotImplementedError("Task 8 (Bonus): Pandas UDF classify_duration")
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `F.to_timestamp()`, `F.unix_timestamp()`, `F.col()`, `F.when()`, `.withColumn()`, `.select()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC import pandas as pd
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>F.to_timestamp()</code>, <code>F.unix_timestamp()</code>, <code>F.col()</code>, <code>F.when()</code>, <code>.withColumn()</code>, <code>.select()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>import pandas as pd
 # MAGIC from pyspark.sql.functions import pandas_udf
-# MAGIC
+# MAGIC 
 # MAGIC df_with_dur = (
 # MAGIC     spark.table(TABLE)
-# MAGIC     .withColumn("start_ts", F.to_timestamp("start_ts_str", "yyyy-MM-dd HH:mm:ss"))
-# MAGIC     .withColumn("end_ts",   F.to_timestamp("end_ts_str",   "yyyy-MM-dd HH:mm:ss"))
-# MAGIC     .withColumn("duration_min",
-# MAGIC         ((F.unix_timestamp("end_ts") - F.unix_timestamp("start_ts")) / 60).cast("int"))
+# MAGIC     .withColumn(&quot;start_ts&quot;, F.to_timestamp(&quot;start_ts_str&quot;, &quot;yyyy-MM-dd HH:mm:ss&quot;))
+# MAGIC     .withColumn(&quot;end_ts&quot;,   F.to_timestamp(&quot;end_ts_str&quot;,   &quot;yyyy-MM-dd HH:mm:ss&quot;))
+# MAGIC     .withColumn(&quot;duration_min&quot;,
+# MAGIC         ((F.unix_timestamp(&quot;end_ts&quot;) - F.unix_timestamp(&quot;start_ts&quot;)) / 60).cast(&quot;int&quot;))
 # MAGIC )
-# MAGIC
-# MAGIC @pandas_udf("string")
-# MAGIC def classify_duration(s: pd.Series) -> pd.Series:
+# MAGIC 
+# MAGIC @pandas_udf(&quot;string&quot;)
+# MAGIC def classify_duration(s: pd.Series) -&gt; pd.Series:
 # MAGIC     import numpy as np
 # MAGIC     return pd.Series(
-# MAGIC         np.select([s < 15, s < 45], ["quick", "normal"], default="long").astype(str)
+# MAGIC         np.select([s &lt; 15, s &lt; 45], [&quot;quick&quot;, &quot;normal&quot;], default=&quot;long&quot;).astype(str)
 # MAGIC     )
-# MAGIC
+# MAGIC 
 # MAGIC (df_with_dur
-# MAGIC  .withColumn("trip_category_udf",
-# MAGIC      classify_duration(F.col("duration_min")))
-# MAGIC  .withColumn("trip_category_builtin",
-# MAGIC      F.when(F.col("duration_min") < 15, "quick")
-# MAGIC       .when(F.col("duration_min") < 45, "normal")
-# MAGIC       .otherwise("long"))
-# MAGIC  .select("duration_min", "trip_category_udf", "trip_category_builtin")
+# MAGIC  .withColumn(&quot;trip_category_udf&quot;,
+# MAGIC      classify_duration(F.col(&quot;duration_min&quot;)))
+# MAGIC  .withColumn(&quot;trip_category_builtin&quot;,
+# MAGIC      F.when(F.col(&quot;duration_min&quot;) &lt; 15, &quot;quick&quot;)
+# MAGIC       .when(F.col(&quot;duration_min&quot;) &lt; 45, &quot;normal&quot;)
+# MAGIC       .otherwise(&quot;long&quot;))
+# MAGIC  .select(&quot;duration_min&quot;, &quot;trip_category_udf&quot;, &quot;trip_category_builtin&quot;)
 # MAGIC  .show(10)
-# MAGIC )
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC )</code></pre></details>
 

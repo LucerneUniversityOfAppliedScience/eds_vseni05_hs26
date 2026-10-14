@@ -91,54 +91,40 @@ raise NotImplementedError("Step 1: read CSV and write Bronze")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `TO_DATE`, `HOUR`, `.withColumn()`, `.withColumnRenamed()`, `.saveAsTable()`, `.printSchema()`, `.count()`, `.schema()`, `.option()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.types import StructType, StructField, IntegerType, StringType, TimestampType, DoubleType
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>TO_DATE</code>, <code>HOUR</code>, <code>.withColumn()</code>, <code>.withColumnRenamed()</code>, <code>.saveAsTable()</code>, <code>.printSchema()</code>, <code>.count()</code>, <code>.schema()</code>, <code>.option()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.types import StructType, StructField, IntegerType, StringType, TimestampType, DoubleType
 # MAGIC from pyspark.sql.functions import col, to_date, hour, dayofweek, when, expr
-# MAGIC
+# MAGIC 
 # MAGIC traffic_schema = StructType([
-# MAGIC     StructField("FK_STANDORT", IntegerType(),   True),
-# MAGIC     StructField("DATUM",       TimestampType(), True),
-# MAGIC     StructField("VELO_IN",     IntegerType(),   True),
-# MAGIC     StructField("VELO_OUT",    IntegerType(),   True),
-# MAGIC     StructField("FUSS_IN",     IntegerType(),   True),
-# MAGIC     StructField("FUSS_OUT",    IntegerType(),   True),
-# MAGIC     StructField("OST",         DoubleType(),    True),
-# MAGIC     StructField("NORD",        DoubleType(),    True),
+# MAGIC     StructField(&quot;FK_STANDORT&quot;, IntegerType(),   True),
+# MAGIC     StructField(&quot;DATUM&quot;,       TimestampType(), True),
+# MAGIC     StructField(&quot;VELO_IN&quot;,     IntegerType(),   True),
+# MAGIC     StructField(&quot;VELO_OUT&quot;,    IntegerType(),   True),
+# MAGIC     StructField(&quot;FUSS_IN&quot;,     IntegerType(),   True),
+# MAGIC     StructField(&quot;FUSS_OUT&quot;,    IntegerType(),   True),
+# MAGIC     StructField(&quot;OST&quot;,         DoubleType(),    True),
+# MAGIC     StructField(&quot;NORD&quot;,        DoubleType(),    True),
 # MAGIC ])
-# MAGIC
+# MAGIC 
 # MAGIC df_raw = (spark.read
-# MAGIC     .option("header", "true")
-# MAGIC     .option("timestampFormat", "yyyy-MM-dd'T'HH:mm")
+# MAGIC     .option(&quot;header&quot;, &quot;true&quot;)
+# MAGIC     .option(&quot;timestampFormat&quot;, &quot;yyyy-MM-dd&#x27;T&#x27;HH:mm&quot;)
 # MAGIC     .schema(traffic_schema)
 # MAGIC     .csv(CSV_PATH))
-# MAGIC
+# MAGIC 
 # MAGIC df_bronze = (df_raw
-# MAGIC     .withColumnRenamed("FK_STANDORT", "station_id")
-# MAGIC     .withColumnRenamed("DATUM",       "ts")
-# MAGIC     .withColumn("date",    to_date(col("ts")))
-# MAGIC     .withColumn("hour",    hour(col("ts")))
-# MAGIC     # Spark's dayofweek is 1=Sunday..7=Saturday. Convert to ISO 1=Monday..7=Sunday.
-# MAGIC     .withColumn("weekday", ((dayofweek(col("ts")) + 5) % 7) + 1)
+# MAGIC     .withColumnRenamed(&quot;FK_STANDORT&quot;, &quot;station_id&quot;)
+# MAGIC     .withColumnRenamed(&quot;DATUM&quot;,       &quot;ts&quot;)
+# MAGIC     .withColumn(&quot;date&quot;,    to_date(col(&quot;ts&quot;)))
+# MAGIC     .withColumn(&quot;hour&quot;,    hour(col(&quot;ts&quot;)))
+# MAGIC     # Spark&#x27;s dayofweek is 1=Sunday..7=Saturday. Convert to ISO 1=Monday..7=Sunday.
+# MAGIC     .withColumn(&quot;weekday&quot;, ((dayofweek(col(&quot;ts&quot;)) + 5) % 7) + 1)
 # MAGIC )
-# MAGIC
-# MAGIC df_bronze.write.mode("overwrite").saveAsTable(BRONZE_TABLE)
-# MAGIC print(f"Bronze rows: {spark.table(BRONZE_TABLE).count():,}")
-# MAGIC df_bronze.printSchema()
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC df_bronze.write.mode(&quot;overwrite&quot;).saveAsTable(BRONZE_TABLE)
+# MAGIC print(f&quot;Bronze rows: {spark.table(BRONZE_TABLE).count():,}&quot;)
+# MAGIC df_bronze.printSchema()</code></pre></details>
 
 # COMMAND ----------
 
@@ -163,35 +149,21 @@ raise NotImplementedError("Step 2: build the daily Gold table")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `COALESCE`, `SUM`, `.groupBy()`, `.agg()`, `.orderBy()`, `.saveAsTable()`, `.count()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.functions import sum as spark_sum, coalesce, lit
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COALESCE</code>, <code>SUM</code>, <code>.groupBy()</code>, <code>.agg()</code>, <code>.orderBy()</code>, <code>.saveAsTable()</code>, <code>.count()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.functions import sum as spark_sum, coalesce, lit
+# MAGIC 
 # MAGIC df_daily = (spark.table(BRONZE_TABLE)
-# MAGIC     .groupBy("station_id", "date")
+# MAGIC     .groupBy(&quot;station_id&quot;, &quot;date&quot;)
 # MAGIC     .agg(
-# MAGIC         spark_sum(coalesce(col("VELO_IN"),  lit(0)) + coalesce(col("VELO_OUT"),  lit(0))).alias("bikes_total"),
-# MAGIC         spark_sum(coalesce(col("FUSS_IN"),  lit(0)) + coalesce(col("FUSS_OUT"),  lit(0))).alias("peds_total"),
+# MAGIC         spark_sum(coalesce(col(&quot;VELO_IN&quot;),  lit(0)) + coalesce(col(&quot;VELO_OUT&quot;),  lit(0))).alias(&quot;bikes_total&quot;),
+# MAGIC         spark_sum(coalesce(col(&quot;FUSS_IN&quot;),  lit(0)) + coalesce(col(&quot;FUSS_OUT&quot;),  lit(0))).alias(&quot;peds_total&quot;),
 # MAGIC     )
 # MAGIC )
-# MAGIC
-# MAGIC df_daily.write.mode("overwrite").saveAsTable(GOLD_DAILY)
-# MAGIC print(f"Daily rows: {spark.table(GOLD_DAILY).count():,}")
-# MAGIC display(spark.table(GOLD_DAILY).orderBy("station_id", "date").limit(10))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC df_daily.write.mode(&quot;overwrite&quot;).saveAsTable(GOLD_DAILY)
+# MAGIC print(f&quot;Daily rows: {spark.table(GOLD_DAILY).count():,}&quot;)
+# MAGIC display(spark.table(GOLD_DAILY).orderBy(&quot;station_id&quot;, &quot;date&quot;).limit(10))</code></pre></details>
 
 # COMMAND ----------
 
@@ -216,34 +188,20 @@ raise NotImplementedError("Step 3: running totals")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `.withColumn()`, `.filter()`, `.orderBy()`, `.over()`, `.partitionBy()`, `.rowsBetween()`, `Window.unboundedPreceding()`, `Window.currentRow()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.window import Window
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>.withColumn()</code>, <code>.filter()</code>, <code>.orderBy()</code>, <code>.over()</code>, <code>.partitionBy()</code>, <code>.rowsBetween()</code>, <code>Window.unboundedPreceding()</code>, <code>Window.currentRow()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.window import Window
+# MAGIC 
 # MAGIC w_running = (Window
-# MAGIC     .partitionBy("station_id")
-# MAGIC     .orderBy("date")
+# MAGIC     .partitionBy(&quot;station_id&quot;)
+# MAGIC     .orderBy(&quot;date&quot;)
 # MAGIC     .rowsBetween(Window.unboundedPreceding, Window.currentRow))
-# MAGIC
+# MAGIC 
 # MAGIC df_running = (spark.table(GOLD_DAILY)
-# MAGIC     .withColumn("bikes_ytd", spark_sum("bikes_total").over(w_running)))
-# MAGIC
+# MAGIC     .withColumn(&quot;bikes_ytd&quot;, spark_sum(&quot;bikes_total&quot;).over(w_running)))
+# MAGIC 
 # MAGIC # Pick one busy station for a readable preview.
-# MAGIC display(df_running.filter("station_id = 4241").orderBy("date").limit(15))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC display(df_running.filter(&quot;station_id = 4241&quot;).orderBy(&quot;date&quot;).limit(15))</code></pre></details>
 
 # COMMAND ----------
 
@@ -303,31 +261,17 @@ raise NotImplementedError("Step 5: dense_rank top 5")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `DENSE_RANK`, `.withColumn()`, `.filter()`, `.orderBy()`, `.over()`, `.partitionBy()`, `Window.partitionBy()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.functions import dense_rank
-# MAGIC
-# MAGIC w_rank = Window.partitionBy("station_id").orderBy(col("bikes_total").desc())
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>DENSE_RANK</code>, <code>.withColumn()</code>, <code>.filter()</code>, <code>.orderBy()</code>, <code>.over()</code>, <code>.partitionBy()</code>, <code>Window.partitionBy()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.functions import dense_rank
+# MAGIC 
+# MAGIC w_rank = Window.partitionBy(&quot;station_id&quot;).orderBy(col(&quot;bikes_total&quot;).desc())
+# MAGIC 
 # MAGIC df_top5 = (spark.table(GOLD_DAILY)
-# MAGIC     .withColumn("rank_busiest", dense_rank().over(w_rank))
-# MAGIC     .filter("rank_busiest <= 5"))
-# MAGIC
-# MAGIC display(df_top5.filter("station_id = 4241").orderBy("rank_busiest"))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC     .withColumn(&quot;rank_busiest&quot;, dense_rank().over(w_rank))
+# MAGIC     .filter(&quot;rank_busiest &lt;= 5&quot;))
+# MAGIC 
+# MAGIC display(df_top5.filter(&quot;station_id = 4241&quot;).orderBy(&quot;rank_busiest&quot;))</code></pre></details>
 
 # COMMAND ----------
 
@@ -353,36 +297,22 @@ raise NotImplementedError("Step 6: lag and spike detection")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `LAG`, `.withColumn()`, `.filter()`, `.orderBy()`, `.over()`, `.partitionBy()`, `Window.partitionBy()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.functions import lag
-# MAGIC
-# MAGIC w_neighbours = Window.partitionBy("station_id").orderBy("date")
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LAG</code>, <code>.withColumn()</code>, <code>.filter()</code>, <code>.orderBy()</code>, <code>.over()</code>, <code>.partitionBy()</code>, <code>Window.partitionBy()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.functions import lag
+# MAGIC 
+# MAGIC w_neighbours = Window.partitionBy(&quot;station_id&quot;).orderBy(&quot;date&quot;)
+# MAGIC 
 # MAGIC df_dod = (spark.table(GOLD_DAILY)
-# MAGIC     .withColumn("bikes_prev_day", lag("bikes_total", 1).over(w_neighbours))
+# MAGIC     .withColumn(&quot;bikes_prev_day&quot;, lag(&quot;bikes_total&quot;, 1).over(w_neighbours))
 # MAGIC     .withColumn(
-# MAGIC         "pct_change",
-# MAGIC         when(col("bikes_prev_day").isNull() | (col("bikes_prev_day") == 0), None)
-# MAGIC         .otherwise((col("bikes_total") - col("bikes_prev_day")) / col("bikes_prev_day"))
+# MAGIC         &quot;pct_change&quot;,
+# MAGIC         when(col(&quot;bikes_prev_day&quot;).isNull() | (col(&quot;bikes_prev_day&quot;) == 0), None)
+# MAGIC         .otherwise((col(&quot;bikes_total&quot;) - col(&quot;bikes_prev_day&quot;)) / col(&quot;bikes_prev_day&quot;))
 # MAGIC     )
-# MAGIC     .withColumn("is_spike", col("pct_change") > 0.5))
-# MAGIC
-# MAGIC display(df_dod.filter("station_id = 4241 AND is_spike = true").orderBy("date").limit(20))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC     .withColumn(&quot;is_spike&quot;, col(&quot;pct_change&quot;) &gt; 0.5))
+# MAGIC 
+# MAGIC display(df_dod.filter(&quot;station_id = 4241 AND is_spike = true&quot;).orderBy(&quot;date&quot;).limit(20))</code></pre></details>
 
 # COMMAND ----------
 
@@ -408,40 +338,26 @@ raise NotImplementedError("Step 7: pivot")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `COALESCE`, `HOUR`, `SUM`, `AVG`, `.groupBy()`, `.agg()`, `.withColumnRenamed()`, `.orderBy()`, `.pivot()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC from pyspark.sql.functions import avg, sum as spark_sum
-# MAGIC
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COALESCE</code>, <code>HOUR</code>, <code>SUM</code>, <code>AVG</code>, <code>.groupBy()</code>, <code>.agg()</code>, <code>.withColumnRenamed()</code>, <code>.orderBy()</code>, <code>.pivot()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>from pyspark.sql.functions import avg, sum as spark_sum
+# MAGIC 
 # MAGIC # Aggregate first to one row per (date, hour, weekday) per station, then pivot.
 # MAGIC df_hourly = (spark.table(BRONZE_TABLE)
-# MAGIC     .groupBy("date", "hour", "weekday")
-# MAGIC     .agg(spark_sum(coalesce(col("VELO_IN"), lit(0)) + coalesce(col("VELO_OUT"), lit(0))).alias("bikes_hour")))
-# MAGIC
+# MAGIC     .groupBy(&quot;date&quot;, &quot;hour&quot;, &quot;weekday&quot;)
+# MAGIC     .agg(spark_sum(coalesce(col(&quot;VELO_IN&quot;), lit(0)) + coalesce(col(&quot;VELO_OUT&quot;), lit(0))).alias(&quot;bikes_hour&quot;)))
+# MAGIC 
 # MAGIC df_pivot = (df_hourly
-# MAGIC     .groupBy("hour")
-# MAGIC     .pivot("weekday", [1, 2, 3, 4, 5, 6, 7])
-# MAGIC     .agg(avg("bikes_hour")))
-# MAGIC
-# MAGIC # Rename pivot columns from "1","2",... to "mon","tue",... for clarity.
-# MAGIC weekday_names = {1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat", 7: "sun"}
+# MAGIC     .groupBy(&quot;hour&quot;)
+# MAGIC     .pivot(&quot;weekday&quot;, [1, 2, 3, 4, 5, 6, 7])
+# MAGIC     .agg(avg(&quot;bikes_hour&quot;)))
+# MAGIC 
+# MAGIC # Rename pivot columns from &quot;1&quot;,&quot;2&quot;,... to &quot;mon&quot;,&quot;tue&quot;,... for clarity.
+# MAGIC weekday_names = {1: &quot;mon&quot;, 2: &quot;tue&quot;, 3: &quot;wed&quot;, 4: &quot;thu&quot;, 5: &quot;fri&quot;, 6: &quot;sat&quot;, 7: &quot;sun&quot;}
 # MAGIC for num, name in weekday_names.items():
 # MAGIC     df_pivot = df_pivot.withColumnRenamed(str(num), name)
-# MAGIC
-# MAGIC display(df_pivot.orderBy("hour"))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC display(df_pivot.orderBy(&quot;hour&quot;))</code></pre></details>
 
 # COMMAND ----------
 
@@ -472,28 +388,14 @@ raise NotImplementedError("Step 8: unpivot with stack()")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC <details>
-# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
-# MAGIC
-# MAGIC You will need: `HOUR`, `.orderBy()`, `.selectExpr()`
-# MAGIC
-# MAGIC </details>
-# MAGIC <details>
-# MAGIC <summary><b>🔑 Solution</b></summary>
-# MAGIC
-# MAGIC Try it yourself first – then compare.
-# MAGIC
-# MAGIC ```python
-# MAGIC df_long = df_pivot.selectExpr(
-# MAGIC     "hour",
-# MAGIC     "stack(7, 'mon', mon, 'tue', tue, 'wed', wed, 'thu', thu, 'fri', fri, 'sat', sat, 'sun', sun) AS (weekday_name, bikes_avg)"
+# MAGIC %md-sandbox
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>HOUR</code>, <code>.orderBy()</code>, <code>.selectExpr()</code></p></details>
+# MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>df_long = df_pivot.selectExpr(
+# MAGIC     &quot;hour&quot;,
+# MAGIC     &quot;stack(7, &#x27;mon&#x27;, mon, &#x27;tue&#x27;, tue, &#x27;wed&#x27;, wed, &#x27;thu&#x27;, thu, &#x27;fri&#x27;, fri, &#x27;sat&#x27;, sat, &#x27;sun&#x27;, sun) AS (weekday_name, bikes_avg)&quot;
 # MAGIC )
-# MAGIC
-# MAGIC display(df_long.orderBy("hour", "weekday_name").limit(20))
-# MAGIC ```
-# MAGIC
-# MAGIC </details>
+# MAGIC 
+# MAGIC display(df_long.orderBy(&quot;hour&quot;, &quot;weekday_name&quot;).limit(20))</code></pre></details>
 
 # COMMAND ----------
 

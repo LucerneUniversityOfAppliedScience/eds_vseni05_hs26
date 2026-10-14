@@ -41,18 +41,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT *
--- MAGIC FROM adventureworks.production_product;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT *
+-- MAGIC FROM adventureworks.production_product;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -69,25 +60,11 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `LIMIT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LIMIT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, ListPrice
 -- MAGIC FROM adventureworks.production_product
--- MAGIC LIMIT 10;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC LIMIT 10;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -104,31 +81,13 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `LIMIT`, `DESCRIBE`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC -- Show column structure
--- MAGIC DESCRIBE adventureworks.sales_salesorderheader;
--- MAGIC ```
--- MAGIC
--- MAGIC ```sql
--- MAGIC -- First 5 records
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LIMIT</code>, <code>DESCRIBE</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>-- Show column structure
+-- MAGIC DESCRIBE adventureworks.sales_salesorderheader;</code></pre><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>-- First 5 records
 -- MAGIC SELECT *
 -- MAGIC FROM adventureworks.sales_salesorderheader
--- MAGIC LIMIT 5;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC LIMIT 5;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -151,18 +110,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT FirstName, MiddleName, LastName
--- MAGIC FROM adventureworks.person_person;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT FirstName, MiddleName, LastName
+-- MAGIC FROM adventureworks.person_person;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -177,20 +127,11 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID AS `Product ID`,
 -- MAGIC     Name AS ProductName
--- MAGIC FROM adventureworks.production_product;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.production_product;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -205,31 +146,17 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `COALESCE`, `CONCAT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COALESCE</code>, <code>CONCAT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     BusinessEntityID,
 -- MAGIC     CONCAT(
 -- MAGIC         FirstName,
--- MAGIC         ' ',
--- MAGIC         COALESCE(MiddleName || ' ', ''),
+-- MAGIC         &#x27; &#x27;,
+-- MAGIC         COALESCE(MiddleName || &#x27; &#x27;, &#x27;&#x27;),
 -- MAGIC         LastName
 -- MAGIC     ) AS FullName
--- MAGIC FROM adventureworks.person_person;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.person_person;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -250,14 +177,8 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     SalesOrderID,
 -- MAGIC     ProductID,
 -- MAGIC     OrderQty,
@@ -265,10 +186,7 @@ USE CATALOG workspace;
 -- MAGIC     OrderQty * UnitPrice AS Total_Gross,
 -- MAGIC     OrderQty * UnitPrice * (1 - UnitPriceDiscount) AS Total_Net,
 -- MAGIC     OrderQty * UnitPrice * UnitPriceDiscount AS Discount_Savings
--- MAGIC FROM adventureworks.sales_salesorderdetail;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.sales_salesorderdetail;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -291,28 +209,14 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `CAST`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>CAST</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID,
 -- MAGIC     Name,
 -- MAGIC     ListPrice,
 -- MAGIC     CAST(ListPrice AS INT) AS ListPrice_Int
--- MAGIC FROM adventureworks.production_product;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.production_product;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -329,27 +233,13 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `DATE_FORMAT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>DATE_FORMAT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     SalesOrderID,
 -- MAGIC     OrderDate,
--- MAGIC     DATE_FORMAT(OrderDate, 'dd.MM.yyyy') AS OrderDate_Formatted
--- MAGIC FROM adventureworks.sales_salesorderheader;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC     DATE_FORMAT(OrderDate, &#x27;dd.MM.yyyy&#x27;) AS OrderDate_Formatted
+-- MAGIC FROM adventureworks.sales_salesorderheader;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -366,27 +256,13 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `FORMAT_NUMBER`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>FORMAT_NUMBER</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     SalesOrderID,
 -- MAGIC     TotalDue,
 -- MAGIC     FORMAT_NUMBER(TotalDue, 2) AS TotalDue_Formatted
--- MAGIC FROM adventureworks.sales_salesorderheader;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.sales_salesorderheader;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -403,29 +279,15 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `TO_DATE`, `DATEDIFF`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>TO_DATE</code>, <code>DATEDIFF</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID,
 -- MAGIC     Name,
 -- MAGIC     SellStartDate,
 -- MAGIC     TO_DATE(SellStartDate) AS SellStartDate_Date,
 -- MAGIC     DATEDIFF(CURRENT_DATE(), TO_DATE(SellStartDate)) AS Days_Since_Start
--- MAGIC FROM adventureworks.production_product;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.production_product;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -448,25 +310,11 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `IS NULL`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, ProductSubcategoryID
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>IS NULL</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, ProductSubcategoryID
 -- MAGIC FROM adventureworks.production_product
--- MAGIC WHERE ProductSubcategoryID IS NULL;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE ProductSubcategoryID IS NULL;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -483,28 +331,14 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `COALESCE`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COALESCE</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     BusinessEntityID,
 -- MAGIC     FirstName,
--- MAGIC     COALESCE(MiddleName, 'N/A') AS MiddleName,
+-- MAGIC     COALESCE(MiddleName, &#x27;N/A&#x27;) AS MiddleName,
 -- MAGIC     LastName
--- MAGIC FROM adventureworks.person_person;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.person_person;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -521,27 +355,13 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `COALESCE`, `CAST`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>COALESCE</code>, <code>CAST</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID,
 -- MAGIC     Name,
--- MAGIC     COALESCE(Color, Size, CAST(Weight AS STRING), 'Not specified') AS First_Attribute
--- MAGIC FROM adventureworks.production_product;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC     COALESCE(Color, Size, CAST(Weight AS STRING), &#x27;Not specified&#x27;) AS First_Attribute
+-- MAGIC FROM adventureworks.production_product;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -558,20 +378,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `CASE WHEN`, `NULLIF`, `IS NULL`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>CASE WHEN</code>, <code>NULLIF</code>, <code>IS NULL</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID,
 -- MAGIC     Name,
 -- MAGIC     ListPrice,
@@ -580,10 +389,7 @@ USE CATALOG workspace;
 -- MAGIC         WHEN NULLIF(ListPrice, StandardCost) IS NULL THEN NULL
 -- MAGIC         ELSE ListPrice - StandardCost
 -- MAGIC     END AS ProfitMargin
--- MAGIC FROM adventureworks.production_product;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC FROM adventureworks.production_product;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -606,25 +412,11 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, ListPrice
 -- MAGIC FROM adventureworks.production_product
--- MAGIC ORDER BY Name ASC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY Name ASC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -641,25 +433,11 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `NULLS LAST`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, Color
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>NULLS LAST</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, Color
 -- MAGIC FROM adventureworks.production_product
--- MAGIC ORDER BY Color ASC NULLS LAST;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY Color ASC NULLS LAST;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -676,25 +454,11 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT SalesOrderID, OrderDate, TotalDue
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT SalesOrderID, OrderDate, TotalDue
 -- MAGIC FROM adventureworks.sales_salesorderheader
--- MAGIC ORDER BY TotalDue DESC, OrderDate ASC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY TotalDue DESC, OrderDate ASC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -711,27 +475,13 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `NULLS FIRST`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, ProductSubcategoryID, ListPrice
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>NULLS FIRST</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, ProductSubcategoryID, ListPrice
 -- MAGIC FROM adventureworks.production_product
 -- MAGIC ORDER BY ProductSubcategoryID ASC NULLS FIRST,
 -- MAGIC          ListPrice DESC,
--- MAGIC          Name ASC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC          Name ASC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -754,25 +504,11 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `DISTINCT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT DISTINCT Color
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>DISTINCT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT DISTINCT Color
 -- MAGIC FROM adventureworks.production_product
--- MAGIC ORDER BY Color;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY Color;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -789,27 +525,13 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `GROUP BY`, `HAVING`, `ORDER BY`, `COUNT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT Color, Size, COUNT(*) AS DuplicateCount
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>HAVING</code>, <code>ORDER BY</code>, <code>COUNT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT Color, Size, COUNT(*) AS DuplicateCount
 -- MAGIC FROM adventureworks.production_product
 -- MAGIC GROUP BY Color, Size
--- MAGIC HAVING COUNT(*) > 1
--- MAGIC ORDER BY DuplicateCount DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC HAVING COUNT(*) &gt; 1
+-- MAGIC ORDER BY DuplicateCount DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -826,20 +548,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `WITH`, `ORDER BY`, `IS NOT NULL`, `ROW_NUMBER`, `OVER`, `PARTITION BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH RankedProducts AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>WITH</code>, <code>ORDER BY</code>, <code>IS NOT NULL</code>, <code>ROW_NUMBER</code>, <code>OVER</code>, <code>PARTITION BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH RankedProducts AS (
 -- MAGIC     SELECT
 -- MAGIC         ProductSubcategoryID,
 -- MAGIC         ProductID,
@@ -852,10 +563,7 @@ USE CATALOG workspace;
 -- MAGIC SELECT ProductSubcategoryID, ProductID, Name, ListPrice
 -- MAGIC FROM RankedProducts
 -- MAGIC WHERE rn = 1
--- MAGIC ORDER BY ProductSubcategoryID;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY ProductSubcategoryID;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -878,26 +586,12 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, ListPrice
 -- MAGIC FROM adventureworks.production_product
--- MAGIC WHERE ListPrice > 500
--- MAGIC ORDER BY ListPrice DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE ListPrice &gt; 500
+-- MAGIC ORDER BY ListPrice DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -914,26 +608,12 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `LIKE`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT BusinessEntityID, FirstName, LastName
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>LIKE</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT BusinessEntityID, FirstName, LastName
 -- MAGIC FROM adventureworks.person_person
--- MAGIC WHERE LastName LIKE 'M%'
--- MAGIC ORDER BY LastName, FirstName;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE LastName LIKE &#x27;M%&#x27;
+-- MAGIC ORDER BY LastName, FirstName;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -950,26 +630,12 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `IN`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, Color
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>IN</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, Color
 -- MAGIC FROM adventureworks.production_product
--- MAGIC WHERE Color IN ('Red', 'Blue', 'Black')
--- MAGIC ORDER BY Color, Name;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE Color IN (&#x27;Red&#x27;, &#x27;Blue&#x27;, &#x27;Black&#x27;)
+-- MAGIC ORDER BY Color, Name;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -986,26 +652,12 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `RLIKE`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, ProductNumber
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>RLIKE</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, ProductNumber
 -- MAGIC FROM adventureworks.production_product
--- MAGIC WHERE ProductNumber RLIKE '[0-9]{2}$'
--- MAGIC ORDER BY ProductNumber;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE ProductNumber RLIKE &#x27;[0-9]{2}$&#x27;
+-- MAGIC ORDER BY ProductNumber;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1027,28 +679,14 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `BETWEEN`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT SalesOrderID, OrderDate, TotalDue, Status
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>BETWEEN</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT SalesOrderID, OrderDate, TotalDue, Status
 -- MAGIC FROM adventureworks.sales_salesorderheader
--- MAGIC WHERE OrderDate BETWEEN '2011-01-01' AND '2011-12-31'
+-- MAGIC WHERE OrderDate BETWEEN &#x27;2011-01-01&#x27; AND &#x27;2011-12-31&#x27;
 -- MAGIC   AND TotalDue BETWEEN 1000 AND 5000
 -- MAGIC   AND Status = 5
--- MAGIC ORDER BY OrderDate;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY OrderDate;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1071,30 +709,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `INNER JOIN`, `ORDER BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>INNER JOIN</code>, <code>ORDER BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     p.ProductID,
 -- MAGIC     p.Name AS ProductName,
 -- MAGIC     ps.Name AS SubcategoryName
 -- MAGIC FROM adventureworks.production_product p
 -- MAGIC INNER JOIN adventureworks.production_productsubcategory ps
 -- MAGIC     ON p.ProductSubcategoryID = ps.ProductSubcategoryID
--- MAGIC ORDER BY ps.Name, p.Name;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY ps.Name, p.Name;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1111,30 +735,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `LEFT JOIN`, `ORDER BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LEFT JOIN</code>, <code>ORDER BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     p.ProductID,
 -- MAGIC     p.Name AS ProductName,
 -- MAGIC     ps.Name AS SubcategoryName
 -- MAGIC FROM adventureworks.production_product p
 -- MAGIC LEFT JOIN adventureworks.production_productsubcategory ps
 -- MAGIC     ON p.ProductSubcategoryID = ps.ProductSubcategoryID
--- MAGIC ORDER BY ps.Name, p.Name;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY ps.Name, p.Name;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1151,30 +761,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `INNER JOIN`, `GROUP BY`, `ORDER BY`, `COUNT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>INNER JOIN</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>COUNT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     c.CustomerID,
 -- MAGIC     COUNT(soh.SalesOrderID) AS Order_Count
 -- MAGIC FROM adventureworks.sales_customer c
 -- MAGIC INNER JOIN adventureworks.sales_salesorderheader soh
 -- MAGIC     ON c.CustomerID = soh.CustomerID
 -- MAGIC GROUP BY c.CustomerID
--- MAGIC ORDER BY Order_Count DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY Order_Count DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1196,20 +792,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `INNER JOIN`, `ORDER BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>INNER JOIN</code>, <code>ORDER BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     sod.SalesOrderID,
 -- MAGIC     sod.ProductID,
 -- MAGIC     p.Name AS ProductName,
@@ -1221,11 +806,8 @@ USE CATALOG workspace;
 -- MAGIC     ON sod.ProductID = p.ProductID
 -- MAGIC INNER JOIN adventureworks.production_productsubcategory ps
 -- MAGIC     ON p.ProductSubcategoryID = ps.ProductSubcategoryID
--- MAGIC WHERE ps.Name = 'Mountain Bikes'
--- MAGIC ORDER BY sod.LineTotal DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE ps.Name = &#x27;Mountain Bikes&#x27;
+-- MAGIC ORDER BY sod.LineTotal DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1248,24 +830,10 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `AVG`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT AVG(ListPrice) AS Avg_Price
--- MAGIC FROM adventureworks.production_product;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>AVG</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT AVG(ListPrice) AS Avg_Price
+-- MAGIC FROM adventureworks.production_product;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1282,29 +850,15 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `LIMIT`, `UPPER`, `LOWER`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LIMIT</code>, <code>UPPER</code>, <code>LOWER</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID,
 -- MAGIC     Name,
 -- MAGIC     UPPER(Name) AS Name_Upper,
 -- MAGIC     LOWER(Name) AS Name_Lower
 -- MAGIC FROM adventureworks.production_product
--- MAGIC LIMIT 10;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC LIMIT 10;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1321,28 +875,14 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `GROUP BY`, `ORDER BY`, `YEAR`, `SUM`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>YEAR</code>, <code>SUM</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     YEAR(OrderDate) AS OrderYear,
 -- MAGIC     SUM(TotalDue) AS Annual_Revenue
 -- MAGIC FROM adventureworks.sales_salesorderheader
 -- MAGIC GROUP BY YEAR(OrderDate)
--- MAGIC ORDER BY OrderYear;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY OrderYear;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1359,29 +899,15 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `GROUP BY`, `HAVING`, `ORDER BY`, `COUNT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>HAVING</code>, <code>ORDER BY</code>, <code>COUNT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     CustomerID,
 -- MAGIC     COUNT(*) AS Order_Count
 -- MAGIC FROM adventureworks.sales_salesorderheader
 -- MAGIC GROUP BY CustomerID
--- MAGIC HAVING COUNT(*) > 10
--- MAGIC ORDER BY Order_Count DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC HAVING COUNT(*) &gt; 10
+-- MAGIC ORDER BY Order_Count DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1403,20 +929,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `GROUP BY`, `HAVING`, `ORDER BY`, `SUM`, `AVG`, `MIN`, `MAX`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>HAVING</code>, <code>ORDER BY</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID,
 -- MAGIC     SUM(OrderQty) AS Total_Sold,
 -- MAGIC     AVG(UnitPrice) AS Avg_Price,
@@ -1424,11 +939,8 @@ USE CATALOG workspace;
 -- MAGIC     MIN(UnitPrice) AS Min_Price
 -- MAGIC FROM adventureworks.sales_salesorderdetail
 -- MAGIC GROUP BY ProductID
--- MAGIC HAVING SUM(OrderQty) > 100
--- MAGIC ORDER BY Total_Sold DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC HAVING SUM(OrderQty) &gt; 100
+-- MAGIC ORDER BY Total_Sold DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1450,32 +962,18 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `GROUP BY`, `ORDER BY`, `CASE WHEN`, `BETWEEN`, `COUNT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>CASE WHEN</code>, <code>BETWEEN</code>, <code>COUNT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     CASE
--- MAGIC         WHEN ListPrice < 100 THEN 'Cheap'
--- MAGIC         WHEN ListPrice BETWEEN 100 AND 500 THEN 'Medium'
--- MAGIC         ELSE 'Expensive'
+-- MAGIC         WHEN ListPrice &lt; 100 THEN &#x27;Cheap&#x27;
+-- MAGIC         WHEN ListPrice BETWEEN 100 AND 500 THEN &#x27;Medium&#x27;
+-- MAGIC         ELSE &#x27;Expensive&#x27;
 -- MAGIC     END AS PriceCategory,
 -- MAGIC     COUNT(*) AS Product_Count
 -- MAGIC FROM adventureworks.production_product
 -- MAGIC GROUP BY PriceCategory
--- MAGIC ORDER BY PriceCategory;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY PriceCategory;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1492,20 +990,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `ROW_NUMBER`, `DENSE_RANK`, `RANK`, `OVER`, `PARTITION BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>ROW_NUMBER</code>, <code>DENSE_RANK</code>, <code>RANK</code>, <code>OVER</code>, <code>PARTITION BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     ProductID,
 -- MAGIC     SalesOrderID,
 -- MAGIC     OrderQty,
@@ -1513,11 +1000,8 @@ USE CATALOG workspace;
 -- MAGIC     RANK() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) AS Rank,
 -- MAGIC     DENSE_RANK() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) AS DenseRank
 -- MAGIC FROM adventureworks.sales_salesorderdetail
--- MAGIC QUALIFY ROW_NUMBER() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) <= 3
--- MAGIC ORDER BY ProductID, OrderQty DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC QUALIFY ROW_NUMBER() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) &lt;= 3
+-- MAGIC ORDER BY ProductID, OrderQty DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1540,29 +1024,15 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `AVG`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>AVG</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name, ListPrice
 -- MAGIC FROM adventureworks.production_product
--- MAGIC WHERE ListPrice > (
+-- MAGIC WHERE ListPrice &gt; (
 -- MAGIC     SELECT AVG(ListPrice)
 -- MAGIC     FROM adventureworks.production_product
 -- MAGIC )
--- MAGIC ORDER BY ListPrice DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY ListPrice DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1579,29 +1049,15 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `DISTINCT`, `IN`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>DISTINCT</code>, <code>IN</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name
 -- MAGIC FROM adventureworks.production_product
 -- MAGIC WHERE ProductID IN (
 -- MAGIC     SELECT DISTINCT ProductID
 -- MAGIC     FROM adventureworks.sales_salesorderdetail
 -- MAGIC )
--- MAGIC ORDER BY Name;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY Name;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1618,30 +1074,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `EXISTS`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>EXISTS</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name
 -- MAGIC FROM adventureworks.production_product p
 -- MAGIC WHERE EXISTS (
 -- MAGIC     SELECT 1
 -- MAGIC     FROM adventureworks.sales_salesorderdetail sod
 -- MAGIC     WHERE sod.ProductID = p.ProductID
 -- MAGIC )
--- MAGIC ORDER BY Name;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY Name;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1658,30 +1100,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `EXISTS`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID, Name
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>EXISTS</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID, Name
 -- MAGIC FROM adventureworks.production_product p
 -- MAGIC WHERE NOT EXISTS (
 -- MAGIC     SELECT 1
 -- MAGIC     FROM adventureworks.sales_salesorderdetail sod
 -- MAGIC     WHERE sod.ProductID = p.ProductID
 -- MAGIC )
--- MAGIC ORDER BY Name;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY Name;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1698,30 +1126,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `GROUP BY`, `ORDER BY`, `SUM`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT CustomerID, Total_Revenue
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>GROUP BY</code>, <code>ORDER BY</code>, <code>SUM</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT CustomerID, Total_Revenue
 -- MAGIC FROM (
 -- MAGIC     SELECT CustomerID, SUM(TotalDue) AS Total_Revenue
 -- MAGIC     FROM adventureworks.sales_salesorderheader
 -- MAGIC     GROUP BY CustomerID
 -- MAGIC )
--- MAGIC WHERE Total_Revenue > 50000
--- MAGIC ORDER BY Total_Revenue DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE Total_Revenue &gt; 50000
+-- MAGIC ORDER BY Total_Revenue DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1738,20 +1152,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `LIMIT`, `COUNT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>LIMIT</code>, <code>COUNT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     p.ProductID,
 -- MAGIC     p.Name,
 -- MAGIC     (
@@ -1761,10 +1164,7 @@ USE CATALOG workspace;
 -- MAGIC     ) AS Order_Count
 -- MAGIC FROM adventureworks.production_product p
 -- MAGIC ORDER BY Order_Count DESC
--- MAGIC LIMIT 20;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC LIMIT 20;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1787,30 +1187,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `WITH`, `ORDER BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH ExpensiveProducts AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>WITH</code>, <code>ORDER BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH ExpensiveProducts AS (
 -- MAGIC     SELECT *
 -- MAGIC     FROM adventureworks.production_product
--- MAGIC     WHERE ListPrice > 1000
+-- MAGIC     WHERE ListPrice &gt; 1000
 -- MAGIC )
 -- MAGIC SELECT ProductID, Name, ListPrice
 -- MAGIC FROM ExpensiveProducts
--- MAGIC ORDER BY ListPrice DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY ListPrice DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1827,20 +1213,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `WITH`, `GROUP BY`, `ORDER BY`, `LIMIT`, `SUM`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH CustomerTotals AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>WITH</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, <code>SUM</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH CustomerTotals AS (
 -- MAGIC     SELECT
 -- MAGIC         CustomerID,
 -- MAGIC         SUM(TotalDue) AS Total_Revenue
@@ -1850,10 +1225,7 @@ USE CATALOG workspace;
 -- MAGIC SELECT CustomerID, Total_Revenue
 -- MAGIC FROM CustomerTotals
 -- MAGIC ORDER BY Total_Revenue DESC
--- MAGIC LIMIT 10;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC LIMIT 10;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1874,23 +1246,12 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `LEFT JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `SUM`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH RedProducts AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>LEFT JOIN</code>, <code>WITH</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>SUM</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH RedProducts AS (
 -- MAGIC     SELECT ProductID, Name, Color
 -- MAGIC     FROM adventureworks.production_product
--- MAGIC     WHERE Color = 'Red'
+-- MAGIC     WHERE Color = &#x27;Red&#x27;
 -- MAGIC ),
 -- MAGIC SalesData AS (
 -- MAGIC     SELECT ProductID, SUM(OrderQty) AS Total_Sold
@@ -1904,10 +1265,7 @@ USE CATALOG workspace;
 -- MAGIC     sd.Total_Sold
 -- MAGIC FROM RedProducts rp
 -- MAGIC LEFT JOIN SalesData sd ON rp.ProductID = sd.ProductID
--- MAGIC ORDER BY sd.Total_Sold DESC;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY sd.Total_Sold DESC;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1927,20 +1285,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `INNER JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `LIMIT`, `SUM`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH ProductSales AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>INNER JOIN</code>, <code>WITH</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, <code>SUM</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH ProductSales AS (
 -- MAGIC     SELECT
 -- MAGIC         ProductID,
 -- MAGIC         SUM(LineTotal) AS TotalSales
@@ -1958,10 +1305,7 @@ USE CATALOG workspace;
 -- MAGIC SELECT ProductID, Name, TotalSales
 -- MAGIC FROM ProductDetails
 -- MAGIC ORDER BY TotalSales DESC
--- MAGIC LIMIT 5;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC LIMIT 5;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -1984,28 +1328,14 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `INTERSECT`, `ORDER BY`, `DISTINCT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>INTERSECT</code>, <code>ORDER BY</code>, <code>DISTINCT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID
 -- MAGIC FROM adventureworks.production_product
 -- MAGIC INTERSECT
 -- MAGIC SELECT DISTINCT ProductID
 -- MAGIC FROM adventureworks.sales_salesorderdetail
--- MAGIC ORDER BY ProductID;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY ProductID;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -2022,28 +1352,14 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `EXCEPT`, `ORDER BY`, `DISTINCT`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT ProductID
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>EXCEPT</code>, <code>ORDER BY</code>, <code>DISTINCT</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT ProductID
 -- MAGIC FROM adventureworks.production_product
 -- MAGIC EXCEPT
 -- MAGIC SELECT DISTINCT ProductID
 -- MAGIC FROM adventureworks.sales_salesorderdetail
--- MAGIC ORDER BY ProductID;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY ProductID;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -2066,30 +1382,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `LAG`, `LEAD`, `OVER`, `PARTITION BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>LAG</code>, <code>LEAD</code>, <code>OVER</code>, <code>PARTITION BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     CustomerID,
 -- MAGIC     SalesOrderID,
 -- MAGIC     OrderDate,
 -- MAGIC     LAG(OrderDate) OVER (PARTITION BY CustomerID ORDER BY OrderDate) AS Previous_Order,
 -- MAGIC     LEAD(OrderDate) OVER (PARTITION BY CustomerID ORDER BY OrderDate) AS Next_Order
 -- MAGIC FROM adventureworks.sales_salesorderheader
--- MAGIC ORDER BY CustomerID, OrderDate;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY CustomerID, OrderDate;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -2106,30 +1408,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `ORDER BY`, `SUM`, `OVER`, `PARTITION BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC SELECT
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>ORDER BY</code>, <code>SUM</code>, <code>OVER</code>, <code>PARTITION BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>SELECT
 -- MAGIC     CustomerID,
 -- MAGIC     SalesOrderID,
 -- MAGIC     OrderDate,
 -- MAGIC     TotalDue,
 -- MAGIC     SUM(TotalDue) OVER (PARTITION BY CustomerID ORDER BY OrderDate) AS Running_Total
 -- MAGIC FROM adventureworks.sales_salesorderheader
--- MAGIC ORDER BY CustomerID, OrderDate;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY CustomerID, OrderDate;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -2146,27 +1434,16 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `WITH`, `GROUP BY`, `ORDER BY`, `COUNT`, `MIN`, `MAX`, `NTILE`, `OVER`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH ProductQuartiles AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>WITH</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>COUNT</code>, <code>MIN</code>, <code>MAX</code>, <code>NTILE</code>, <code>OVER</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH ProductQuartiles AS (
 -- MAGIC     SELECT
 -- MAGIC         ProductID,
 -- MAGIC         Name,
 -- MAGIC         ListPrice,
 -- MAGIC         NTILE(4) OVER (ORDER BY ListPrice) AS PriceQuartile
 -- MAGIC     FROM adventureworks.production_product
--- MAGIC     WHERE ListPrice > 0
+-- MAGIC     WHERE ListPrice &gt; 0
 -- MAGIC )
 -- MAGIC SELECT
 -- MAGIC     PriceQuartile,
@@ -2175,10 +1452,7 @@ USE CATALOG workspace;
 -- MAGIC     COUNT(*) AS Product_Count
 -- MAGIC FROM ProductQuartiles
 -- MAGIC GROUP BY PriceQuartile
--- MAGIC ORDER BY PriceQuartile;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC ORDER BY PriceQuartile;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -2195,20 +1469,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `INNER JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `IS NOT NULL`, `SUM`, `DENSE_RANK`, `OVER`, `PARTITION BY`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH CategorySales AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>INNER JOIN</code>, <code>WITH</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>IS NOT NULL</code>, <code>SUM</code>, <code>DENSE_RANK</code>, <code>OVER</code>, <code>PARTITION BY</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH CategorySales AS (
 -- MAGIC     SELECT
 -- MAGIC         p.ProductSubcategoryID,
 -- MAGIC         p.ProductID,
@@ -2233,11 +1496,8 @@ USE CATALOG workspace;
 -- MAGIC     TotalSales,
 -- MAGIC     SalesRank
 -- MAGIC FROM RankedSales
--- MAGIC WHERE SalesRank <= 3
--- MAGIC ORDER BY ProductSubcategoryID, SalesRank;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC WHERE SalesRank &lt;= 3
+-- MAGIC ORDER BY ProductSubcategoryID, SalesRank;</code></pre></details>
 
 -- COMMAND ----------
 
@@ -2277,20 +1537,9 @@ USE CATALOG workspace;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC <details>
--- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
--- MAGIC
--- MAGIC You will need: `INNER JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `LIMIT`, `BETWEEN`, `ROUND`, `SUM`, `AVG`, `RANK`, `PERCENT_RANK`, `OVER`, `ROWS BETWEEN`
--- MAGIC
--- MAGIC </details>
--- MAGIC <details>
--- MAGIC <summary><b>🔑 Solution</b></summary>
--- MAGIC
--- MAGIC Try it yourself first – then compare.
--- MAGIC
--- MAGIC ```sql
--- MAGIC WITH ProductMetrics AS (
+-- MAGIC %md-sandbox
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>💡 Hint – useful building blocks</b></summary><p style='margin:6px 0'>You will need: <code>INNER JOIN</code>, <code>WITH</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, <code>BETWEEN</code>, <code>ROUND</code>, <code>SUM</code>, <code>AVG</code>, <code>RANK</code>, <code>PERCENT_RANK</code>, <code>OVER</code>, <code>ROWS BETWEEN</code></p></details>
+-- MAGIC <details style='margin:4px 0;padding:6px 10px;border:1px solid #d0d7de;border-radius:6px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px'><summary style='cursor:pointer'><b>🔑 Solution</b></summary><p style='margin:6px 0'>Try it yourself first – then compare.</p><pre style='background:#f6f8fa;padding:8px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.4'><code>WITH ProductMetrics AS (
 -- MAGIC     SELECT
 -- MAGIC         ProductID,
 -- MAGIC         SUM(OrderQty) AS Total_Sold,
@@ -2324,8 +1573,5 @@ USE CATALOG workspace;
 -- MAGIC INNER JOIN adventureworks.production_product p
 -- MAGIC     ON rm.ProductID = p.ProductID
 -- MAGIC ORDER BY rm.Rank_Quantity_Sold
--- MAGIC LIMIT 20;
--- MAGIC ```
--- MAGIC
--- MAGIC </details>
+-- MAGIC LIMIT 20;</code></pre></details>
 
