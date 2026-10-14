@@ -97,6 +97,11 @@ No local installation needed – you only need a browser.
 This deletes the catalog `mzmv` (incl. your uploaded MZMV ZIP), all tables in the workshop schemas and all files in the
 volume. Schemas, volume, jobs and dashboard stay – run `01_workshop_setup` again to start fresh.
 
+**Workspace not empty?** If your workspace already contains schemas, tables, jobs or dashboards from earlier courses,
+open `src/00_setup/98_nuke_workspace` **in your Git folder** and run it: first as a dry run (it only lists what it would
+delete), then with `mode` = `delete` and `confirm` = `NUKE`. It deletes all your catalogs, schemas, tables, volumes,
+jobs, pipelines, dashboards and Genie spaces – your Git folders and notebooks stay. Then deploy and run `01_workshop_setup`.
+
 **Remove everything (at the end of the course):** first run the cleanup above, then open the **Deployments** panel in
 your Git folder and click **Destroy**. This removes the schemas, the volume, the jobs, the pipeline and the dashboard.
 Finally you can delete the Git folder itself.
