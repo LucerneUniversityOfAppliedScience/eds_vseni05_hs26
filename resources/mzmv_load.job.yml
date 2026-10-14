@@ -18,6 +18,8 @@ resources:
           default: mzmv2021,zeitreihen
         - name: chunk_rows
           default: "200000"
+        - name: parallel_tables
+          default: "4"
       tasks:
         - task_key: unzip
           notebook_task:

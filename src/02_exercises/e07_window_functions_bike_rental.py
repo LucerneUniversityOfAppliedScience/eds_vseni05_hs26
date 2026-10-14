@@ -131,6 +131,33 @@ raise NotImplementedError("Task 1: parse timestamps and compute duration_min")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `F.to_timestamp()`, `F.unix_timestamp()`, `.withColumn()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df = (
+# MAGIC     spark.table(TABLE)
+# MAGIC     .withColumn("start_ts",    F.to_timestamp("start_ts_str", "yyyy-MM-dd HH:mm:ss"))
+# MAGIC     .withColumn("end_ts",      F.to_timestamp("end_ts_str",   "yyyy-MM-dd HH:mm:ss"))
+# MAGIC     .withColumn("duration_min",
+# MAGIC         ((F.unix_timestamp("end_ts") - F.unix_timestamp("start_ts")) / 60).cast("int"))
+# MAGIC )
+# MAGIC df.show(5)
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ---
 # MAGIC ## Task 2 — `dense_rank`: top-3 longest trips per city
 # MAGIC
@@ -149,6 +176,37 @@ raise NotImplementedError("Task 1: parse timestamps and compute duration_min")
 
 # YOUR CODE HERE
 raise NotImplementedError("Task 2: dense_rank top-3 trips per city")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `WITH`, `ROW_NUMBER`, `RANK`, `F.desc()`, `F.col()`, `F.dense_rank()`, `.withColumn()`, `.filter()`, `.orderBy()`, `.select()`, `.over()`, `.partitionBy()`, `Window.partitionBy()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC w_rank = Window.partitionBy("city").orderBy(F.desc("distance_km"))
+# MAGIC
+# MAGIC (df
+# MAGIC  .filter(F.col("distance_km").isNotNull())
+# MAGIC  .withColumn("rank", F.dense_rank().over(w_rank))
+# MAGIC  .filter(F.col("rank") <= 3)
+# MAGIC  .select("city", "trip_id", "distance_km", "rank")
+# MAGIC  .orderBy("city", "rank")
+# MAGIC  .show(20)
+# MAGIC )
+# MAGIC
+# MAGIC # Follow-up: rank() gaps on ties; row_number() always unique — compare with ties in distance_km
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 
@@ -175,6 +233,40 @@ raise NotImplementedError("Task 3: cumulative distance per user")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `F.col()`, `F.round()`, `F.sum()`, `.withColumn()`, `.filter()`, `.orderBy()`, `.select()`, `.over()`, `.partitionBy()`, `.rowsBetween()`, `Window.unboundedPreceding()`, `Window.currentRow()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC w_cum = (
+# MAGIC     Window
+# MAGIC     .partitionBy("user_id")
+# MAGIC     .orderBy("start_ts")
+# MAGIC     .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+# MAGIC )
+# MAGIC
+# MAGIC (df
+# MAGIC  .filter(F.col("user_id").isNotNull() & F.col("distance_km").isNotNull())
+# MAGIC  .withColumn("km_cumulative", F.round(F.sum("distance_km").over(w_cum), 1))
+# MAGIC  .filter(F.col("user_id") == "U0007")
+# MAGIC  .select("user_id", "start_ts", "distance_km", "km_cumulative")
+# MAGIC  .orderBy("start_ts")
+# MAGIC  .show()
+# MAGIC )
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ---
 # MAGIC ## Task 4 — `lag()`: gap between consecutive trips per user
 # MAGIC
@@ -196,6 +288,41 @@ raise NotImplementedError("Task 3: cumulative distance per user")
 
 # YOUR CODE HERE
 raise NotImplementedError("Task 4: lag and gap between trips")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `F.col()`, `F.lag()`, `F.unix_timestamp()`, `F.desc()`, `.withColumn()`, `.filter()`, `.orderBy()`, `.select()`, `.over()`, `.partitionBy()`, `Window.partitionBy()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC w_lag = Window.partitionBy("user_id").orderBy("start_ts")
+# MAGIC
+# MAGIC df_gap = (
+# MAGIC     df
+# MAGIC     .filter(F.col("user_id").isNotNull())
+# MAGIC     .withColumn("prev_end", F.lag("end_ts", 1).over(w_lag))
+# MAGIC     .withColumn("gap_min",
+# MAGIC         ((F.unix_timestamp("start_ts") - F.unix_timestamp("prev_end")) / 60).cast("int"))
+# MAGIC     .filter(F.col("gap_min").isNotNull())
+# MAGIC     .select("user_id", "start_ts", "end_ts", "prev_end", "gap_min")
+# MAGIC     .orderBy("user_id", "start_ts")
+# MAGIC )
+# MAGIC df_gap.show(15)
+# MAGIC
+# MAGIC # Follow-up: who waited longest?
+# MAGIC df_gap.orderBy(F.desc("gap_min")).limit(1).show()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 
@@ -230,6 +357,54 @@ raise NotImplementedError("Task 5a: build daily_trips temp view")
 # 5b–5d — lag, pct_change, spike flag
 # YOUR CODE HERE
 raise NotImplementedError("Task 5b-d: lag on daily aggregate + spike flag")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `LAG`, `F.to_date()`, `F.count()`, `F.lag()`, `F.round()`, `F.col()`, `F.when()`, `.groupBy()`, `.agg()`, `.withColumn()`, `.filter()`, `.orderBy()`, `.select()`, `.createOrReplaceTempView()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC # 5a — daily aggregate
+# MAGIC df_daily = (
+# MAGIC     df
+# MAGIC     .withColumn("date", F.to_date("start_ts"))
+# MAGIC     .groupBy("city", "date")
+# MAGIC     .agg(F.count("*").alias("trips"))
+# MAGIC )
+# MAGIC df_daily.createOrReplaceTempView("daily_trips")
+# MAGIC print("Temp view daily_trips created.")
+# MAGIC ```
+# MAGIC
+# MAGIC ```python
+# MAGIC # 5b–5d — lag, pct_change, spike flag
+# MAGIC w_dod = Window.partitionBy("city").orderBy("date")
+# MAGIC
+# MAGIC (df_daily
+# MAGIC  .withColumn("prev_trips", F.lag("trips", 1).over(w_dod))
+# MAGIC  .withColumn("pct_change",
+# MAGIC      F.round(
+# MAGIC          (F.col("trips") - F.col("prev_trips")) /
+# MAGIC          F.when(F.col("prev_trips") > 0, F.col("prev_trips")),
+# MAGIC          2,
+# MAGIC      ))
+# MAGIC  .withColumn("is_spike", F.col("pct_change") > 0.5)
+# MAGIC  .filter(F.col("is_spike") == True)
+# MAGIC  .select("city", "date", "prev_trips", "trips", "pct_change")
+# MAGIC  .orderBy("city", "date")
+# MAGIC  .show()
+# MAGIC )
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 
@@ -283,6 +458,49 @@ raise NotImplementedError("Task 7: pivot trips per city × weekday")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `F.date_format()`, `F.round()`, `F.col()`, `F.desc()`, `.groupBy()`, `.withColumn()`, `.orderBy()`, `.select()`, `.pivot()`, `.count()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+# MAGIC
+# MAGIC df_pivot = (
+# MAGIC     df
+# MAGIC     .withColumn("weekday", F.date_format("start_ts", "EEE"))
+# MAGIC     .groupBy("city")
+# MAGIC     .pivot("weekday", DAYS)
+# MAGIC     .count()
+# MAGIC )
+# MAGIC df_pivot.show()
+# MAGIC
+# MAGIC # Follow-up: weekend share
+# MAGIC (df_pivot
+# MAGIC  .withColumn("weekend_pct",
+# MAGIC      F.round(
+# MAGIC          (F.col("Sat") + F.col("Sun")) /
+# MAGIC          (F.col("Mon") + F.col("Tue") + F.col("Wed") + F.col("Thu") +
+# MAGIC           F.col("Fri") + F.col("Sat") + F.col("Sun")),
+# MAGIC          3,
+# MAGIC      ))
+# MAGIC  .select("city", "Sat", "Sun", "weekend_pct")
+# MAGIC  .orderBy(F.desc("weekend_pct"))
+# MAGIC  .show()
+# MAGIC )
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ---
 # MAGIC ## Task 8 — `row_number()`: most recent trip per user
 # MAGIC
@@ -301,3 +519,36 @@ raise NotImplementedError("Task 7: pivot trips per city × weekday")
 
 # YOUR CODE HERE
 raise NotImplementedError("Task 8: row_number() to get most recent trip per user")
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `DISTINCT`, `F.desc()`, `F.col()`, `F.row_number()`, `.withColumn()`, `.filter()`, `.orderBy()`, `.select()`, `.over()`, `.partitionBy()`, `.count()`, `Window.partitionBy()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC w_latest = Window.partitionBy("user_id").orderBy(F.desc("start_ts"))
+# MAGIC
+# MAGIC df_latest = (
+# MAGIC     df
+# MAGIC     .filter(F.col("user_id").isNotNull())
+# MAGIC     .withColumn("rn", F.row_number().over(w_latest))
+# MAGIC     .filter(F.col("rn") == 1)
+# MAGIC     .select("user_id", "start_ts", "trip_id", "city")
+# MAGIC     .orderBy("user_id")
+# MAGIC )
+# MAGIC df_latest.show(10)
+# MAGIC
+# MAGIC # Follow-up: how many distinct users?
+# MAGIC print(f"Distinct users: {df_latest.select('user_id').distinct().count()}")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+

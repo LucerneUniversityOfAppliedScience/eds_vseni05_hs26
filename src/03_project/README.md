@@ -29,7 +29,8 @@ You combine four open data sources of the City of Zurich and Open-Meteo, build a
 - Every task is marked **Task x.y**. Replace `raise NotImplementedError(...)` (Python) or
   `SELECT 'replace this line with your query'` (SQL) with your solution.
 - Stuck? Read the hints in the task, ask the Databricks Assistant (✨) – but make sure you understand the code –
-  or ask your neighbour. **Solutions are published on Thursday.**
+  or ask your neighbour. Below every task you find **💡 Hint 1** (the idea), **🧩 Hint 2** (a code skeleton) and
+  the **🔑 Solution** – click to expand, but try it yourself first.
 
 ## The steps
 
@@ -152,4 +153,9 @@ In steps 2–4 you ran notebooks by hand. In practice this runs **automatically*
   `databricks bundle deploy`.
 
 Try it yourself: **Jobs & Pipelines → Create → ETL pipeline**, and rewrite one of your silver tables in SQL.
-A complete reference pipeline (and the dashboard as code) is part of the solutions published on Thursday.
+A complete reference is part of this repo and deployed with the bundle:
+
+- **Pipeline:** [reference/pipeline](reference/pipeline/transformations) → *Jobs & Pipelines* → `mobility_pipeline` → **Start**
+  (writes to the schema `mobility_pipeline`; the first run needs a few minutes).
+- **Dashboard as code:** [reference/dashboard/mobility.lvdash.json](reference/dashboard/mobility.lvdash.json) →
+  *Dashboards* → `Bike vs car in Zurich` (shows data once your gold tables from step 4 exist).

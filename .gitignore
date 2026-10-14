@@ -228,7 +228,6 @@ data/**
 !data/README.md
 !data/build_data_zip.sh
 
-# Solutions: published on Thursday (remove these two lines and commit)
+# Private authoring sources (solution notebooks with markers, MZMV solutions, instructor notes)
 solutions/
-resources/solution_*.yml
 dist/

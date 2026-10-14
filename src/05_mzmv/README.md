@@ -42,7 +42,7 @@ created automatically by the setup job `workshop_setup` (see the main README).
 > (`MZMV.zip`, 2.2 GB – additionally 2015, CSV, SPSS and route geometries) works with the same job; it only takes much
 > longer to upload (browser limit: 5 GB per file).
 
-## Step 2 – Run the job `mzmv_load` (≈ 5–10 min)
+## Step 2 – Run the job `mzmv_load` (≈ 10 min)
 
 *Jobs & Pipelines* → `mzmv_load` → **Run now** – or click **Run** (▶︎) next to `mzmv_load` in the Deployments panel
 of your Git folder.
@@ -92,6 +92,17 @@ Try it:
    )
    ```
    ⚠️ Always use the **weights** (`WM` for households, `WP` for persons) – the sample is not representative without them.
+
+## Step 4 – Your turn: bronze → silver
+
+Open [03_silver_time_series.py](03_silver_time_series.py). It is a guided example on the time series:
+
+- the **code labels** are prepared (`mzmv.silver.code_labels`),
+- **you** combine the trips of all six surveys (1994–2021) into `mzmv.silver.trips`: rename columns, turn special codes
+  (`-97`, `-99`, …) into NULL and decode the codes into readable labels.
+
+Every task has **💡 Hint 1** (the idea) and **🧩 Hint 2** (a code skeleton) – click to expand. Afterwards you continue on
+your own: more silver tables (persons, households) and a gold layer, e.g. the modal split 1994–2021.
 
 ## Documentation
 

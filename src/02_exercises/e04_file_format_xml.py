@@ -40,6 +40,48 @@ raise NotImplementedError("Step 1: read XML and write to Bronze")
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `LIMIT`, `.saveAsTable()`, `.printSchema()`, `.count()`, `.option()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_countries_raw = (spark.read
+# MAGIC     .format("xml")
+# MAGIC     .option("rowTag", "country")
+# MAGIC     .load(XML_PATH))
+# MAGIC
+# MAGIC df_countries_raw.printSchema()
+# MAGIC ```
+# MAGIC
+# MAGIC ```python
+# MAGIC print(f"Number of countries: {df_countries_raw.count()}")
+# MAGIC ```
+# MAGIC
+# MAGIC ```python
+# MAGIC display(df_countries_raw.limit(5))
+# MAGIC ```
+# MAGIC
+# MAGIC ```python
+# MAGIC df_countries_raw.write.mode("overwrite").saveAsTable("workspace.exercises.bronze_countries_raw")
+# MAGIC print("Bronze table written: workspace.exercises.bronze_countries_raw")
+# MAGIC ```
+# MAGIC
+# MAGIC ```sql
+# MAGIC SELECT * FROM workspace.exercises.bronze_countries_raw LIMIT 5
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
 # MAGIC %sql
 # MAGIC SELECT * FROM workspace.exercises.bronze_countries_raw LIMIT 5
 
@@ -74,6 +116,57 @@ raise NotImplementedError("Step 1: read XML and write to Bronze")
 #       try_cast(col("latitude"), "double").alias("latitude"), ...)
 # YOUR CODE HERE
 raise NotImplementedError("Step 2: flatten to Silver")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `GROUP BY`, `ORDER BY`, `LIMIT`, `COUNT`, `.select()`, `.saveAsTable()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC from pyspark.sql.functions import col
+# MAGIC
+# MAGIC df_countries_silver = spark.table("workspace.exercises.bronze_countries_raw").select(
+# MAGIC     col("id").cast("int").alias("id"),
+# MAGIC     col("name"),
+# MAGIC     col("iso3"),
+# MAGIC     col("iso2"),
+# MAGIC     col("capital"),
+# MAGIC     col("region"),
+# MAGIC     col("subregion"),
+# MAGIC     col("latitude").cast("double").alias("latitude"),
+# MAGIC     col("longitude").cast("double").alias("longitude"),
+# MAGIC     col("currency"),
+# MAGIC     col("currency_name"),
+# MAGIC     col("phone_code"),
+# MAGIC     col("tld"),
+# MAGIC )
+# MAGIC
+# MAGIC df_countries_silver.write.mode("overwrite").saveAsTable("workspace.exercises.silver_countries")
+# MAGIC print("Silver table written: workspace.exercises.silver_countries")
+# MAGIC ```
+# MAGIC
+# MAGIC ```sql
+# MAGIC SELECT * FROM workspace.exercises.silver_countries LIMIT 10
+# MAGIC ```
+# MAGIC
+# MAGIC ```sql
+# MAGIC -- Quick check: countries per region
+# MAGIC SELECT region, count(*) AS num_countries
+# MAGIC FROM workspace.exercises.silver_countries
+# MAGIC GROUP BY region
+# MAGIC ORDER BY num_countries DESC
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 

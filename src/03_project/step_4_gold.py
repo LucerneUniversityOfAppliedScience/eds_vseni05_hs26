@@ -77,6 +77,42 @@ display(df_car_daily.orderBy(F.desc("date")).limit(5))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
+# MAGIC
+# MAGIC Copy the code of `df_bike_daily` above and adapt it: table `car_counts_hourly`, sum of `vehicles`, distinct count of `site_id`. No filter needed.
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
+# MAGIC
+# MAGIC ```python
+# MAGIC df_car_daily = (
+# MAGIC     spark.table(f"{SILVER}.car_counts_hourly")
+# MAGIC     .groupBy("date")
+# MAGIC     .agg(F.sum(___).alias("vehicles"), F.countDistinct(___).alias("car_sites"))
+# MAGIC )
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_car_daily = (
+# MAGIC     spark.table(f"{SILVER}.car_counts_hourly")
+# MAGIC     .groupBy("date")
+# MAGIC     .agg(F.sum("vehicles").alias("vehicles"), F.countDistinct("site_id").alias("car_sites"))
+# MAGIC )
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 4.3 – Daily weather and the big join
 # MAGIC
 # MAGIC 1. Build `df_weather_daily` from `mobility_silver.weather_hourly` with one row per `date`:
@@ -103,6 +139,84 @@ display(df_car_daily.orderBy(F.desc("date")).limit(5))
 raise NotImplementedError("Task 4.3")
 
 display(spark.table(f"{GOLD}.daily_traffic").orderBy(F.desc("date")).limit(10))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
+# MAGIC
+# MAGIC (1) `df_weather_daily`: group the hourly weather by `F.to_date("ts_hour")`. (2) Start with `df_weather_daily` and add the three traffic DataFrames with `.join(other, "date", "left")`. (3) Add the derived columns with `withColumn`. (4) `save(df_daily, "daily_traffic")`.
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
+# MAGIC
+# MAGIC ```python
+# MAGIC df_weather_daily = (
+# MAGIC     spark.table(f"{SILVER}.weather_hourly")
+# MAGIC     .groupBy(F.to_date("ts_hour").alias("date"))
+# MAGIC     .agg(F.round(F.avg("temperature_c"), 1).alias("temp_mean_c"), F.max(___).alias("temp_max_c"),
+# MAGIC          F.round(F.sum("precipitation_mm"), 1).alias("precipitation_mm"), F.round(F.sum(___), 1).alias("snowfall_cm"))
+# MAGIC )
+# MAGIC df_daily = (
+# MAGIC     df_weather_daily
+# MAGIC     .join(df_bike_daily, "date", "left")
+# MAGIC     .join(___, "date", "left")
+# MAGIC     .join(___, "date", "left")
+# MAGIC     .withColumn("year", F.year("date"))
+# MAGIC     .withColumn("weekday", F.date_format("date", "EEEE"))
+# MAGIC     .withColumn("is_weekend", F.dayofweek("date").isin(1, 7))
+# MAGIC     .withColumn("bikes_per_station", F.round(F.col("bikes") / F.col("bike_stations")))
+# MAGIC     # ... month, pedestrians_per_station, vehicles_per_site, is_rainy_day
+# MAGIC )
+# MAGIC save(df_daily, "daily_traffic")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_weather_daily = (
+# MAGIC     spark.table(f"{SILVER}.weather_hourly")
+# MAGIC     .groupBy(F.to_date("ts_hour").alias("date"))
+# MAGIC     .agg(
+# MAGIC         F.round(F.avg("temperature_c"), 1).alias("temp_mean_c"),
+# MAGIC         F.max("temperature_c").alias("temp_max_c"),
+# MAGIC         F.round(F.sum("precipitation_mm"), 1).alias("precipitation_mm"),
+# MAGIC         F.round(F.sum("snowfall_cm"), 1).alias("snowfall_cm"),
+# MAGIC     )
+# MAGIC )
+# MAGIC
+# MAGIC df_daily = (
+# MAGIC     df_weather_daily
+# MAGIC     .join(df_bike_daily, "date", "left")
+# MAGIC     .join(df_ped_daily, "date", "left")
+# MAGIC     .join(df_car_daily, "date", "left")
+# MAGIC     .withColumn("year", F.year("date"))
+# MAGIC     .withColumn("month", F.month("date"))
+# MAGIC     .withColumn("weekday", F.date_format("date", "EEEE"))
+# MAGIC     .withColumn("is_weekend", F.dayofweek("date").isin(1, 7))
+# MAGIC     .withColumn("bikes_per_station", F.round(F.col("bikes") / F.col("bike_stations")))
+# MAGIC     .withColumn("pedestrians_per_station", F.round(F.col("pedestrians") / F.col("pedestrian_stations")))
+# MAGIC     .withColumn("vehicles_per_site", F.round(F.col("vehicles") / F.col("car_sites")))
+# MAGIC     .withColumn("is_rainy_day", F.col("precipitation_mm") >= 1.0)
+# MAGIC     .select(
+# MAGIC         "date", "year", "month", "weekday", "is_weekend",
+# MAGIC         "bikes", "bike_stations", "bikes_per_station",
+# MAGIC         "pedestrians", "pedestrian_stations", "pedestrians_per_station",
+# MAGIC         "vehicles", "car_sites", "vehicles_per_site",
+# MAGIC         "temp_mean_c", "temp_max_c", "precipitation_mm", "snowfall_cm", "is_rainy_day",
+# MAGIC     )
+# MAGIC )
+# MAGIC
+# MAGIC save(df_daily, "daily_traffic")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 
@@ -180,6 +294,64 @@ display(spark.table(f"{GOLD}.location_map").orderBy(F.desc("avg_daily_count")).l
 
 # TODO Task 4.6 – build GOLD.hourly_profile (mode, day_type, hour, avg_per_location) for 2025
 raise NotImplementedError("Task 4.6")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
+# MAGIC
+# MAGIC Write a small function `profile(df, value_col, mode)` that groups by `is_weekend` and `hour`, averages the value column and adds `mode` and `day_type`. Call it once for bikes and once for cars and combine with `unionByName`.
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
+# MAGIC
+# MAGIC ```python
+# MAGIC def profile(df, value_col, mode):
+# MAGIC     return (
+# MAGIC         df.groupBy("is_weekend", "hour")
+# MAGIC         .agg(F.round(F.avg(value_col), 1).alias("avg_per_location"))
+# MAGIC         .select(F.lit(mode).alias("mode"),
+# MAGIC                 F.when(F.col("is_weekend"), "Weekend").otherwise(___).alias("day_type"),
+# MAGIC                 "hour", "avg_per_location")
+# MAGIC     )
+# MAGIC
+# MAGIC df_bikes = bike_hourly.filter(F.col("has_bike_data") & (F.col("year") == YEAR))
+# MAGIC df_cars = spark.table(f"{SILVER}.car_counts_hourly").filter(F.col("year") == YEAR)
+# MAGIC save(profile(df_bikes, "bikes", "Bike").unionByName(profile(df_cars, ___, ___)), "hourly_profile")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC def profile(df, value_col, mode):
+# MAGIC     return (
+# MAGIC         df.groupBy("is_weekend", "hour")
+# MAGIC         .agg(F.round(F.avg(value_col), 1).alias("avg_per_location"))
+# MAGIC         .select(
+# MAGIC             F.lit(mode).alias("mode"),
+# MAGIC             F.when(F.col("is_weekend"), "Weekend").otherwise("Weekday").alias("day_type"),
+# MAGIC             "hour",
+# MAGIC             "avg_per_location",
+# MAGIC         )
+# MAGIC     )
+# MAGIC
+# MAGIC
+# MAGIC df_profile = profile(
+# MAGIC     bike_hourly.filter(F.col("has_bike_data") & (F.col("year") == YEAR)), "bikes", "Bike"
+# MAGIC ).unionByName(
+# MAGIC     profile(spark.table(f"{SILVER}.car_counts_hourly").filter(F.col("year") == YEAR), "vehicles", "Car")
+# MAGIC )
+# MAGIC
+# MAGIC save(df_profile, "hourly_profile")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 

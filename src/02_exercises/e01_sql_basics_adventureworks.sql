@@ -12,7 +12,7 @@
 -- MAGIC - The notebook is written in **SQL**. Attach it to **Serverless** (or the *Serverless Starter Warehouse*).
 -- MAGIC - Below each exercise there is an empty cell `-- your solution` – write your query there and run it.
 -- MAGIC - The difficulty is shown in the title: *Easy*, *Medium*, *Hard*.
--- MAGIC - Solutions: `solutions/02_exercises/e01_sql_basics_adventureworks_solution.sql`
+-- MAGIC - Below each exercise you find a **hint** and the **solution** (click to expand) – try it yourself first!
 -- MAGIC
 -- MAGIC > Source: SQL introduction from CAS DEADS7, adapted for Databricks Free Edition.
 
@@ -42,6 +42,21 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT *
+-- MAGIC FROM adventureworks.production_product;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 1.2 (Easy)
 -- MAGIC **Business context:** For a quick price overview, the sales team needs a compact list of the most important product information.
 -- MAGIC
@@ -55,6 +70,28 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `LIMIT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC LIMIT 10;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 1.3 (Medium)
 -- MAGIC **Business context:** As a new data analyst, you need to understand the structure of the order data in order to carry out future analyses.
 -- MAGIC
@@ -64,6 +101,34 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `LIMIT`, `DESCRIBE`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC -- Show column structure
+-- MAGIC DESCRIBE adventureworks.sales_salesorderheader;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC -- First 5 records
+-- MAGIC SELECT *
+-- MAGIC FROM adventureworks.sales_salesorderheader
+-- MAGIC LIMIT 5;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -87,6 +152,21 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT FirstName, MiddleName, LastName
+-- MAGIC FROM adventureworks.person_person;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 2.2 (Easy)
 -- MAGIC Write a query on `adventureworks.production_product` that shows the column `ProductID` as "Product ID" and `Name` as "ProductName" (use aliases).
 
@@ -98,6 +178,23 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID AS `Product ID`,
+-- MAGIC     Name AS ProductName
+-- MAGIC FROM adventureworks.production_product;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 2.4 (Medium)
 -- MAGIC Create a concatenated column "FullName" from `FirstName`, `MiddleName` and `LastName` of the table `adventureworks.person_person`. Handle `NULL` values in `MiddleName` appropriately.
 
@@ -105,6 +202,34 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `COALESCE`, `CONCAT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     BusinessEntityID,
+-- MAGIC     CONCAT(
+-- MAGIC         FirstName,
+-- MAGIC         ' ',
+-- MAGIC         COALESCE(MiddleName || ' ', ''),
+-- MAGIC         LastName
+-- MAGIC     ) AS FullName
+-- MAGIC FROM adventureworks.person_person;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -122,6 +247,28 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     SalesOrderID,
+-- MAGIC     ProductID,
+-- MAGIC     OrderQty,
+-- MAGIC     UnitPrice,
+-- MAGIC     OrderQty * UnitPrice AS Total_Gross,
+-- MAGIC     OrderQty * UnitPrice * (1 - UnitPriceDiscount) AS Total_Net,
+-- MAGIC     OrderQty * UnitPrice * UnitPriceDiscount AS Discount_Savings
+-- MAGIC FROM adventureworks.sales_salesorderdetail;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -145,6 +292,31 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `CAST`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID,
+-- MAGIC     Name,
+-- MAGIC     ListPrice,
+-- MAGIC     CAST(ListPrice AS INT) AS ListPrice_Int
+-- MAGIC FROM adventureworks.production_product;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 3.2 (Easy)
 -- MAGIC **Business context:** For the export to Excel, the reporting team needs order data in the European date format.
 -- MAGIC
@@ -154,6 +326,30 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `DATE_FORMAT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     SalesOrderID,
+-- MAGIC     OrderDate,
+-- MAGIC     DATE_FORMAT(OrderDate, 'dd.MM.yyyy') AS OrderDate_Formatted
+-- MAGIC FROM adventureworks.sales_salesorderheader;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -171,6 +367,30 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `FORMAT_NUMBER`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     SalesOrderID,
+-- MAGIC     TotalDue,
+-- MAGIC     FORMAT_NUMBER(TotalDue, 2) AS TotalDue_Formatted
+-- MAGIC FROM adventureworks.sales_salesorderheader;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 3.4 (Hard)
 -- MAGIC **Business context:** Product management wants to analyze the age of all products in the range in order to make lifecycle decisions.
 -- MAGIC
@@ -180,6 +400,32 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `TO_DATE`, `DATEDIFF`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID,
+-- MAGIC     Name,
+-- MAGIC     SellStartDate,
+-- MAGIC     TO_DATE(SellStartDate) AS SellStartDate_Date,
+-- MAGIC     DATEDIFF(CURRENT_DATE(), TO_DATE(SellStartDate)) AS Days_Since_Start
+-- MAGIC FROM adventureworks.production_product;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -203,6 +449,28 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `IS NULL`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, ProductSubcategoryID
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC WHERE ProductSubcategoryID IS NULL;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 4.2 (Easy)
 -- MAGIC **Business context:** For customer communication, all names should be displayed in full, even if there is no middle name.
 -- MAGIC
@@ -212,6 +480,31 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `COALESCE`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     BusinessEntityID,
+-- MAGIC     FirstName,
+-- MAGIC     COALESCE(MiddleName, 'N/A') AS MiddleName,
+-- MAGIC     LastName
+-- MAGIC FROM adventureworks.person_person;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -229,6 +522,30 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `COALESCE`, `CAST`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID,
+-- MAGIC     Name,
+-- MAGIC     COALESCE(Color, Size, CAST(Weight AS STRING), 'Not specified') AS First_Attribute
+-- MAGIC FROM adventureworks.production_product;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 4.5 (Hard)
 -- MAGIC **Business context:** The finance team wants to identify products with a real profit margin and filter out cost-price products (no markup).
 -- MAGIC
@@ -238,6 +555,35 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `CASE WHEN`, `NULLIF`, `IS NULL`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID,
+-- MAGIC     Name,
+-- MAGIC     ListPrice,
+-- MAGIC     StandardCost,
+-- MAGIC     CASE
+-- MAGIC         WHEN NULLIF(ListPrice, StandardCost) IS NULL THEN NULL
+-- MAGIC         ELSE ListPrice - StandardCost
+-- MAGIC     END AS ProfitMargin
+-- MAGIC FROM adventureworks.production_product;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -261,6 +607,28 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC ORDER BY Name ASC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 5.3 (Medium)
 -- MAGIC **Business context:** For sorting on the website, products with a color should appear first and colorless products at the end of the list.
 -- MAGIC
@@ -270,6 +638,28 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `NULLS LAST`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, Color
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC ORDER BY Color ASC NULLS LAST;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -287,6 +677,28 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT SalesOrderID, OrderDate, TotalDue
+-- MAGIC FROM adventureworks.sales_salesorderheader
+-- MAGIC ORDER BY TotalDue DESC, OrderDate ASC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 5.5 (Hard)
 -- MAGIC **Business context:** The printed product catalog should show uncategorized products first (for review), then be sorted by category, price and name.
 -- MAGIC
@@ -296,6 +708,30 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `NULLS FIRST`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, ProductSubcategoryID, ListPrice
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC ORDER BY ProductSubcategoryID ASC NULLS FIRST,
+-- MAGIC          ListPrice DESC,
+-- MAGIC          Name ASC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -319,6 +755,28 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `DISTINCT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT DISTINCT Color
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC ORDER BY Color;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 6.2 (Medium)
 -- MAGIC **Business context:** Quality assurance suspects duplicates in the product data and wants to check color/size combinations that were created more than once.
 -- MAGIC
@@ -332,6 +790,30 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `GROUP BY`, `HAVING`, `ORDER BY`, `COUNT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT Color, Size, COUNT(*) AS DuplicateCount
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC GROUP BY Color, Size
+-- MAGIC HAVING COUNT(*) > 1
+-- MAGIC ORDER BY DuplicateCount DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 6.4 (Hard)
 -- MAGIC **Business context:** Product management wants to identify the premium product (highest price) in each product category for a luxury campaign.
 -- MAGIC
@@ -341,6 +823,39 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `WITH`, `ORDER BY`, `IS NOT NULL`, `ROW_NUMBER`, `OVER`, `PARTITION BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH RankedProducts AS (
+-- MAGIC     SELECT
+-- MAGIC         ProductSubcategoryID,
+-- MAGIC         ProductID,
+-- MAGIC         Name,
+-- MAGIC         ListPrice,
+-- MAGIC         ROW_NUMBER() OVER (PARTITION BY ProductSubcategoryID ORDER BY ListPrice DESC) AS rn
+-- MAGIC     FROM adventureworks.production_product
+-- MAGIC     WHERE ProductSubcategoryID IS NOT NULL
+-- MAGIC )
+-- MAGIC SELECT ProductSubcategoryID, ProductID, Name, ListPrice
+-- MAGIC FROM RankedProducts
+-- MAGIC WHERE rn = 1
+-- MAGIC ORDER BY ProductSubcategoryID;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -364,6 +879,29 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC WHERE ListPrice > 500
+-- MAGIC ORDER BY ListPrice DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 7.2 (Easy)
 -- MAGIC **Business context:** Customer service wants to create a list of names for a personalized mailing campaign to all customers whose last name starts with 'M'.
 -- MAGIC
@@ -373,6 +911,29 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `LIKE`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT BusinessEntityID, FirstName, LastName
+-- MAGIC FROM adventureworks.person_person
+-- MAGIC WHERE LastName LIKE 'M%'
+-- MAGIC ORDER BY LastName, FirstName;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -390,6 +951,29 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `IN`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, Color
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC WHERE Color IN ('Red', 'Blue', 'Black')
+-- MAGIC ORDER BY Color, Name;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 7.4 (Medium)
 -- MAGIC **Business context:** The logistics department wants to identify products with two-digit number endings that follow a special packaging standard.
 -- MAGIC
@@ -399,6 +983,29 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `RLIKE`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, ProductNumber
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC WHERE ProductNumber RLIKE '[0-9]{2}$'
+-- MAGIC ORDER BY ProductNumber;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -417,6 +1024,31 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `BETWEEN`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT SalesOrderID, OrderDate, TotalDue, Status
+-- MAGIC FROM adventureworks.sales_salesorderheader
+-- MAGIC WHERE OrderDate BETWEEN '2011-01-01' AND '2011-12-31'
+-- MAGIC   AND TotalDue BETWEEN 1000 AND 5000
+-- MAGIC   AND Status = 5
+-- MAGIC ORDER BY OrderDate;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -440,6 +1072,33 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `INNER JOIN`, `ORDER BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     p.ProductID,
+-- MAGIC     p.Name AS ProductName,
+-- MAGIC     ps.Name AS SubcategoryName
+-- MAGIC FROM adventureworks.production_product p
+-- MAGIC INNER JOIN adventureworks.production_productsubcategory ps
+-- MAGIC     ON p.ProductSubcategoryID = ps.ProductSubcategoryID
+-- MAGIC ORDER BY ps.Name, p.Name;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 8.2 (Medium)
 -- MAGIC **Business context:** The catalog department wants to see all products, including those without an assigned subcategory, in order to set data maintenance priorities.
 -- MAGIC
@@ -453,6 +1112,33 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `LEFT JOIN`, `ORDER BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     p.ProductID,
+-- MAGIC     p.Name AS ProductName,
+-- MAGIC     ps.Name AS SubcategoryName
+-- MAGIC FROM adventureworks.production_product p
+-- MAGIC LEFT JOIN adventureworks.production_productsubcategory ps
+-- MAGIC     ON p.ProductSubcategoryID = ps.ProductSubcategoryID
+-- MAGIC ORDER BY ps.Name, p.Name;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 8.3 (Medium)
 -- MAGIC **Business context:** The CRM team wants to analyze the order frequency per customer in order to identify regular customers and offer loyalty programs.
 -- MAGIC
@@ -462,6 +1148,33 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `INNER JOIN`, `GROUP BY`, `ORDER BY`, `COUNT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     c.CustomerID,
+-- MAGIC     COUNT(soh.SalesOrderID) AS Order_Count
+-- MAGIC FROM adventureworks.sales_customer c
+-- MAGIC INNER JOIN adventureworks.sales_salesorderheader soh
+-- MAGIC     ON c.CustomerID = soh.CustomerID
+-- MAGIC GROUP BY c.CustomerID
+-- MAGIC ORDER BY Order_Count DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -480,6 +1193,39 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `INNER JOIN`, `ORDER BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     sod.SalesOrderID,
+-- MAGIC     sod.ProductID,
+-- MAGIC     p.Name AS ProductName,
+-- MAGIC     ps.Name AS SubcategoryName,
+-- MAGIC     sod.OrderQty,
+-- MAGIC     sod.LineTotal
+-- MAGIC FROM adventureworks.sales_salesorderdetail sod
+-- MAGIC INNER JOIN adventureworks.production_product p
+-- MAGIC     ON sod.ProductID = p.ProductID
+-- MAGIC INNER JOIN adventureworks.production_productsubcategory ps
+-- MAGIC     ON p.ProductSubcategoryID = ps.ProductSubcategoryID
+-- MAGIC WHERE ps.Name = 'Mountain Bikes'
+-- MAGIC ORDER BY sod.LineTotal DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -503,6 +1249,27 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `AVG`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT AVG(ListPrice) AS Avg_Price
+-- MAGIC FROM adventureworks.production_product;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 9.2 (Easy)
 -- MAGIC **Business context:** For the data export to external partners, product names must be available in standardized upper/lower case.
 -- MAGIC
@@ -512,6 +1279,32 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `LIMIT`, `UPPER`, `LOWER`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID,
+-- MAGIC     Name,
+-- MAGIC     UPPER(Name) AS Name_Upper,
+-- MAGIC     LOWER(Name) AS Name_Lower
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC LIMIT 10;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -529,6 +1322,31 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `GROUP BY`, `ORDER BY`, `YEAR`, `SUM`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     YEAR(OrderDate) AS OrderYear,
+-- MAGIC     SUM(TotalDue) AS Annual_Revenue
+-- MAGIC FROM adventureworks.sales_salesorderheader
+-- MAGIC GROUP BY YEAR(OrderDate)
+-- MAGIC ORDER BY OrderYear;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 9.4 (Medium)
 -- MAGIC **Business context:** The CRM team wants to identify VIP customers (with more than 10 orders) in order to offer them exclusive loyalty rewards.
 -- MAGIC
@@ -538,6 +1356,32 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `GROUP BY`, `HAVING`, `ORDER BY`, `COUNT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     CustomerID,
+-- MAGIC     COUNT(*) AS Order_Count
+-- MAGIC FROM adventureworks.sales_salesorderheader
+-- MAGIC GROUP BY CustomerID
+-- MAGIC HAVING COUNT(*) > 10
+-- MAGIC ORDER BY Order_Count DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -560,6 +1404,35 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `GROUP BY`, `HAVING`, `ORDER BY`, `SUM`, `AVG`, `MIN`, `MAX`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID,
+-- MAGIC     SUM(OrderQty) AS Total_Sold,
+-- MAGIC     AVG(UnitPrice) AS Avg_Price,
+-- MAGIC     MAX(UnitPrice) AS Max_Price,
+-- MAGIC     MIN(UnitPrice) AS Min_Price
+-- MAGIC FROM adventureworks.sales_salesorderdetail
+-- MAGIC GROUP BY ProductID
+-- MAGIC HAVING SUM(OrderQty) > 100
+-- MAGIC ORDER BY Total_Sold DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 9.6 (Medium)
 -- MAGIC **Business context:** Category management wants to understand the distribution of products across price segments for strategic assortment decisions.
 -- MAGIC
@@ -578,6 +1451,35 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `GROUP BY`, `ORDER BY`, `CASE WHEN`, `BETWEEN`, `COUNT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     CASE
+-- MAGIC         WHEN ListPrice < 100 THEN 'Cheap'
+-- MAGIC         WHEN ListPrice BETWEEN 100 AND 500 THEN 'Medium'
+-- MAGIC         ELSE 'Expensive'
+-- MAGIC     END AS PriceCategory,
+-- MAGIC     COUNT(*) AS Product_Count
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC GROUP BY PriceCategory
+-- MAGIC ORDER BY PriceCategory;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 9.7 (Hard)
 -- MAGIC **Business context:** The sales dashboard should show the largest individual orders per product – understand the different ranking methods for correct visualization.
 -- MAGIC
@@ -587,6 +1489,35 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `ROW_NUMBER`, `DENSE_RANK`, `RANK`, `OVER`, `PARTITION BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     ProductID,
+-- MAGIC     SalesOrderID,
+-- MAGIC     OrderQty,
+-- MAGIC     ROW_NUMBER() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) AS RowNum,
+-- MAGIC     RANK() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) AS Rank,
+-- MAGIC     DENSE_RANK() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) AS DenseRank
+-- MAGIC FROM adventureworks.sales_salesorderdetail
+-- MAGIC QUALIFY ROW_NUMBER() OVER (PARTITION BY ProductID ORDER BY OrderQty DESC) <= 3
+-- MAGIC ORDER BY ProductID, OrderQty DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -610,6 +1541,32 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `AVG`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC WHERE ListPrice > (
+-- MAGIC     SELECT AVG(ListPrice)
+-- MAGIC     FROM adventureworks.production_product
+-- MAGIC )
+-- MAGIC ORDER BY ListPrice DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 10.2 (Medium)
 -- MAGIC **Business context:** Product management wants to know which products have already generated revenue vs. shelf warmers without any sales.
 -- MAGIC
@@ -619,6 +1576,32 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `DISTINCT`, `IN`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC WHERE ProductID IN (
+-- MAGIC     SELECT DISTINCT ProductID
+-- MAGIC     FROM adventureworks.sales_salesorderdetail
+-- MAGIC )
+-- MAGIC ORDER BY Name;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -636,6 +1619,33 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `EXISTS`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name
+-- MAGIC FROM adventureworks.production_product p
+-- MAGIC WHERE EXISTS (
+-- MAGIC     SELECT 1
+-- MAGIC     FROM adventureworks.sales_salesorderdetail sod
+-- MAGIC     WHERE sod.ProductID = p.ProductID
+-- MAGIC )
+-- MAGIC ORDER BY Name;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 10.6 (Medium)
 -- MAGIC **Business context:** Assortment management wants to identify shelf warmers (unsold products) in order to make phase-out decisions or launch marketing measures.
 -- MAGIC
@@ -645,6 +1655,33 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `EXISTS`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID, Name
+-- MAGIC FROM adventureworks.production_product p
+-- MAGIC WHERE NOT EXISTS (
+-- MAGIC     SELECT 1
+-- MAGIC     FROM adventureworks.sales_salesorderdetail sod
+-- MAGIC     WHERE sod.ProductID = p.ProductID
+-- MAGIC )
+-- MAGIC ORDER BY Name;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -662,6 +1699,33 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `GROUP BY`, `ORDER BY`, `SUM`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT CustomerID, Total_Revenue
+-- MAGIC FROM (
+-- MAGIC     SELECT CustomerID, SUM(TotalDue) AS Total_Revenue
+-- MAGIC     FROM adventureworks.sales_salesorderheader
+-- MAGIC     GROUP BY CustomerID
+-- MAGIC )
+-- MAGIC WHERE Total_Revenue > 50000
+-- MAGIC ORDER BY Total_Revenue DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 10.4 (Hard)
 -- MAGIC **Business context:** The sales analytics team needs the order frequency per product in order to measure the popularity of individual items.
 -- MAGIC
@@ -671,6 +1735,36 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `LIMIT`, `COUNT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     p.ProductID,
+-- MAGIC     p.Name,
+-- MAGIC     (
+-- MAGIC         SELECT COUNT(*)
+-- MAGIC         FROM adventureworks.sales_salesorderdetail sod
+-- MAGIC         WHERE sod.ProductID = p.ProductID
+-- MAGIC     ) AS Order_Count
+-- MAGIC FROM adventureworks.production_product p
+-- MAGIC ORDER BY Order_Count DESC
+-- MAGIC LIMIT 20;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -694,6 +1788,33 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `WITH`, `ORDER BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH ExpensiveProducts AS (
+-- MAGIC     SELECT *
+-- MAGIC     FROM adventureworks.production_product
+-- MAGIC     WHERE ListPrice > 1000
+-- MAGIC )
+-- MAGIC SELECT ProductID, Name, ListPrice
+-- MAGIC FROM ExpensiveProducts
+-- MAGIC ORDER BY ListPrice DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 11.2 (Medium)
 -- MAGIC **Business context:** Sales management wants to identify the top 10 customers by revenue in order to invite them to an exclusive customer event.
 -- MAGIC
@@ -703,6 +1824,36 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `WITH`, `GROUP BY`, `ORDER BY`, `LIMIT`, `SUM`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH CustomerTotals AS (
+-- MAGIC     SELECT
+-- MAGIC         CustomerID,
+-- MAGIC         SUM(TotalDue) AS Total_Revenue
+-- MAGIC     FROM adventureworks.sales_salesorderheader
+-- MAGIC     GROUP BY CustomerID
+-- MAGIC )
+-- MAGIC SELECT CustomerID, Total_Revenue
+-- MAGIC FROM CustomerTotals
+-- MAGIC ORDER BY Total_Revenue DESC
+-- MAGIC LIMIT 10;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -724,6 +1875,43 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `LEFT JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `SUM`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH RedProducts AS (
+-- MAGIC     SELECT ProductID, Name, Color
+-- MAGIC     FROM adventureworks.production_product
+-- MAGIC     WHERE Color = 'Red'
+-- MAGIC ),
+-- MAGIC SalesData AS (
+-- MAGIC     SELECT ProductID, SUM(OrderQty) AS Total_Sold
+-- MAGIC     FROM adventureworks.sales_salesorderdetail
+-- MAGIC     GROUP BY ProductID
+-- MAGIC )
+-- MAGIC SELECT
+-- MAGIC     rp.ProductID,
+-- MAGIC     rp.Name,
+-- MAGIC     rp.Color,
+-- MAGIC     sd.Total_Sold
+-- MAGIC FROM RedProducts rp
+-- MAGIC LEFT JOIN SalesData sd ON rp.ProductID = sd.ProductID
+-- MAGIC ORDER BY sd.Total_Sold DESC;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 11.4 (Hard)
 -- MAGIC **Business context:** Product management needs a ranking of the top 5 bestsellers by revenue in order to optimize production decisions and inventory planning.
 -- MAGIC
@@ -736,6 +1924,44 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `INNER JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `LIMIT`, `SUM`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH ProductSales AS (
+-- MAGIC     SELECT
+-- MAGIC         ProductID,
+-- MAGIC         SUM(LineTotal) AS TotalSales
+-- MAGIC     FROM adventureworks.sales_salesorderdetail
+-- MAGIC     GROUP BY ProductID
+-- MAGIC ),
+-- MAGIC ProductDetails AS (
+-- MAGIC     SELECT
+-- MAGIC         p.ProductID,
+-- MAGIC         p.Name,
+-- MAGIC         ps.TotalSales
+-- MAGIC     FROM adventureworks.production_product p
+-- MAGIC     INNER JOIN ProductSales ps ON p.ProductID = ps.ProductID
+-- MAGIC )
+-- MAGIC SELECT ProductID, Name, TotalSales
+-- MAGIC FROM ProductDetails
+-- MAGIC ORDER BY TotalSales DESC
+-- MAGIC LIMIT 5;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -759,6 +1985,31 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `INTERSECT`, `ORDER BY`, `DISTINCT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC INTERSECT
+-- MAGIC SELECT DISTINCT ProductID
+-- MAGIC FROM adventureworks.sales_salesorderdetail
+-- MAGIC ORDER BY ProductID;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 12.3 (Medium)
 -- MAGIC **Business context:** Product management wants to identify unsold products in order to decide whether they should be removed from the range or promoted more heavily.
 -- MAGIC
@@ -768,6 +2019,31 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `EXCEPT`, `ORDER BY`, `DISTINCT`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT ProductID
+-- MAGIC FROM adventureworks.production_product
+-- MAGIC EXCEPT
+-- MAGIC SELECT DISTINCT ProductID
+-- MAGIC FROM adventureworks.sales_salesorderdetail
+-- MAGIC ORDER BY ProductID;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -791,6 +2067,33 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `LAG`, `LEAD`, `OVER`, `PARTITION BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     CustomerID,
+-- MAGIC     SalesOrderID,
+-- MAGIC     OrderDate,
+-- MAGIC     LAG(OrderDate) OVER (PARTITION BY CustomerID ORDER BY OrderDate) AS Previous_Order,
+-- MAGIC     LEAD(OrderDate) OVER (PARTITION BY CustomerID ORDER BY OrderDate) AS Next_Order
+-- MAGIC FROM adventureworks.sales_salesorderheader
+-- MAGIC ORDER BY CustomerID, OrderDate;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 13.2 (Hard)
 -- MAGIC **Business context:** The finance team needs a cumulative revenue history per customer in order to visualize the growth of the customer lifetime value.
 -- MAGIC
@@ -800,6 +2103,33 @@ USE CATALOG workspace;
 
 -- your solution
 
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `ORDER BY`, `SUM`, `OVER`, `PARTITION BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC SELECT
+-- MAGIC     CustomerID,
+-- MAGIC     SalesOrderID,
+-- MAGIC     OrderDate,
+-- MAGIC     TotalDue,
+-- MAGIC     SUM(TotalDue) OVER (PARTITION BY CustomerID ORDER BY OrderDate) AS Running_Total
+-- MAGIC FROM adventureworks.sales_salesorderheader
+-- MAGIC ORDER BY CustomerID, OrderDate;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 
 -- COMMAND ----------
 
@@ -817,6 +2147,42 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `WITH`, `GROUP BY`, `ORDER BY`, `COUNT`, `MIN`, `MAX`, `NTILE`, `OVER`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH ProductQuartiles AS (
+-- MAGIC     SELECT
+-- MAGIC         ProductID,
+-- MAGIC         Name,
+-- MAGIC         ListPrice,
+-- MAGIC         NTILE(4) OVER (ORDER BY ListPrice) AS PriceQuartile
+-- MAGIC     FROM adventureworks.production_product
+-- MAGIC     WHERE ListPrice > 0
+-- MAGIC )
+-- MAGIC SELECT
+-- MAGIC     PriceQuartile,
+-- MAGIC     MIN(ListPrice) AS Min_Price,
+-- MAGIC     MAX(ListPrice) AS Max_Price,
+-- MAGIC     COUNT(*) AS Product_Count
+-- MAGIC FROM ProductQuartiles
+-- MAGIC GROUP BY PriceQuartile
+-- MAGIC ORDER BY PriceQuartile;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ### Exercise 13.4 (Hard)
 -- MAGIC **Business context:** Category management wants to identify the top 3 bestsellers by revenue for each product category for optimized shelf placement.
 -- MAGIC
@@ -830,7 +2196,53 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC ### Exercise 13.4 (Very Hard)
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `INNER JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `IS NOT NULL`, `SUM`, `DENSE_RANK`, `OVER`, `PARTITION BY`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH CategorySales AS (
+-- MAGIC     SELECT
+-- MAGIC         p.ProductSubcategoryID,
+-- MAGIC         p.ProductID,
+-- MAGIC         p.Name,
+-- MAGIC         SUM(sod.LineTotal) AS TotalSales
+-- MAGIC     FROM adventureworks.production_product p
+-- MAGIC     INNER JOIN adventureworks.sales_salesorderdetail sod
+-- MAGIC         ON p.ProductID = sod.ProductID
+-- MAGIC     WHERE p.ProductSubcategoryID IS NOT NULL
+-- MAGIC     GROUP BY p.ProductSubcategoryID, p.ProductID, p.Name
+-- MAGIC ),
+-- MAGIC RankedSales AS (
+-- MAGIC     SELECT
+-- MAGIC         *,
+-- MAGIC         DENSE_RANK() OVER (PARTITION BY ProductSubcategoryID ORDER BY TotalSales DESC) AS SalesRank
+-- MAGIC     FROM CategorySales
+-- MAGIC )
+-- MAGIC SELECT
+-- MAGIC     ProductSubcategoryID,
+-- MAGIC     ProductID,
+-- MAGIC     Name,
+-- MAGIC     TotalSales,
+-- MAGIC     SalesRank
+-- MAGIC FROM RankedSales
+-- MAGIC WHERE SalesRank <= 3
+-- MAGIC ORDER BY ProductSubcategoryID, SalesRank;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ### Exercise 13.5 (Very Hard)
 -- MAGIC Create an analysis with multiple window functions:
 -- MAGIC - For each product in `adventureworks.sales_salesorderdetail`:
 -- MAGIC   - Calculate the rank by quantity sold (`RANK()` over `SUM(OrderQty)`)
@@ -862,4 +2274,58 @@ USE CATALOG workspace;
 -- COMMAND ----------
 
 -- your solution
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC <details>
+-- MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+-- MAGIC
+-- MAGIC You will need: `INNER JOIN`, `WITH`, `GROUP BY`, `ORDER BY`, `LIMIT`, `BETWEEN`, `ROUND`, `SUM`, `AVG`, `RANK`, `PERCENT_RANK`, `OVER`, `ROWS BETWEEN`
+-- MAGIC
+-- MAGIC </details>
+-- MAGIC <details>
+-- MAGIC <summary><b>🔑 Solution</b></summary>
+-- MAGIC
+-- MAGIC Try it yourself first – then compare.
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC WITH ProductMetrics AS (
+-- MAGIC     SELECT
+-- MAGIC         ProductID,
+-- MAGIC         SUM(OrderQty) AS Total_Sold,
+-- MAGIC         SUM(LineTotal) AS Total_Revenue,
+-- MAGIC         AVG(OrderQty) AS Avg_OrderQty
+-- MAGIC     FROM adventureworks.sales_salesorderdetail
+-- MAGIC     GROUP BY ProductID
+-- MAGIC ),
+-- MAGIC RankedMetrics AS (
+-- MAGIC     SELECT
+-- MAGIC         ProductID,
+-- MAGIC         Total_Sold,
+-- MAGIC         Total_Revenue,
+-- MAGIC         RANK() OVER (ORDER BY Total_Sold DESC) AS Rank_Quantity_Sold,
+-- MAGIC         PERCENT_RANK() OVER (ORDER BY Total_Revenue) AS Percent_Revenue,
+-- MAGIC         AVG(Total_Revenue) OVER (
+-- MAGIC             ORDER BY Total_Sold
+-- MAGIC             ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+-- MAGIC         ) AS Moving_Average
+-- MAGIC     FROM ProductMetrics
+-- MAGIC )
+-- MAGIC SELECT
+-- MAGIC     p.ProductID,
+-- MAGIC     p.Name,
+-- MAGIC     rm.Total_Sold,
+-- MAGIC     rm.Total_Revenue,
+-- MAGIC     rm.Rank_Quantity_Sold,
+-- MAGIC     ROUND(rm.Percent_Revenue, 4) AS Percent_Revenue,
+-- MAGIC     ROUND(rm.Moving_Average, 2) AS Moving_Average_Revenue
+-- MAGIC FROM RankedMetrics rm
+-- MAGIC INNER JOIN adventureworks.production_product p
+-- MAGIC     ON rm.ProductID = p.ProductID
+-- MAGIC ORDER BY rm.Rank_Quantity_Sold
+-- MAGIC LIMIT 20;
+-- MAGIC ```
+-- MAGIC
+-- MAGIC </details>
 

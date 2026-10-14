@@ -71,6 +71,45 @@ raise NotImplementedError("Task 2.2")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
+# MAGIC
+# MAGIC Exactly the same as Task 2.1 – only the folder (`motorized_traffic_counts`) and the table name (`car_counts`) change.
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
+# MAGIC
+# MAGIC ```python
+# MAGIC df_car = spark.read.parquet(f"{LANDING}/___/")
+# MAGIC add_metadata(df_car).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{BRONZE}.___")
+# MAGIC print(spark.table(f"{BRONZE}.car_counts").count())
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_car = spark.read.parquet(f"{LANDING}/motorized_traffic_counts/")
+# MAGIC
+# MAGIC (
+# MAGIC     add_metadata(df_car)
+# MAGIC     .write.mode("overwrite")
+# MAGIC     .option("overwriteSchema", "true")
+# MAGIC     .saveAsTable(f"{BRONZE}.car_counts")
+# MAGIC )
+# MAGIC
+# MAGIC print(f"{BRONZE}.car_counts: {spark.table(f'{BRONZE}.car_counts').count():,} rows")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 2.3 – Counting stations and weather (CSV)
 # MAGIC
 # MAGIC Load the two CSV sources:
@@ -87,6 +126,51 @@ raise NotImplementedError("Task 2.2")
 
 # TODO Task 2.3 – load bike_pedestrian_stations and weather (CSV, all columns as string)
 raise NotImplementedError("Task 2.3")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint 1 – the idea</b></summary>
+# MAGIC
+# MAGIC Read the CSV with `spark.read.format("csv").option("header", "true").load(path)` – without `inferSchema`, so every column stays a string. Write a small function `load_csv_to_bronze(folder, table)` and call it twice.
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🧩 Hint 2 – code skeleton</b></summary>
+# MAGIC
+# MAGIC ```python
+# MAGIC def load_csv_to_bronze(folder, table):
+# MAGIC     df = spark.read.format("csv").option("header", "___").load(f"{LANDING}/{folder}/")
+# MAGIC     add_metadata(df).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{BRONZE}.{table}")
+# MAGIC
+# MAGIC load_csv_to_bronze("bike_pedestrian_stations", "___")
+# MAGIC load_csv_to_bronze("___", "weather")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC def load_csv_to_bronze(folder: str, table: str):
+# MAGIC     df = spark.read.format("csv").option("header", "true").load(f"{LANDING}/{folder}/")
+# MAGIC     (
+# MAGIC         add_metadata(df)
+# MAGIC         .write.mode("overwrite")
+# MAGIC         .option("overwriteSchema", "true")
+# MAGIC         .saveAsTable(f"{BRONZE}.{table}")
+# MAGIC     )
+# MAGIC     print(f"{BRONZE}.{table}: {spark.table(f'{BRONZE}.{table}').count():,} rows")
+# MAGIC
+# MAGIC
+# MAGIC load_csv_to_bronze("bike_pedestrian_stations", "bike_stations")
+# MAGIC load_csv_to_bronze("weather", "weather")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 

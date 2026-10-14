@@ -47,7 +47,7 @@ After the workshop you can …
 5. **Bonus: NYC taxi** – [src/04_bonus](src/04_bonus)
 6. **MZMV** – [upload and load the Mobility and Transport Microcensus](src/05_mzmv/README.md)
 
-Solutions are published on **Thursday**.
+Every task comes with collapsible **hints** and the **solution** right below your code cell – try it yourself first!
 
 ## Quickstart – everything in the browser
 

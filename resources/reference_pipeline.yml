@@ -1,0 +1,39 @@
+# Reference solution of project step 8: a Lakeflow Spark Declarative Pipeline that rebuilds the whole
+# project (bronze -> silver -> gold) declaratively in SQL, plus a job that refreshes it daily (schedule paused).
+resources:
+  schemas:
+    pipeline_schema:
+      name: mobility_pipeline
+      catalog_name: ${var.catalog}
+      comment: "Output of the reference Lakeflow Declarative Pipeline (solution of step 8)"
+
+  pipelines:
+    mobility_pipeline:
+      name: mobility_pipeline
+      catalog: ${var.catalog}
+      schema: ${resources.schemas.pipeline_schema.name}
+      serverless: true
+      root_path: ../src/03_project/reference/pipeline
+      libraries:
+        - glob:
+            include: ../src/03_project/reference/pipeline/transformations/**
+      configuration:
+        landing_path: /Volumes/${var.catalog}/${resources.volumes.landing_volume.schema_name}/${resources.volumes.landing_volume.name}
+      continuous: false
+      development: false
+      channel: CURRENT
+
+  jobs:
+    mobility_refresh:
+      name: mobility_pipeline_daily_refresh
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"   # every day at 06:00
+        timezone_id: Europe/Zurich
+        pause_status: PAUSED
+      tasks:
+        - task_key: refresh_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.mobility_pipeline.id}
+            full_refresh: false
+      tags:
+        workshop: mobility

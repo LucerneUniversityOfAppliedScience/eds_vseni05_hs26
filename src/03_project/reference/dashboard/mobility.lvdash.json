@@ -1,0 +1,800 @@
+{
+  "datasets": [
+    {
+      "name": "ds_daily",
+      "displayName": "Daily traffic and weather",
+      "queryLines": [
+        "SELECT date, year, is_weekend, bikes_per_station, pedestrians_per_station, vehicles_per_site, ",
+        "temp_mean_c, precipitation_mm, IF(is_rainy_day, 'rainy (>= 1 mm)', 'dry') AS weather, ",
+        "CASE WHEN is_rainy_day THEN 1 ELSE 0 END AS rainy_day ",
+        "FROM daily_traffic WHERE year BETWEEN 2011 AND 2026 ORDER BY date"
+      ]
+    },
+    {
+      "name": "ds_yearly",
+      "displayName": "Yearly trend",
+      "queryLines": [
+        "SELECT make_date(year, 1, 1) AS year_start, avg_daily_bikes_per_station, avg_daily_vehicles_per_site, ",
+        "avg_active_bike_stations FROM yearly_trend ORDER BY year"
+      ]
+    },
+    {
+      "name": "ds_profile",
+      "displayName": "Hourly profile 2025",
+      "queryLines": [
+        "SELECT mode, day_type, hour, avg_per_location FROM hourly_profile ORDER BY hour"
+      ]
+    },
+    {
+      "name": "ds_locations",
+      "displayName": "Counting locations 2025",
+      "queryLines": [
+        "SELECT mode, location_name, lat, lon, avg_daily_count FROM location_map"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "overview",
+      "displayName": "Overview",
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1",
+      "layout": [
+        {
+          "widget": {
+            "name": "title",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Bike vs. car in Zurich\n",
+                "\n",
+                "Automatic bike, pedestrian and motorized traffic counts of the City of Zurich (Open Data, CC0) joined with weather data from Open-Meteo (CC BY 4.0). Values are averages per active counting station / site and day, because the number of stations changes over time."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_date",
+            "queries": [
+              {
+                "name": "q_daily",
+                "query": {
+                  "datasetName": "ds_daily",
+                  "fields": [
+                    {
+                      "name": "date",
+                      "expression": "`date`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "date",
+                    "displayName": "Date",
+                    "queryName": "q_daily"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Period"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_bikes",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_daily",
+                  "fields": [
+                    {
+                      "name": "avg(bikes_per_station)",
+                      "expression": "AVG(`bikes_per_station`)"
+                    },
+                    {
+                      "name": "monthly(date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `date`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(bikes_per_station)",
+                  "displayName": "Bikes per station and day",
+                  "format": {
+                    "type": "number",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                },
+                "period": {
+                  "fieldName": "monthly(date)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Bikes per station and day"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_vehicles",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_daily",
+                  "fields": [
+                    {
+                      "name": "avg(vehicles_per_site)",
+                      "expression": "AVG(`vehicles_per_site`)"
+                    },
+                    {
+                      "name": "monthly(date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `date`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(vehicles_per_site)",
+                  "displayName": "Vehicles per site and day",
+                  "format": {
+                    "type": "number",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                },
+                "period": {
+                  "fieldName": "monthly(date)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Vehicles per site and day"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_rainy",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_daily",
+                  "fields": [
+                    {
+                      "name": "sum(rainy_day)",
+                      "expression": "SUM(`rainy_day`)"
+                    },
+                    {
+                      "name": "monthly(date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `date`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(rainy_day)",
+                  "displayName": "Rainy days (>= 1 mm)"
+                },
+                "period": {
+                  "fieldName": "monthly(date)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Rainy days (>= 1 mm)"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 4,
+            "width": 4,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "h_trend",
+            "multilineTextboxSpec": {
+              "lines": [
+                "### Long-term trend"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "line_bikes_year",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_yearly",
+                  "fields": [
+                    {
+                      "name": "year_start",
+                      "expression": "`year_start`"
+                    },
+                    {
+                      "name": "avg_daily_bikes_per_station",
+                      "expression": "`avg_daily_bikes_per_station`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "year_start",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Year"
+                },
+                "y": {
+                  "fieldName": "avg_daily_bikes_per_station",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Bikes per station and day"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Bikes per station and day",
+                "description": "Average per active station/site and day (not affected by the date filter)",
+                "showDescription": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "line_vehicles_year",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_yearly",
+                  "fields": [
+                    {
+                      "name": "year_start",
+                      "expression": "`year_start`"
+                    },
+                    {
+                      "name": "avg_daily_vehicles_per_site",
+                      "expression": "`avg_daily_vehicles_per_site`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "year_start",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Year"
+                },
+                "y": {
+                  "fieldName": "avg_daily_vehicles_per_site",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Vehicles per site and day"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Vehicles per site and day",
+                "description": "Average per active station/site and day (not affected by the date filter)",
+                "showDescription": true
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "h_patterns",
+            "multilineTextboxSpec": {
+              "lines": [
+                "### What influences cycling?"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_rain",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_daily",
+                  "fields": [
+                    {
+                      "name": "weather",
+                      "expression": "`weather`"
+                    },
+                    {
+                      "name": "avg(bikes_per_station)",
+                      "expression": "AVG(`bikes_per_station`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "filters": [
+                    {
+                      "expression": "`is_weekend` = false"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "weather",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Weather"
+                },
+                "y": {
+                  "fieldName": "avg(bikes_per_station)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Bikes per station and day"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Rain effect on cycling",
+                "description": "Weekdays only",
+                "showDescription": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 15,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "line_profile",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_profile",
+                  "fields": [
+                    {
+                      "name": "hour",
+                      "expression": "`hour`"
+                    },
+                    {
+                      "name": "avg(avg_per_location)",
+                      "expression": "AVG(`avg_per_location`)"
+                    },
+                    {
+                      "name": "day_type",
+                      "expression": "`day_type`"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "filters": [
+                    {
+                      "expression": "`mode` = 'Bike'"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "hour",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Hour"
+                },
+                "y": {
+                  "fieldName": "avg(avg_per_location)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Bikes per station and hour"
+                },
+                "color": {
+                  "fieldName": "day_type",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Day type"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Rush hours: bikes (2025)"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 15,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "line_profile_car",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_profile",
+                  "fields": [
+                    {
+                      "name": "hour",
+                      "expression": "`hour`"
+                    },
+                    {
+                      "name": "avg(avg_per_location)",
+                      "expression": "AVG(`avg_per_location`)"
+                    },
+                    {
+                      "name": "day_type",
+                      "expression": "`day_type`"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "filters": [
+                    {
+                      "expression": "`mode` = 'Car'"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "hour",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Hour"
+                },
+                "y": {
+                  "fieldName": "avg(avg_per_location)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Vehicles per site and hour"
+                },
+                "color": {
+                  "fieldName": "day_type",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Day type"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Rush hours: cars (2025)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 21,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_weekday",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_daily",
+                  "fields": [
+                    {
+                      "name": "weekday_num",
+                      "expression": "DAYOFWEEK(`date`)"
+                    },
+                    {
+                      "name": "avg(bikes_per_station)",
+                      "expression": "AVG(`bikes_per_station`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "weekday_num",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Day of week (1 = Sunday)"
+                },
+                "y": {
+                  "fieldName": "avg(bikes_per_station)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Bikes per station and day"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cycling by day of week"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 21,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "h_map",
+            "multilineTextboxSpec": {
+              "lines": [
+                "### Where is the traffic?"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 27,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "map_locations",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ds_locations",
+                  "fields": [
+                    {
+                      "name": "lat",
+                      "expression": "`lat`"
+                    },
+                    {
+                      "name": "lon",
+                      "expression": "`lon`"
+                    },
+                    {
+                      "name": "mode",
+                      "expression": "`mode`"
+                    },
+                    {
+                      "name": "location_name",
+                      "expression": "`location_name`"
+                    },
+                    {
+                      "name": "sum(avg_daily_count)",
+                      "expression": "SUM(`avg_daily_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "symbol-map",
+              "encodings": {
+                "coordinates": {
+                  "latitude": {
+                    "fieldName": "lat"
+                  },
+                  "longitude": {
+                    "fieldName": "lon"
+                  }
+                },
+                "size": {
+                  "fieldName": "sum(avg_daily_count)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Average per day"
+                },
+                "color": {
+                  "fieldName": "mode",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "Bike",
+                        "color": "#0B6E4F"
+                      },
+                      {
+                        "value": "Car",
+                        "color": "#C8553D"
+                      }
+                    ]
+                  },
+                  "displayName": "Mode"
+                }
+              },
+              "mark": {
+                "opacity": 0.75
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Counting locations 2025 (size = average daily volume)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 28,
+            "width": 12,
+            "height": 8
+          }
+        }
+      ]
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#FAFBF9",
+        "dark": "#1B2420"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#111814"
+      },
+      "widgetBorderColor": {
+        "light": "#FFFFFF",
+        "dark": "#111814"
+      },
+      "fontColor": {
+        "light": "#14231C",
+        "dark": "#E6EEE9"
+      },
+      "selectionColor": {
+        "light": "#2272B4",
+        "dark": "#8ACAFF"
+      },
+      "visualizationColors": [
+        "#0B6E4F",
+        "#F2A541",
+        "#3C6997",
+        "#C8553D",
+        "#7A9E7E",
+        "#6C4F77",
+        "#5ADBFF"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    }
+  }
+}

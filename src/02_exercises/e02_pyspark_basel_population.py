@@ -68,6 +68,28 @@ raise NotImplementedError("Task 1: read the parquet file")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `.count()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_pop = spark.read.parquet(PARQUET_PATH)
+# MAGIC
+# MAGIC print(f"Rows: {df_pop.count():,}")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 2 – Inspect the Data
 # MAGIC
 # MAGIC Show the first 10 rows and print the schema.
@@ -79,6 +101,30 @@ raise NotImplementedError("Task 1: read the parquet file")
 # Hint: df_pop.show(10) and df_pop.printSchema()
 
 raise NotImplementedError("Task 2: inspect the data")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `.printSchema()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_pop.limit(10).display()
+# MAGIC ```
+# MAGIC
+# MAGIC ```python
+# MAGIC df_pop.printSchema()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 
@@ -103,6 +149,40 @@ raise NotImplementedError("Task 3: define bs_schema and re-read the file")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `.printSchema()`, `.schema()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC from pyspark.sql.types import StructType, StructField, StringType, LongType
+# MAGIC
+# MAGIC bs_schema = StructType([
+# MAGIC     StructField("datum",                StringType(), True),
+# MAGIC     StructField("gemeinde",             StringType(), True),
+# MAGIC     StructField("geschlecht",           StringType(), True),
+# MAGIC     StructField("staatsangehoerigkeit", StringType(), True),
+# MAGIC     StructField("anzahl",               LongType(),   True),
+# MAGIC     StructField("jahr",                 StringType(), True),
+# MAGIC     StructField("wohnviertel_name",     StringType(), True),
+# MAGIC     StructField("wohnviertel_id",       StringType(), True),
+# MAGIC ])
+# MAGIC
+# MAGIC df_pop = spark.read.schema(bs_schema).parquet(PARQUET_PATH)
+# MAGIC df_pop.printSchema()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 4 – Save as Delta Table
 # MAGIC
 # MAGIC Save `df_pop` as a managed Delta table in Unity Catalog.
@@ -120,6 +200,33 @@ raise NotImplementedError("Task 4: save as Delta table")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `.saveAsTable()`, `.count()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC (
+# MAGIC     df_pop
+# MAGIC     .write
+# MAGIC     .mode("overwrite")
+# MAGIC     .saveAsTable(TABLE_POP)
+# MAGIC )
+# MAGIC
+# MAGIC print(f"Saved: {TABLE_POP}  ({spark.table(TABLE_POP).count():,} rows)")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 5 – Test: Iran in 1980
 # MAGIC
 # MAGIC Write a SQL query that returns all rows where `staatsangehoerigkeit` is `'Iran'`
@@ -131,6 +238,34 @@ raise NotImplementedError("Task 4: save as Delta table")
 # Hint: SELECT * FROM {TABLE_POP} WHERE staatsangehoerigkeit = 'Iran' AND jahr = '1980'
 
 raise NotImplementedError("Task 5: query for Iran, 1980")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `.count()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_iran_1980 = spark.sql(f"""
+# MAGIC     SELECT *
+# MAGIC     FROM {TABLE_POP}
+# MAGIC     WHERE staatsangehoerigkeit = 'Iran'
+# MAGIC       AND jahr = '1980'
+# MAGIC """)
+# MAGIC
+# MAGIC print(f"Rows found: {df_iran_1980.count()}")
+# MAGIC df_iran_1980.display()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 
@@ -152,6 +287,37 @@ raise NotImplementedError("Task 6: aggregate by country and year")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `GROUP BY`, `ORDER BY`, `SUM`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_by_country = spark.sql(f"""
+# MAGIC     SELECT
+# MAGIC         staatsangehoerigkeit,
+# MAGIC         jahr,
+# MAGIC         SUM(anzahl) AS anzahl
+# MAGIC     FROM {TABLE_POP}
+# MAGIC     WHERE staatsangehoerigkeit != 'Schweiz'
+# MAGIC     GROUP BY staatsangehoerigkeit, jahr
+# MAGIC     ORDER BY anzahl DESC
+# MAGIC """)
+# MAGIC
+# MAGIC df_by_country.limit(10).display()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 7 – Save the Aggregation as a Delta Table
 # MAGIC
 # MAGIC Save the result from Task 6 as `TABLE_AGG`.
@@ -162,6 +328,33 @@ raise NotImplementedError("Task 6: aggregate by country and year")
 # Hint: same pattern as Task 4
 
 raise NotImplementedError("Task 7: save aggregation table")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `.saveAsTable()`, `.count()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC (
+# MAGIC     df_by_country
+# MAGIC     .write
+# MAGIC     .mode("overwrite")
+# MAGIC     .saveAsTable(TABLE_AGG)
+# MAGIC )
+# MAGIC
+# MAGIC print(f"Saved: {TABLE_AGG}  ({spark.table(TABLE_AGG).count():,} rows)")
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 
@@ -187,6 +380,43 @@ raise NotImplementedError("Task 8: load and display aggregation for visualizatio
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `GROUP BY`, `ORDER BY`, `LIMIT`, `IN`, `SUM`, `.join()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC # Determine top 10 nationalities by total anzahl
+# MAGIC top10 = spark.sql(f"""
+# MAGIC     SELECT staatsangehoerigkeit
+# MAGIC     FROM {TABLE_AGG}
+# MAGIC     GROUP BY staatsangehoerigkeit
+# MAGIC     ORDER BY SUM(anzahl) DESC
+# MAGIC     LIMIT 10
+# MAGIC """).toPandas()["staatsangehoerigkeit"].tolist()
+# MAGIC
+# MAGIC # Load the aggregation table filtered to top 10
+# MAGIC df_top10 = spark.sql(f"""
+# MAGIC     SELECT staatsangehoerigkeit, jahr, anzahl
+# MAGIC     FROM {TABLE_AGG}
+# MAGIC     WHERE staatsangehoerigkeit IN ({", ".join(f"'{c}'" for c in top10)})
+# MAGIC     ORDER BY jahr, anzahl DESC
+# MAGIC """)
+# MAGIC
+# MAGIC df_top10.display()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 9 – Filter: Women in Basel, 2010
 # MAGIC
 # MAGIC Use `spark.sql()` to load only rows where:
@@ -206,6 +436,35 @@ raise NotImplementedError("Task 9: filter for women in Basel, 2010")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `.count()`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_women_2010 = spark.sql(f"""
+# MAGIC     SELECT *
+# MAGIC     FROM {TABLE_POP}
+# MAGIC     WHERE gemeinde    = 'Basel'
+# MAGIC       AND geschlecht  = 'W'
+# MAGIC       AND jahr        = '2010'
+# MAGIC """)
+# MAGIC
+# MAGIC print(f"Rows: {df_women_2010.count():,}")
+# MAGIC df_women_2010.limit(5).display()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task 10 – Visualize: Where Do the Women Come From?
 # MAGIC
 # MAGIC Display `df_women_2010` and use the **Databricks built-in visualization** to create
@@ -218,6 +477,36 @@ raise NotImplementedError("Task 9: filter for women in Basel, 2010")
 # Hint: display(df_women_2010.orderBy(col("anzahl").desc()))
 
 raise NotImplementedError("Task 10: display women data for visualization")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC <details>
+# MAGIC <summary><b>💡 Hint – useful building blocks</b></summary>
+# MAGIC
+# MAGIC You will need: `GROUP BY`, `ORDER BY`, `SUM`
+# MAGIC
+# MAGIC </details>
+# MAGIC <details>
+# MAGIC <summary><b>🔑 Solution</b></summary>
+# MAGIC
+# MAGIC Try it yourself first – then compare.
+# MAGIC
+# MAGIC ```python
+# MAGIC df_women_2010_by_country = spark.sql(f"""
+# MAGIC     SELECT staatsangehoerigkeit, SUM(anzahl) AS anzahl
+# MAGIC     FROM {TABLE_POP}
+# MAGIC     WHERE gemeinde   = 'Basel'
+# MAGIC       AND geschlecht = 'W'
+# MAGIC       AND jahr       = '2010'
+# MAGIC     GROUP BY staatsangehoerigkeit
+# MAGIC     ORDER BY anzahl DESC
+# MAGIC """)
+# MAGIC
+# MAGIC df_women_2010_by_country.display()
+# MAGIC ```
+# MAGIC
+# MAGIC </details>
 
 # COMMAND ----------
 

@@ -90,7 +90,153 @@ display(dbutils.fs.ls(f"{LANDING}/mobility"))
 
 # MAGIC %md
 # MAGIC ---
-# MAGIC ## 4 – Read Parquet with Spark (Python)
+# MAGIC ## 4 – Read an existing table
+# MAGIC
+# MAGIC Most of the time you do not read files but **tables that already exist** in Unity Catalog.
+# MAGIC Every table is addressed with its **three-part name** `catalog.schema.table`.
+# MAGIC
+# MAGIC Two good examples are already in your workspace:
+# MAGIC - `samples.nyctaxi.trips` – sample data that exists in **every** Databricks workspace
+# MAGIC - `workspace.adventureworks.production_product` – loaded by the setup job (products of a bike manufacturer)
+# MAGIC
+# MAGIC 👀 Find them in the left sidebar: **Catalog** → `samples` → `nyctaxi` → `trips` and **Catalog** → `workspace` →
+# MAGIC `adventureworks` → `production_product`. The tabs **Columns** and **Sample Data** show you what is inside –
+# MAGIC without writing any code.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 4.1 – The simplest query: `SELECT * FROM ...`
+# MAGIC `*` means "all columns". **Always add a `LIMIT`** when you just want to have a look – tables can have millions of rows.
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT *
+# MAGIC FROM samples.nyctaxi.trips
+# MAGIC LIMIT 10
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 4.2 – Which columns are there?
+# MAGIC `DESCRIBE TABLE` lists the columns with their data types (and comments, if any).
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC DESCRIBE TABLE samples.nyctaxi.trips
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 4.3 – Choose columns, filter, sort
+# MAGIC
+# MAGIC | Clause | Meaning |
+# MAGIC |---|---|
+# MAGIC | `SELECT col1, col2` | only these columns (`AS` gives a column a new name) |
+# MAGIC | `WHERE condition` | only rows that fulfil the condition |
+# MAGIC | `ORDER BY col DESC` | sort (descending with `DESC`) |
+# MAGIC | `LIMIT n` | only the first n rows |
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT tpep_pickup_datetime        AS pickup_time,
+# MAGIC        trip_distance * 1.609       AS distance_km,
+# MAGIC        fare_amount
+# MAGIC FROM samples.nyctaxi.trips
+# MAGIC WHERE trip_distance > 10
+# MAGIC ORDER BY fare_amount DESC
+# MAGIC LIMIT 20
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 4.4 – Aggregate: count, sum, average per group
+# MAGIC `GROUP BY` combines all rows with the same value; aggregate functions (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`) compute one
+# MAGIC value per group.
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT Color,
+# MAGIC        COUNT(*)                 AS products,
+# MAGIC        ROUND(AVG(ListPrice), 2) AS avg_list_price
+# MAGIC FROM workspace.adventureworks.production_product
+# MAGIC WHERE Color IS NOT NULL
+# MAGIC GROUP BY Color
+# MAGIC ORDER BY products DESC
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 4.5 – Shorter names with `USE`
+# MAGIC With `USE CATALOG` and `USE SCHEMA` you set defaults – then the table name alone is enough.
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC USE CATALOG workspace;
+# MAGIC USE SCHEMA adventureworks;
+# MAGIC
+# MAGIC SELECT Name, ProductNumber, ListPrice
+# MAGIC FROM production_product          -- = workspace.adventureworks.production_product
+# MAGIC WHERE ListPrice > 3000
+# MAGIC ORDER BY ListPrice DESC
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 4.6 – The same in Python
+# MAGIC In Python you read a table with `spark.table(...)` or run SQL with `spark.sql(...)`. Both return a
+# MAGIC **DataFrame** that you can show with `display(...)` or process further.
+
+# COMMAND ----------
+
+from pyspark.sql import functions as F
+
+df_trips = spark.table("samples.nyctaxi.trips")
+
+display(
+    df_trips
+    .select("tpep_pickup_datetime", "trip_distance", "fare_amount")
+    .filter(F.col("trip_distance") > 10)
+    .orderBy(F.desc("fare_amount"))
+    .limit(20)
+)
+
+# COMMAND ----------
+
+df_colors = spark.sql("""
+    SELECT Color, COUNT(*) AS products
+    FROM workspace.adventureworks.production_product
+    WHERE Color IS NOT NULL
+    GROUP BY Color
+""")
+display(df_colors)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ✏️ **Try it:**
+# MAGIC 1. How many taxi trips are in `samples.nyctaxi.trips`? (`SELECT COUNT(*) FROM ...`)
+# MAGIC 2. What is the average fare (`fare_amount`) of trips longer than 5 miles?
+# MAGIC 3. Which are the 5 most expensive products (`ListPrice`) in `workspace.adventureworks.production_product`?
+# MAGIC
+# MAGIC 💡 There is also the **SQL Editor** (left sidebar): write SQL there without a notebook – handy for quick questions.
+# MAGIC More SQL practice: exercise **e01** (`src/02_exercises`).
+
+# COMMAND ----------
+
+# your code here
+
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ---
+# MAGIC ## 5 – Read Parquet with Spark (Python)
 # MAGIC
 # MAGIC Parquet is the standard file format in data lakes: columnar, compressed and it contains its own schema.
 
@@ -125,11 +271,9 @@ display(df_counts.limit(20))
 
 # MAGIC %md
 # MAGIC ---
-# MAGIC ## 5 – Filter and aggregate with PySpark
+# MAGIC ## 6 – Filter and aggregate with PySpark
 
 # COMMAND ----------
-
-from pyspark.sql import functions as F
 
 df_2025 = (
     df_counts
@@ -154,7 +298,7 @@ display(df_2025)
 
 # MAGIC %md
 # MAGIC ---
-# MAGIC ## 6 – The same with SQL
+# MAGIC ## 7 – The same with SQL
 # MAGIC
 # MAGIC With `read_files()` you can query files directly in SQL. Note the `%sql` at the start of the cell.
 
@@ -180,7 +324,7 @@ display(df_2025)
 
 # MAGIC %md
 # MAGIC ---
-# MAGIC ## 7 – Combine Python and SQL
+# MAGIC ## 8 – Combine Python and SQL
 # MAGIC
 # MAGIC A Spark DataFrame can be registered as a temporary view and then queried with SQL – and vice versa.
 
@@ -208,7 +352,7 @@ display(df_hourly)
 
 # MAGIC %md
 # MAGIC ---
-# MAGIC ## 8 – Save a result as a Delta table
+# MAGIC ## 9 – Save a result as a Delta table
 # MAGIC
 # MAGIC `saveAsTable()` writes the data as a managed **Delta table** and registers it in Unity Catalog.
 # MAGIC Afterwards you find it in the sidebar under **Catalog → workspace → exercises**.
@@ -223,7 +367,7 @@ display(spark.table(f"{CATALOG}.exercises.bikes_per_station_2025"))
 
 # MAGIC %md
 # MAGIC ---
-# MAGIC ## 9 – Small results? pandas works too
+# MAGIC ## 10 – Small results? pandas works too
 # MAGIC
 # MAGIC Spark is built for large data. For small results you can switch to **pandas** at any time:
 
