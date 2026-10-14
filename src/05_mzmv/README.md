@@ -15,17 +15,17 @@ This guide shows how you upload the data into **your** Databricks workspace and 
 ```
  your laptop                     Unity Catalog (catalog "mzmv")
  MZMV_workshop.zip ─upload──►  raw.landing   (volume)  MZMV_workshop.zip
-                                      │  job mzmv_load, task "unzip"
+                                      │  job 02_mzmv_load, task "unzip"
                                       ▼
                                 raw.files     (volume)  MZMV/MZMV2021_mit_Geo/..., MZMV/Zeitreihen1994-2021/...
-                                      │  job mzmv_load, task "load_bronze"
+                                      │  job 02_mzmv_load, task "load_bronze"
                                       ▼
                                 bronze        (schema)  mzmv2021_wege, mzmv2021_haushalte, …, zeitreihen_wege94, …
                                 silver, gold  (schemas) → your own work
 ```
 
 The catalog `mzmv` with the schemas `raw`, `bronze`, `silver`, `gold` and the volumes `raw.landing` and `raw.files` is
-created automatically by the setup job `workshop_setup` (see the main README).
+created automatically by the setup job `01_workshop_setup` (see the main README).
 
 ## Step 1 – Upload the ZIP file (≈ 1–3 min)
 
@@ -42,9 +42,9 @@ created automatically by the setup job `workshop_setup` (see the main README).
 > (`MZMV.zip`, 2.2 GB – additionally 2015, CSV, SPSS and route geometries) works with the same job; it only takes much
 > longer to upload (browser limit: 5 GB per file).
 
-## Step 2 – Run the job `mzmv_load` (≈ 10 min)
+## Step 2 – Run the job `02_mzmv_load` (≈ 10 min)
 
-*Jobs & Pipelines* → `mzmv_load` → **Run now** – or click **Run** (▶︎) next to `mzmv_load` in the Deployments panel
+*Jobs & Pipelines* → `02_mzmv_load` → **Run now** – or click **Run** (▶︎) next to `02_mzmv_load` in the Deployments panel
 of your Git folder.
 
 The job has two tasks:
@@ -124,4 +124,4 @@ volume. A nice exercise: translate one of the standard evaluations into SQL!
 **The job fails with "No ZIP file found".** The upload into `raw.landing` is missing or not finished yet.
 
 **Can I start over?** The job overwrites the bronze tables on every run and skips files that are already extracted.
-The cleanup job `workshop_cleanup` drops the whole `mzmv` catalog – including your uploaded ZIP.
+The cleanup job `99_workshop_cleanup` drops the whole `mzmv` catalog – including your uploaded ZIP.

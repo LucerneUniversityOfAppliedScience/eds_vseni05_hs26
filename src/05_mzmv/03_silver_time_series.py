@@ -16,7 +16,7 @@
 # MAGIC 💡 Look up a variable: Catalog Explorer → `mzmv` → `bronze` → table → **Columns** (German description),
 # MAGIC or the documentation `Variablen_MZMV_1994-2021.xlsx` in `/Volumes/mzmv/raw/files/`.
 # MAGIC
-# MAGIC **Prerequisite:** the job `mzmv_load` ran successfully.
+# MAGIC **Prerequisite:** the job `02_mzmv_load` ran successfully.
 
 # COMMAND ----------
 

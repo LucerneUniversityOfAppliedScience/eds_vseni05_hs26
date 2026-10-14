@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # MZMV 01 – Unzip the uploaded ZIP file
 # MAGIC
-# MAGIC Run by the job `mzmv_load` (task `unzip`), but you can also run it by hand.
+# MAGIC Run by the job `02_mzmv_load` (task `unzip`), but you can also run it by hand.
 # MAGIC
 # MAGIC ```
 # MAGIC /Volumes/mzmv/raw/landing/MZMV.zip   ──unzip──►   /Volumes/mzmv/raw/files/MZMV/...

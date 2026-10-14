@@ -15,7 +15,7 @@
 # MAGIC Why not in the bundle (`resources.catalogs`)? In Databricks Free Edition the catalog API requires an explicit
 # MAGIC storage location, while SQL `CREATE CATALOG` automatically uses the workspace's *Default Storage*.
 # MAGIC So we create the catalog – and its schemas – here with SQL. Everything is idempotent (`IF NOT EXISTS`).
-# MAGIC The cleanup job (`workshop_cleanup`) removes it again.
+# MAGIC The cleanup job (`99_workshop_cleanup`) removes it again.
 
 # COMMAND ----------
 
@@ -34,7 +34,7 @@ for schema in schemas:
 
 if "raw" in schemas:
     spark.sql(f"CREATE VOLUME IF NOT EXISTS `{catalog}`.`raw`.`landing` COMMENT 'Upload the original MZMV ZIP file here'")
-    spark.sql(f"CREATE VOLUME IF NOT EXISTS `{catalog}`.`raw`.`files` COMMENT 'Extracted MZMV files (written by the mzmv_load job)'")
+    spark.sql(f"CREATE VOLUME IF NOT EXISTS `{catalog}`.`raw`.`files` COMMENT 'Extracted MZMV files (written by the 02_mzmv_load job)'")
     print(f"volumes ready: /Volumes/{catalog}/raw/landing, /Volumes/{catalog}/raw/files")
 
 # COMMAND ----------

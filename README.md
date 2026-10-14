@@ -46,6 +46,7 @@ After the workshop you can …
 4. **Project "Bike vs. car in Zurich"** – [step-by-step guide](src/03_project/README.md)
 5. **Bonus: NYC taxi** – [src/04_bonus](src/04_bonus)
 6. **MZMV** – [upload and load the Mobility and Transport Microcensus](src/05_mzmv/README.md)
+7. **Clean up** – [start over or remove everything](#clean-up)
 
 Every task comes with collapsible **hints** and the **solution** right below your code cell – try it yourself first!
 
@@ -58,9 +59,9 @@ No local installation needed – you only need a browser.
    paste `https://github.com/LucerneUniversityOfAppliedScience/eds_vseni05_hs26.git` → **Create Git folder**.
 3. **Deploy the bundle:** in the new folder `eds_vseni05_hs26` open the **Deployments** panel (🚀 icon on the left) →
    target `prod` → **Deploy**. This creates the schemas, the volume and the jobs.
-4. **Load the data:** in the same panel, next to the job `workshop_setup`, click **Run** (▶︎).
+4. **Load the data:** in the same panel, next to the job `01_workshop_setup`, click **Run** (▶︎).
    It downloads the data (≈ 100 MB) into your volume and takes about 5 minutes
-   (progress: **Jobs & Pipelines** → `workshop_setup`).
+   (progress: **Jobs & Pipelines** → `01_workshop_setup`).
 5. **Start:** open `src/01_getting_started/01_databricks_basics` in the Git folder and attach it to **Serverless**.
 
 **Problems?**
@@ -79,13 +80,25 @@ No local installation needed – you only need a browser.
 | Volume | `workspace.mobility_raw.landing` | all raw files |
 | Schemas | `workspace.exercises`, `workspace.adventureworks` | basic exercises |
 | Catalog | `mzmv` with schemas `raw` (+ volumes `landing`, `files`), `bronze`, `silver`, `gold` | for the MZMV (Mikrozensus Mobilität und Verkehr) part – created by the setup job |
-| Job | `workshop_setup` | creates `mzmv`, downloads the data, loads AdventureWorks |
-| Job | `mzmv_load` | unzips your uploaded MZMV ZIP and loads the SAS files as bronze tables |
-| Job | `workshop_cleanup` | removes all data again – only with `confirm=yes` |
+| Job | `01_workshop_setup` | creates `mzmv`, downloads the data, loads AdventureWorks |
+| Job | `02_mzmv_load` | unzips your uploaded MZMV ZIP and loads the SAS files as bronze tables |
+| Job | `99_workshop_cleanup` | removes all data again – only with `confirm=yes` |
 
-**Start over:** *Jobs & Pipelines* → `workshop_cleanup` → ▾ next to *Run now* → **Run now with different parameters** →
-set `confirm` to `yes`. This deletes all data (schemas, volume and jobs stay). Then run `workshop_setup` again.
-To remove the bundle resources as well, click **Destroy** in the Deployments panel of the Git folder.
+**MZMV:** upload `MZMV_workshop.zip` to `mzmv.raw.landing`, then run `02_mzmv_load` – see the [MZMV guide](src/05_mzmv/README.md).
+
+## Clean up
+
+**Start over (delete all data):**
+
+1. *Jobs & Pipelines* → `99_workshop_cleanup` → ▾ next to *Run now* → **Run now with different parameters**.
+2. Set the parameter `confirm` to `yes` → **Run**. (Without `yes` the job stops and deletes nothing.)
+
+This deletes the catalog `mzmv` (incl. your uploaded MZMV ZIP), all tables in the workshop schemas and all files in the
+volume. Schemas, volume, jobs and dashboard stay – run `01_workshop_setup` again to start fresh.
+
+**Remove everything (at the end of the course):** first run the cleanup above, then open the **Deployments** panel in
+your Git folder and click **Destroy**. This removes the schemas, the volume, the jobs, the pipeline and the dashboard.
+Finally you can delete the Git folder itself.
 
 ## Repository structure
 

@@ -5,7 +5,7 @@
 resources:
   jobs:
     cleanup:
-      name: workshop_cleanup
+      name: 99_workshop_cleanup
       parameters:
         - name: confirm
           default: "no"

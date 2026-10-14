@@ -33,7 +33,7 @@
 # MAGIC
 # MAGIC ## Before you run
 # MAGIC
-# MAGIC The bundle must be deployed and the setup job `workshop_setup`
+# MAGIC The bundle must be deployed and the setup job `01_workshop_setup`
 # MAGIC must have run once (see README).
 
 # COMMAND ----------

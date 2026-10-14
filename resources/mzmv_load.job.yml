@@ -6,7 +6,7 @@
 resources:
   jobs:
     mzmv_load:
-      name: mzmv_load
+      name: 02_mzmv_load
       parameters:
         - name: catalog
           default: mzmv

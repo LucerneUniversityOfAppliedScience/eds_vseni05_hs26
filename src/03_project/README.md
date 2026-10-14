@@ -23,7 +23,7 @@ You combine four open data sources of the City of Zurich and Open-Meteo, build a
 
 ## Before you start
 
-- The bundle is deployed and the setup job `workshop_setup` ran successfully (see the main README).
+- The bundle is deployed and the setup job `01_workshop_setup` ran successfully (see the main README).
 - You did **01_getting_started/01_databricks_basics** (or know notebooks, `display()` and `%sql`).
 - Work through the notebooks **in order** – each step builds on the tables of the previous one.
 - Every task is marked **Task x.y**. Replace `raise NotImplementedError(...)` (Python) or

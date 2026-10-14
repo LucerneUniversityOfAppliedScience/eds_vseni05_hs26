@@ -2,9 +2,9 @@
 # MAGIC %md
 # MAGIC # 99 – Cleanup: remove all workshop data
 # MAGIC
-# MAGIC Run by the job `workshop_cleanup`. The job has **no schedule** – it only runs when you start it,
+# MAGIC Run by the job `99_workshop_cleanup`. The job has **no schedule** – it only runs when you start it,
 # MAGIC and only if the parameter `confirm` is set to `yes`:
-# MAGIC *Jobs & Pipelines* → `workshop_cleanup` → *Run now with different parameters* → `confirm` = `yes`
+# MAGIC *Jobs & Pipelines* → `99_workshop_cleanup` → *Run now with different parameters* → `confirm` = `yes`
 # MAGIC (CLI: `databricks bundle run cleanup --params confirm=yes`).
 # MAGIC
 # MAGIC | What | Action |

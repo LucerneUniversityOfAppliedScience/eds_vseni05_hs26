@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # MZMV 02 – Load the SAS files into bronze Delta tables
 # MAGIC
-# MAGIC Run by the job `mzmv_load` (task `load_bronze`) after `01_unzip`.
+# MAGIC Run by the job `02_mzmv_load` (task `load_bronze`) after `01_unzip`.
 # MAGIC
 # MAGIC Every SAS data file (`.sas7bdat`) of the selected datasets becomes **one Delta table** in `mzmv.bronze`:
 # MAGIC
