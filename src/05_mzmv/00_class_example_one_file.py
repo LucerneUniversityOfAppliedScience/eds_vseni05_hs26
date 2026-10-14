@@ -108,16 +108,20 @@ display(spark.table("mzmv.bronze.example_wege21").limit(10))
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC CREATE OR REPLACE TABLE mzmv.silver.example_mode_groups (code INT, mode_group STRING) AS
-# MAGIC VALUES (1, 'Slow traffic (walking, cycling)'),
-# MAGIC        (2, 'Motorised private transport'),
-# MAGIC        (3, 'Public transport'),
-# MAGIC        (4, 'Other');
+# MAGIC CREATE OR REPLACE TABLE mzmv.silver.example_mode_groups AS
+# MAGIC SELECT * FROM VALUES
+# MAGIC   (1, 'Slow traffic (walking, cycling)'),
+# MAGIC   (2, 'Motorised private transport'),
+# MAGIC   (3, 'Public transport'),
+# MAGIC   (4, 'Other')
+# MAGIC AS t(code, mode_group);
 # MAGIC
-# MAGIC CREATE OR REPLACE TABLE mzmv.silver.example_purposes (code INT, purpose STRING) AS
-# MAGIC VALUES (1, 'Change of mode'), (2, 'Work'), (3, 'Education'), (4, 'Shopping'), (5, 'Errands / services'),
-# MAGIC        (6, 'Business'), (7, 'Business trip'), (8, 'Leisure'), (9, 'Accompanying'), (10, 'Return home'),
-# MAGIC        (11, 'Other'), (12, 'Border crossing');
+# MAGIC CREATE OR REPLACE TABLE mzmv.silver.example_purposes AS
+# MAGIC SELECT * FROM VALUES
+# MAGIC   (1, 'Change of mode'), (2, 'Work'), (3, 'Education'), (4, 'Shopping'), (5, 'Errands / services'),
+# MAGIC   (6, 'Business'), (7, 'Business trip'), (8, 'Leisure'), (9, 'Accompanying'), (10, 'Return home'),
+# MAGIC   (11, 'Other'), (12, 'Border crossing')
+# MAGIC AS t(code, purpose);
 # MAGIC
 # MAGIC SELECT * FROM mzmv.silver.example_mode_groups;
 

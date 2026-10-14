@@ -12,11 +12,14 @@
 # MAGIC | 3 | **Pipelines** (incl. their streaming tables / materialized views) | deleted |
 # MAGIC | 4 | **Genie spaces** | moved to the trash |
 # MAGIC | 5 | all **catalogs** you created (e.g. `mzmv`) – not `workspace`, `samples`, `system` | `DROP CATALOG … CASCADE` |
-# MAGIC | 6 | all **schemas** in the catalog `workspace` (except `default`) incl. tables, views, volumes | `DROP SCHEMA … CASCADE` |
-# MAGIC | 7 | all tables, views and volumes in `workspace.default` | `DROP …` |
+# MAGIC | 6 | all **schemas** in the catalog `workspace` except the built-in `default` and `information_schema` – incl. tables, views, volumes | `DROP SCHEMA … CASCADE` |
+# MAGIC | 7 | everything inside `workspace.default`: tables, views, volumes, functions, registered models | `DROP …` |
 # MAGIC | 8 | the deployed bundle folder `/Workspace/Users/<you>/mobility_workshop` | deleted |
 # MAGIC
-# MAGIC **Not touched:** your Git folders and notebooks, the catalogs `workspace`, `samples` and `system`.
+# MAGIC In **Free Edition** the catalog `workspace` is the default catalog and cannot be deleted. The notebook therefore
+# MAGIC keeps the catalog and its built-in schemas `default` and `information_schema`, but empties everything else in it.
+# MAGIC
+# MAGIC **Not touched:** your Git folders and notebooks, the catalogs `workspace` (only emptied), `samples` and `system`.
 # MAGIC
 # MAGIC ### How to use
 # MAGIC 1. Run all cells with the default `mode = dry_run` → the notebook only **lists** what it would delete.
@@ -112,31 +115,44 @@ for row in spark.sql("SHOW CATALOGS").collect():
 
 # COMMAND ----------
 
-for row in spark.sql("SHOW SCHEMAS IN workspace").collect():
+for row in spark.sql("SHOW SCHEMAS IN `workspace`").collect():
     schema = row[0]
     if schema in ("default", "information_schema"):
         continue
-    act("schema", f"workspace.{schema}", lambda s=schema: spark.sql(f"DROP SCHEMA IF EXISTS workspace.`{s}` CASCADE"))
+    act("schema", f"workspace.{schema}", lambda s=schema: spark.sql(f"DROP SCHEMA IF EXISTS `workspace`.`{s}` CASCADE"))
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 7 – Tables, views and volumes in `workspace.default`
+# MAGIC ## 7 – Everything inside `workspace.default` (the schema itself stays)
 
 # COMMAND ----------
 
-for row in spark.sql("SHOW TABLES IN workspace.default").collect():
+for row in spark.sql("SHOW TABLES IN `workspace`.`default`").collect():
     if row.isTemporary:
         continue
-    name = f"workspace.default.`{row.tableName}`"
+    name = f"`workspace`.`default`.`{row.tableName}`"
     kind = spark.sql(f"DESCRIBE TABLE EXTENDED {name}").filter("col_name = 'Type'").collect()
     is_view = bool(kind) and "VIEW" in kind[0].data_type.upper()
     act("view" if is_view else "table", name,
         lambda n=name, v=is_view: spark.sql(f"DROP {'VIEW' if v else 'TABLE'} IF EXISTS {n}"))
 
-for row in spark.sql("SHOW VOLUMES IN workspace.default").collect():
-    name = f"workspace.default.`{row.volume_name}`"
+for row in spark.sql("SHOW VOLUMES IN `workspace`.`default`").collect():
+    name = f"`workspace`.`default`.`{row.volume_name}`"
     act("volume", name, lambda n=name: spark.sql(f"DROP VOLUME IF EXISTS {n}"))
+
+for row in spark.sql("SHOW USER FUNCTIONS IN `workspace`.`default`").collect():
+    parts = (["workspace", "default"] + row[0].split("."))[-3:]   # SHOW returns "fn" or "catalog.schema.fn"
+    name = ".".join(f"`{p}`" for p in parts)
+    act("function", name, lambda n=name: spark.sql(f"DROP FUNCTION IF EXISTS {n}"))
+
+try:
+    models = list(w.registered_models.list(catalog_name="workspace", schema_name="default"))
+except Exception as e:
+    models = []
+    print(f"(registered models not listed: {str(e).splitlines()[0][:100]})")
+for m in models:
+    act("model", m.full_name, lambda m=m: w.registered_models.delete(m.full_name))
 
 # COMMAND ----------
 
