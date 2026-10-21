@@ -46,7 +46,8 @@ After the workshop you can …
 4. **Project "Bike vs. car in Zurich"** – [step-by-step guide](src/03_project/README.md)
 5. **Bonus: NYC taxi** – [src/04_bonus](src/04_bonus)
 6. **MZMV** – [in class: one file from upload to silver; at home: load all tables](src/05_mzmv/README.md)
-7. **Clean up** – [start over or remove everything](#clean-up)
+7. **Live flight tracking (local, LV06)** – [live-flight-tracking-local](live-flight-tracking-local/README.md): your own pipeline from live aircraft data to a map – on your laptop with marimo and DuckDB, no Databricks
+8. **Clean up** – [start over or remove everything](#clean-up)
 
 Every task comes with collapsible **hints** and the **solution** right below your code cell – try it yourself first!
 
@@ -123,6 +124,7 @@ Finally you can delete the Git folder itself.
 │   ├── 03_project/                # project: step-by-step guide (README) + notebooks step_1 … step_5
 │   ├── 04_bonus/                  # NYC taxi
 │   └── 05_mzmv/                   # Mobility and Transport Microcensus: class example, load job notebooks, silver exercise
+├── live-flight-tracking-local/    # LV06, runs on your laptop: marimo notebooks (exercises + solutions), DuckDB, map app
 ├── data/                          # README only – the data is published as GitHub release asset
 ├── cheatsheets/                   # Python, pandas, PySpark, Matplotlib, … cheat sheets (PDF)
 ```

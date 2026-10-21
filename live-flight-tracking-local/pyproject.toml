@@ -1,0 +1,32 @@
+[project]
+name = "live-flight-tracking-local"
+version = "0.1.0"
+description = "Learner notebooks: live aircraft positions from OpenSky into DuckDB (bronze/silver/gold), backfill from R2, local map app"
+requires-python = ">=3.11"
+dependencies = [
+    "marimo>=0.25",
+    "duckdb>=1.5",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "pyarrow>=16",
+    "pytz", # DuckDB needs it to hand TIMESTAMPTZ values to Python
+    "requests>=2.31",
+    "boto3>=1.34", # R2 backfill (S3 API)
+    "openap==2.4", # CO2 model (TU Delft) – tested version
+    "plotly>=6.3,<7",         # plotly 7.1.0: scatter_map draws nothing (MapLibre "Style is not done loading")
+    # the map app (app/) – pinned to the versions it was built and tested with
+    "dash==2.18.1",
+    "dash-bootstrap-components==1.6.0",
+    "dash-leaflet==1.0.15",
+    "shapely>=2.0",
+    "python-calamine>=0.9.0",
+]
+
+[tool.uv]
+# Not a package: notebooks, one helper module (flightlab.py) and two scripts, run from this folder.
+package = false
+
+[dependency-groups]
+contrails = [
+    "pycontrails>=0.63.5",
+]

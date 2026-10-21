@@ -1,0 +1,19 @@
+# mobitool factors v3.1 (2025-04-08), EnergieSchweiz / PSI – file mobitool-Faktoren-v3.1-20250408.xlsx, linked as data basis on
+# https://www.energieschweiz.ch/programme/umweltrechner-verkehr/ (mobitool.ch redirects there),
+# sheet mobitool-Faktoren-v3.1: g CO2-eq per passenger-km, GWP100a; g_co2e_per_pkm = column AG (sum, life cycle),
+# direct_g_co2e_per_pkm = column Z (direct); load_factor/occupancy = columns V/T. No licence stated in the file -
+# cite 'mobitool v3.1, EnergieSchweiz/PSI'. Extracted 2026-10-20. Flight factors match 'mobitool 2020', which includes a factor 2.0
+# on the CO2 of kerosene for non-CO2 effects (treeze 2021, Life Cycle Inventories of Air Transport Services, Tab. 7.5).
+key,mode,description,g_co2e_per_pkm,direct_g_co2e_per_pkm,load_factor,occupancy,mobitool_row
+plane_europe,Airplane,"within Europe, average",319.2,259.0,0.757,112.04,121
+plane_intercontinental,Airplane,"Intercontinental, average",237.2,207.2,0.823,268.43,124
+train_CH,Train Switzerland,Average regional & long-distance traffic,7.0,0.1,0.293,159.35,104
+train_DE,Train Germany,Average regional & long-distance traffic,40.8,5.9,0.428,124.98,113
+train_DE_highspeed,High-speed train DE,High-speed train (ICE),33.4,0.7,0.554,235.45,114
+train_FR,Train France,Average regional & long-distance traffic,12.5,3.3,0.382,207.81,115
+train_FR_highspeed,High Speed Train FR,High-speed train (TGV),12.5,0.7,0.554,235.45,116
+train_IT,Train Italy,Average regional & long-distance traffic,74.7,3.3,0.305,165.92,117
+train_IT_highspeed,High Speed Train IT,High speed train (Frecciarossa),60.0,0.0,0.554,235.45,118
+train_AT,Train Austria,Average regional & long-distance traffic,15.1,5.0,0.365,106.58,119
+car_fleet_average,Passenger car,fleet average,186.4,110.4,0.311,1.6,59
+car_bev_fleet_average,Passenger car,fleet average,89.8,0.0,0.298,1.6,90

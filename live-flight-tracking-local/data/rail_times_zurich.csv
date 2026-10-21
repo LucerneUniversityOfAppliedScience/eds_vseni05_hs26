@@ -1,0 +1,54 @@
+# Fastest rail journey Zürich HB -> city (best of the first ~5 connections departing from 07:00 on Thu 2026-10-22).
+# Source: ÖBB timetable query (HAFAS mgate, fahrplan.oebb.at, TripSearch, all train products), queried 2026-10-20.
+# Timetable data of the railways, used here as a small static reference for teaching (no licence stated).
+# One row per AIRPORT (airport_icao); cities with several airports repeat the rail time. country = country of the
+# destination station (used to pick a train emission factor). rail_minutes = station-to-station travel time, transfers = changes.
+city,station,country,airport_icao,rail_minutes,transfers
+Paris,Paris (all stations; TGV Lyria to Gare de Lyon),FR,LFPG,244,0
+Paris,Paris (all stations; TGV Lyria to Gare de Lyon),FR,LFPO,244,0
+Paris,Paris (all stations; TGV Lyria to Gare de Lyon),FR,LFPB,244,0
+München,München Hbf,DE,EDDM,243,0
+Milano,Milano Centrale,IT,LIML,192,1
+Milano,Milano Centrale,IT,LIMC,192,1
+Milano,Milano Centrale,IT,LIME,192,1
+Wien,Wien Hbf,AT,LOWW,505,2
+Frankfurt,Frankfurt(Main)Hbf,DE,EDDF,246,1
+Amsterdam,Amsterdam Centraal,NL,EHAM,496,3
+Bruxelles,Bruxelles-Midi,BE,EBBR,429,2
+London,London St. Pancras,GB,EGLL,496,4
+London,London St. Pancras,GB,EGLC,496,4
+London,London St. Pancras,GB,EGKK,496,4
+London,London St. Pancras,GB,EGSS,496,4
+London,London St. Pancras,GB,EGGW,496,4
+Berlin,Berlin Hbf,DE,EDDB,498,1
+Genève,Genève (Cornavin),CH,LSGG,171,1
+Lugano,Lugano,CH,LSZA,113,0
+Hamburg,Hamburg Hbf,DE,EDDH,475,1
+Barcelona,Barcelona Sants,ES,LEBL,619,3
+Roma,Roma Termini,IT,LIRF,425,2
+Roma,Roma Termini,IT,LIRA,425,2
+Stuttgart,Stuttgart Hbf,DE,EDDS,188,1
+Köln,Köln Hbf,DE,EDDK,305,3
+Düsseldorf,Düsseldorf Hbf,DE,EDDL,319,2
+Lyon,Lyon Part-Dieu,FR,LFLL,300,2
+Nice,Nice Ville,FR,LFMN,516,2
+Venezia,Venezia Santa Lucia,IT,LIPZ,369,2
+Firenze,Firenze S.M.N.,IT,LIRQ,331,1
+Praha,Praha hl.n.,CZ,LKPR,644,6
+Budapest,Budapest-Keleti,HU,LHBP,682,3
+Ljubljana,Ljubljana,SI,LJLJ,602,3
+Luxembourg,Luxembourg,LU,ELLX,281,2
+Marseille,Marseille-St-Charles,FR,LFML,425,2
+Bologna,Bologna Centrale,IT,LIPE,277,2
+Dresden,Dresden Hbf,DE,EDDC,524,2
+Hannover,Hannover Hbf,DE,EDDV,391,1
+Napoli,Napoli Centrale,IT,LIRN,513,2
+Torino,Torino Porta Nuova,IT,LIMF,282,1
+Graz,Graz Hbf,AT,LOWG,571,6
+Salzburg,Salzburg Hbf,AT,LOWS,355,3
+Leipzig,Leipzig Hbf,DE,EDDP,430,1
+Nürnberg,Nürnberg Hbf,DE,EDDN,325,1
+Bremen,Bremen Hbf,DE,EDDW,485,2
+Bordeaux,Bordeaux-St-Jean,FR,LFBD,458,2
+Montpellier,Montpellier Saint-Roch,FR,LFMT,388,2
+Toulouse,Toulouse-Matabiau,FR,LFBO,606,4

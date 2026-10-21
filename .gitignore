@@ -230,4 +230,6 @@ data/**
 
 # Private authoring sources (solution notebooks with markers, MZMV solutions, instructor notes)
 solutions/
+# the local flight-tracking workshop ships its solutions to the students
+!/live-flight-tracking-local/solutions/
 dist/
