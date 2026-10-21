@@ -265,9 +265,21 @@ def store_snapshot(con, data, region, source="api", credits_remaining=None):
 
 
 # ------------------------------------------------------------------------------------------------ 03 collector
+def retry_after(err):
+    """Seconds OpenSky asks us to wait after a 429 (header X-Rate-Limit-Retry-After-Seconds), or None if missing."""
+    response = getattr(err, "response", None)
+    value = response.headers.get("X-Rate-Limit-Retry-After-Seconds") if response is not None else None
+    try:
+        return max(0.0, float(value)) if value is not None else None
+    except ValueError:
+        return None
+
+
 def collect(con, region="switzerland", interval=35, minutes=10, min_credits=20, token=None, log=print):
     """Poll OpenSky every `interval` seconds for `minutes` (0 = forever). Stops when the credits run low, waits and
-    retries on 429 (too many requests) and network errors. Returns the number of new snapshots."""
+    retries on 429 (too many requests) and network errors. After a 429 it waits as long as OpenSky says in
+    X-Rate-Limit-Retry-After-Seconds; without that header it doubles the wait (exponential backoff, max 600 s).
+    Returns the number of new snapshots."""
     bbox, new, end = REGIONS.get(region), 0, time.time() + minutes * 60
     backoff = interval
     while minutes == 0 or time.time() < end:
@@ -283,9 +295,15 @@ def collect(con, region="switzerland", interval=35, minutes=10, min_credits=20, 
                 break
         except requests.HTTPError as e:
             if e.response is not None and e.response.status_code == 429:
-                backoff = min(backoff * 2, 600)
-                log(f"429 too many requests – waiting {backoff} s")
-                time.sleep(backoff)
+                wait = retry_after(e)
+                if wait is None:
+                    backoff = min(backoff * 2, 600)
+                    wait = backoff
+                if minutes and time.time() + wait > end:
+                    log(f"429 too many requests – waiting {wait:.0f} s would outlast the run – stopping")
+                    break
+                log(f"429 too many requests – waiting {wait:.0f} s")
+                time.sleep(wait)
                 continue
             raise
         except (requests.ConnectionError, requests.Timeout) as e:

@@ -23,9 +23,10 @@ def _(mo):
     1. **Credits.** The header `X-Rate-Limit-Remaining` tells how many are left. Stop before 0 – otherwise OpenSky
        answers `429 Too Many Requests` until the daily refill; the header `X-Rate-Limit-Retry-After-Seconds` says
        how long to wait ([API credits](https://openskynetwork.github.io/opensky-api/rest.html#api-credits)).
-    2. **429 and network errors** can happen on a long run. Wait (longer each time – *exponential backoff*) and try
-       again instead of crashing. Your loop below handles the 429; `flightlab.collect` (used by `collector.py` and
-       the app) also retries network errors.
+    2. **429 and network errors** can happen on a long run. Wait and try again instead of crashing. After a 429,
+       OpenSky says how long to wait in `X-Rate-Limit-Retry-After-Seconds` – use that. If the header is missing,
+       wait longer each time (*exponential backoff*). Your loop below handles the 429; `flightlab.collect` (used by
+       `collector.py` and the app) also retries network errors.
     3. **A steady rhythm.** If a call takes 2 s, sleep 33 s, not 35 – otherwise the loop drifts.
 
     Budget: one call every 35 s = 86,400 / 35 ≈ 2,470 calls per day. Anonymous: 400 per day and IP. With a free
@@ -84,8 +85,9 @@ def _(mo):
     - repeat until `minutes` are over: `data, credits = fetch()`, then `store(data, credits)` (returns True if new)
     - count the **new** snapshots and return that number
     - stop early when `credits < min_credits`
-    - on `requests.HTTPError` with status **429**: double the waiting time (start: `interval`, max 600 s), `sleep`
-      that long and try again
+    - on `requests.HTTPError` with status **429**: `sleep` as many seconds as the header
+      `X-Rate-Limit-Retry-After-Seconds` says, then try again. If the header is missing, double the waiting time
+      instead (start: `interval`, max 600 s)
     - sleep `interval` minus the time the call took (never negative)
 
     `fetch`, `store` and `sleep` are **parameters** – that is how the check below can test your loop with a fake API
@@ -102,7 +104,8 @@ def _(mo):
         except requests.HTTPError as e:
             if e.response is not None and e.response.status_code == 429: ...
     ```
-    `e.response.status_code` holds the HTTP status.
+    `e.response.status_code` holds the HTTP status, `e.response.headers.get("X-Rate-Limit-Retry-After-Seconds")`
+    the header (a string, or `None` if it is missing).
     ///
     """)
     return
@@ -121,13 +124,15 @@ def _(check, collect, requests):
     def _answer(t, credits):
         return {"time": t, "states": []}, credits
 
-    def _too_many():
+    def _too_many(retry_after=None):
         _r = requests.Response()
         _r.status_code = 429
+        if retry_after is not None:
+            _r.headers["X-Rate-Limit-Retry-After-Seconds"] = str(retry_after)
         raise requests.HTTPError("429", response=_r)
 
-    _script = [lambda: _answer(1, 100), _too_many, lambda: _answer(1, 99), lambda: _answer(2, 98),
-               lambda: _answer(3, 10), lambda: _answer(4, 9)]
+    _script = [lambda: _answer(1, 100), _too_many, lambda: _too_many(120), lambda: _answer(1, 99),
+               lambda: _answer(2, 98), lambda: _answer(3, 10), lambda: _answer(4, 9)]
     _calls, _waits, _seen = iter(_script), [], set()
 
     def _store(data, credits):
@@ -140,11 +145,11 @@ def _(check, collect, requests):
         _err = None
     except Exception as _e:
         _n, _err = None, f"{type(_e).__name__}: {_e}"
-    check(_n == 3 and 70 in _waits and len(_waits) == 4,
-          f"3 new snapshots (time 1 twice -> skipped), waited 70 s after the 429, stopped at 10 credits. "
-          f"Waits: {[round(w) for w in _waits]}",
-          f"Expected 3 new snapshots, a 70 s wait after the 429 and a stop at 10 credits – got {_n} new, "
-          f"waits {[round(w) for w in _waits]}" + (f", error {_err}" if _err else ""))
+    check(_n == 3 and 70 in _waits and 120 in _waits and len(_waits) == 5,
+          f"3 new snapshots (time 1 twice -> skipped), waited 70 s after the 429 without header and 120 s after "
+          f"the one with header, stopped at 10 credits. Waits: {[round(w) for w in _waits]}",
+          f"Expected 3 new snapshots, waits of 70 s (429 without header) and 120 s (header says 120) and a stop "
+          f"at 10 credits – got {_n} new, waits {[round(w) for w in _waits]}" + (f", error {_err}" if _err else ""))
     return
 
 
@@ -192,7 +197,9 @@ def _(mo):
 
     ## Think about it
 
-    - Why double the waiting time after a 429 instead of waiting the same time again?
+    - Without the header: why double the waiting time after a 429 instead of waiting the same time again?
+    - When credits run out, the header can say "wait several hours" (until the daily refill). Should a collector
+      wait that long – or stop?
     - Anonymous data has a time resolution of 10 s
       ([Limitations](https://openskynetwork.github.io/opensky-api/rest.html#limitations)). What happens with
       `interval=5`? (Look at `store`'s return value.)

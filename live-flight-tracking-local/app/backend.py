@@ -122,11 +122,14 @@ class LocalBackend:
                     self.last_error = f"only {credits} OpenSky credits left – collector paused"
                     self._stop.wait(1800)
                     continue
-            except Exception as e:                       # 429, network: wait longer, never crash the app
-                backoff = min(backoff * 2, 600)
+            except Exception as e:                       # 429, network: wait, never crash the app
+                wait = fl.retry_after(e)                 # 429: as long as OpenSky says
+                if wait is None:
+                    backoff = min(backoff * 2, 600)      # otherwise longer each time
+                    wait = backoff
                 self.last_error = f"{type(e).__name__}: {str(e)[:120]}"
-                print("[collector]", self.last_error, f"– retry in {backoff:.0f} s")
-                self._stop.wait(backoff)
+                print("[collector]", self.last_error, f"– retry in {wait:.0f} s")
+                self._stop.wait(wait)
                 continue
             self._stop.wait(max(0.0, self.interval - (time.time() - t0)))
 
