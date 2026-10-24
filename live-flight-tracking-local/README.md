@@ -39,7 +39,7 @@ right, then ✅ green. Stuck? The same file in `solutions/` has the answer.
 | | 02 Bronze | store raw data in DuckDB – without duplicates |
 | | 03 Collector | a loop that runs for hours: credits, errors, rhythm |
 | | 04 Backfill | load the class history from the bucket and merge it |
-| | 05 Silver | clean data – and the watermark trap |
+| | 05 Silver | clean data, airline names and aircraft categories – and the watermark trap |
 | | 06 Gold | airports, current positions, approaches |
 | **Analyses** | 07 Routes & detours | how far aircraft really fly |
 | | 08 CO₂ | fuel and CO₂ per aircraft type and airline |

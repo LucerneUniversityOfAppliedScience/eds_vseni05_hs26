@@ -10,8 +10,10 @@ use them (a bug in your own step 2 should not block you in step 7).
 Layers (DuckDB schemas in one file):
     bronze.snapshots  one row per OpenSky answer (raw JSON), key (region, time) – the merge key for live + backfill
     bronze.states     one row per aircraft and snapshot, exactly as OpenSky sends it
-    silver.flights    cleaned positions in feet / km/h, airline code, flight phase – key (icao24, snapshot_time)
-    silver.airports, silver.airlines   reference data (OurAirports, OpenFlights)
+    silver.flights    cleaned positions in feet / km/h, airline code + name, aircraft category, flight phase
+                      – key (icao24, snapshot_time)
+    silver.airlines, silver.aircraft_categories   lookups joined into silver.flights (OpenFlights, OpenSky codes)
+    silver.airports   reference data for the gold views (OurAirports)
     gold.*            views for the map and the analyses
 """
 import gzip
@@ -384,14 +386,18 @@ def ensure_sample_data(con, hours=2, min_snapshots=20):
 # ------------------------------------------------------------------------------------------------ 05 silver
 def build_silver(con):
     """bronze.states -> silver.flights, incrementally PER SNAPSHOT (not by time!): a backfill delivers OLD snapshots
-    after newer ones are already in silver – a "newer than MAX(snapshot_time)" watermark would silently drop them."""
+    after newer ones are already in silver – a "newer than MAX(snapshot_time)" watermark would silently drop them.
+    The lookups (airline name, aircraft category) are joined here, in silver – gold only reads them."""
+    if not {"airlines", "aircraft_categories"} <= _silver_tables(con):
+        load_airlines(con)
     con.execute("""
         CREATE TABLE IF NOT EXISTS silver.flights (
             snapshot_time TIMESTAMP NOT NULL, icao24 VARCHAR NOT NULL, region VARCHAR, callsign VARCHAR,
             airline_icao VARCHAR, origin_country VARCHAR, latitude DOUBLE, longitude DOUBLE, on_ground BOOLEAN,
             altitude_m DOUBLE, altitude_ft DOUBLE, speed_kmh DOUBLE, heading DOUBLE, vertical_rate DOUBLE,
-            flight_phase VARCHAR, squawk VARCHAR, category INTEGER,
+            flight_phase VARCHAR, squawk VARCHAR, category INTEGER, airline_name VARCHAR, aircraft_category VARCHAR,
             PRIMARY KEY (icao24, snapshot_time))""")
+    _add_lookup_columns(con)
     con.execute("CREATE TABLE IF NOT EXISTS silver.processed_snapshots (region VARCHAR, time BIGINT, "
                 "PRIMARY KEY (region, time))")
     todo = con.execute("""
@@ -416,14 +422,37 @@ def build_silver(con):
                  WHEN s.vertical_rate > 2.5 THEN 'climbing'
                  WHEN s.vertical_rate < -2.5 THEN 'descending'
                  ELSE 'cruise' END                                  AS flight_phase,
-            s.squawk, s.category
+            s.squawk, s.category,
+            a.airline_name, c.description                           AS aircraft_category
         FROM bronze.states s
         SEMI JOIN todo USING (region, time)
+        LEFT JOIN silver.airlines a                                 -- one row per code, so no duplicates
+               ON a.airline_icao = substr(s.callsign, 1, 3) AND regexp_matches(s.callsign, '^[A-Z]{3}[0-9]')
+        LEFT JOIN silver.aircraft_categories c ON c.category = s.category
         WHERE s.latitude IS NOT NULL AND s.longitude IS NOT NULL
           AND (s.baro_altitude IS NULL OR s.baro_altitude BETWEEN -500 AND 20000)
         ON CONFLICT DO NOTHING      -- the same aircraft at the same time in two regions (switzerland + world)""")
     con.execute("INSERT INTO silver.processed_snapshots SELECT * FROM todo ON CONFLICT DO NOTHING")
     return len(todo)
+
+
+def _silver_tables(con):
+    return {r[0] for r in con.execute("SELECT table_name FROM information_schema.tables "
+                                      "WHERE table_schema = 'silver'").fetchall()}
+
+
+def _add_lookup_columns(con):
+    """silver.flights from before the lookups moved into silver: add the two columns and fill them once."""
+    cols = {r[0] for r in con.execute("SELECT column_name FROM information_schema.columns "
+                                      "WHERE table_schema = 'silver' AND table_name = 'flights'").fetchall()}
+    if {"airline_name", "aircraft_category"} <= cols:
+        return
+    con.execute("ALTER TABLE silver.flights ADD COLUMN IF NOT EXISTS airline_name VARCHAR")
+    con.execute("ALTER TABLE silver.flights ADD COLUMN IF NOT EXISTS aircraft_category VARCHAR")
+    con.execute("""UPDATE silver.flights f SET airline_name = a.airline_name
+                   FROM silver.airlines a WHERE a.airline_icao = f.airline_icao""")
+    con.execute("""UPDATE silver.flights f SET aircraft_category = c.description
+                   FROM silver.aircraft_categories c WHERE c.category = f.category""")
 
 
 # ------------------------------------------------------------------------------------------------ 06 reference + gold
@@ -442,14 +471,21 @@ def cached(url, name, max_age_days=30):
     return path
 
 
-def load_reference(con):
-    """Airports (large + medium, with IATA code) and airlines (ICAO code -> name) into silver."""
-    ap = pd.read_csv(cached(AIRPORTS_URL, "airports.csv"), keep_default_na=False, na_values=[""])
-    ap = ap[ap["type"].isin(["large_airport", "medium_airport"])]
-    airports = pd.DataFrame({
-        "airport_icao": ap["ident"], "airport_iata": ap["iata_code"], "airport_name": ap["name"],
-        "airport_type": ap["type"], "city": ap["municipality"], "country": ap["iso_country"],
-        "latitude": ap["latitude_deg"], "longitude": ap["longitude_deg"], "elevation_ft": ap["elevation_ft"]})
+# OpenSky's aircraft category codes (field 17 of a state vector, with extended=1), from
+# https://openskynetwork.github.io/opensky-api/rest.html
+AIRCRAFT_CATEGORIES = {
+    0: "No information at all", 1: "No ADS-B Emitter Category Information", 2: "Light (< 15500 lbs)",
+    3: "Small (15500 to 75000 lbs)", 4: "Large (75000 to 300000 lbs)", 5: "High Vortex Large (aircraft such as B-757)",
+    6: "Heavy (> 300000 lbs)", 7: "High Performance (> 5g acceleration and 400 kts)", 8: "Rotorcraft",
+    9: "Glider / sailplane", 10: "Lighter-than-air", 11: "Parachutist / Skydiver",
+    12: "Ultralight / hang-glider / paraglider", 13: "Reserved", 14: "Unmanned Aerial Vehicle",
+    15: "Space / Trans-atmospheric vehicle", 16: "Surface Vehicle – Emergency Vehicle",
+    17: "Surface Vehicle – Service Vehicle", 18: "Point Obstacle (includes tethered balloons)",
+    19: "Cluster Obstacle", 20: "Line Obstacle"}
+
+
+def load_airlines(con):
+    """The lookups silver.flights joins: airlines (ICAO code -> name) and OpenSky's aircraft categories."""
     cols = ["id", "name", "alias", "iata", "icao", "callsign", "country", "active"]
     al = pd.read_csv(cached(AIRLINES_URL, "airlines.dat"), header=None, names=cols, na_values=["\\N"],
                      keep_default_na=False)
@@ -457,9 +493,27 @@ def load_reference(con):
     airlines = al.drop_duplicates("icao").rename(columns={"icao": "airline_icao", "name": "airline_name",
                                                           "iata": "airline_iata"})[
         ["airline_icao", "airline_iata", "airline_name", "callsign", "country"]]
-    con.execute("CREATE OR REPLACE TABLE silver.airports AS SELECT * FROM airports")
+    categories = pd.DataFrame({"category": list(AIRCRAFT_CATEGORIES), "description": list(AIRCRAFT_CATEGORIES.values())})
     con.execute("CREATE OR REPLACE TABLE silver.airlines AS SELECT * FROM airlines")
-    return len(airports), len(airlines)
+    con.execute("CREATE OR REPLACE TABLE silver.aircraft_categories AS SELECT * FROM categories")
+    return len(airlines)
+
+
+def load_airports(con):
+    """Airports (large + medium) into silver – reference data for the gold views, not joined into silver.flights."""
+    ap = pd.read_csv(cached(AIRPORTS_URL, "airports.csv"), keep_default_na=False, na_values=[""])
+    ap = ap[ap["type"].isin(["large_airport", "medium_airport"])]
+    airports = pd.DataFrame({
+        "airport_icao": ap["ident"], "airport_iata": ap["iata_code"], "airport_name": ap["name"],
+        "airport_type": ap["type"], "city": ap["municipality"], "country": ap["iso_country"],
+        "latitude": ap["latitude_deg"], "longitude": ap["longitude_deg"], "elevation_ft": ap["elevation_ft"]})
+    con.execute("CREATE OR REPLACE TABLE silver.airports AS SELECT * FROM airports")
+    return len(airports)
+
+
+def load_reference(con):
+    """All reference data: airports, airlines, aircraft categories."""
+    return load_airports(con), load_airlines(con)
 
 
 def build_gold(con, window_minutes=8):
@@ -469,12 +523,11 @@ def build_gold(con, window_minutes=8):
         CREATE OR REPLACE VIEW gold.current_positions AS
         WITH latest AS (SELECT MAX(snapshot_time) AS max_time FROM silver.flights)
         SELECT f.snapshot_time, f.icao24, f.callsign, f.airline_icao,
-               COALESCE(a.airline_name, 'unknown / private') AS airline_name, f.origin_country,
+               COALESCE(f.airline_name, 'unknown / private') AS airline_name, f.origin_country,
                f.latitude, f.longitude, f.altitude_ft, f.altitude_m, f.speed_kmh, f.heading, f.flight_phase,
-               f.on_ground, f.category, f.region AS source_region,
+               f.on_ground, f.category, f.aircraft_category, f.region AS source_region,
                epoch(l.max_time) - epoch(f.snapshot_time) AS position_age_s
         FROM silver.flights f CROSS JOIN latest l
-        LEFT JOIN silver.airlines a USING (airline_icao)
         WHERE f.snapshot_time >= l.max_time - INTERVAL {int(window_minutes)} MINUTE
         QUALIFY ROW_NUMBER() OVER (PARTITION BY f.icao24 ORDER BY f.snapshot_time DESC, f.region = 'world') = 1""")
     con.execute("""
@@ -496,10 +549,10 @@ def build_gold(con, window_minutes=8):
     con.execute("""
         CREATE OR REPLACE VIEW gold.traffic_per_minute AS
         SELECT date_trunc('minute', f.snapshot_time) AS minute, f.region, f.flight_phase,
-               COALESCE(a.airline_name, 'unknown / private') AS airline_name,
+               COALESCE(f.airline_name, 'unknown / private') AS airline_name,
                COUNT(DISTINCT f.icao24) AS aircraft, ROUND(AVG(f.altitude_ft)) AS avg_altitude_ft,
                ROUND(AVG(f.speed_kmh)) AS avg_speed_kmh
-        FROM silver.flights f LEFT JOIN silver.airlines a USING (airline_icao)
+        FROM silver.flights f
         GROUP BY ALL""")
     con.execute("""
         CREATE OR REPLACE VIEW gold.api_usage AS

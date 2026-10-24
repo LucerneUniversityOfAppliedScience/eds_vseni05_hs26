@@ -16,7 +16,9 @@ def _(mo):
     # 05 – Silver: clean positions, and the trap a backfill sets
 
     Bronze is raw: metres, m/s, callsigns with spaces, aircraft without a position. **Silver** is what analyses use:
-    one clean row per aircraft and moment, units for humans, the airline code, a flight phase.
+    one clean row per aircraft and moment, units for humans, the airline code, a flight phase – and the **lookups**:
+    the airline's name and what kind of aircraft it is, joined from reference tables. Silver is where codes get their
+    meaning; gold (06) only reads it.
 
     This notebook is mostly **SQL** – marimo runs SQL cells directly on DuckDB (`mo.sql(..., engine=con)`) and
     gives you a DataFrame back.
@@ -31,6 +33,7 @@ def _(mo):
     import sys
 
     import duckdb
+    import pandas as pd
 
     sys.path.insert(0, str(mo.notebook_dir().parent))
     import flightlab as fl
@@ -43,7 +46,7 @@ def _(mo):
     fl.ensure_sample_data(con)               # skipped 02-04? then 2 hours from R2 (or one live call)
     _n = con.execute("SELECT COUNT(*), COUNT(DISTINCT time) FROM bronze.snapshots").fetchone()
     mo.md(f"bronze: **{_n[0]} snapshots** to work with")
-    return check, con
+    return check, con, fl, pd
 
 
 @app.cell(hide_code=True)
@@ -125,6 +128,138 @@ def _(check, silver_preview):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    ## TODO 5.2 – Airlines
+
+    `airline_icao` says `SWR` – silver should also say *Swiss International Air Lines*. The names come from
+    [OpenFlights](https://openflights.org/data) (Open Database License), `airlines.dat`, downloaded once into `cache/`.
+
+    The file has **no header**; the columns are `id, name, alias, iata, icao, callsign, country, active`,
+    missing values are written as `\N`. Keep rows whose `icao` is three capital letters, prefer active airlines
+    (`active == "Y"`) when a code appears twice, and store **`silver.airlines`** with `airline_icao`, `airline_iata`,
+    `airline_name`, `callsign`, `country`.
+
+    Careful: OpenFlights itself warns that `active` is not reliable. `SWR` appears twice, both marked `Y`:
+    *Swiss International Air Lines* and *Swissair*. Sort with `kind="stable"`, so the file order decides between equal
+    rows and the result does not change from run to run. And **one row per code** matters for the join in 5.3: two
+    rows for `SWR` would duplicate every Swiss position.
+    """)
+    return
+
+
+@app.cell
+def _(con, fl, pd):
+    airlines_dat = fl.cached(fl.AIRLINES_URL, "airlines.dat")
+
+    # >>> TODO 5.2: silver.airlines (one row per ICAO code, active ones first)
+    # ?? airlines = pd.DataFrame()
+    _al = pd.read_csv(airlines_dat, header=None, na_values=["\\N"], keep_default_na=False,
+                      names=["id", "name", "alias", "iata", "icao", "callsign", "country", "active"])
+    _al = _al[_al["icao"].str.fullmatch(r"[A-Z]{3}", na=False)].sort_values("active", ascending=False,
+                                                                                  kind="stable")
+    airlines = _al.drop_duplicates("icao").rename(columns={"icao": "airline_icao", "iata": "airline_iata",
+                                                           "name": "airline_name"})[
+        ["airline_icao", "airline_iata", "airline_name", "callsign", "country"]]
+    con.execute("CREATE OR REPLACE TABLE silver.airlines AS SELECT * FROM airlines")
+    # <<< TODO 5.2
+    return (airlines,)
+
+
+@app.cell(hide_code=True)
+def _(airlines, check, con):
+    try:
+        _swr = con.execute("SELECT airline_name FROM silver.airlines WHERE airline_icao = 'SWR'").fetchone()
+        _dup = con.execute("SELECT COUNT(*) - COUNT(DISTINCT airline_icao) FROM silver.airlines").fetchone()[0]
+    except Exception:
+        _swr, _dup = None, -1
+    check(len(airlines) > 1000 and _swr is not None and "Swiss International" in _swr[0] and _dup == 0,
+          f"{len(airlines):,} airlines, SWR = {_swr and _swr[0]}",
+          "silver.airlines should contain SWR = Swiss International Air Lines (not Swissair – stable sort?), "
+          "one row per airline_icao.")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Aircraft categories – a fixed code list
+
+    `category` is a number from 0 to 20. What the numbers mean is defined by OpenSky
+    ([REST API docs](https://openskynetwork.github.io/opensky-api/rest.html), "Aircraft category"): 2 = light,
+    4 = large, 6 = heavy, 8 = rotorcraft ... That list is in `fl.AIRCRAFT_CATEGORIES` – the cell below turns it into
+    the lookup table **`silver.aircraft_categories`**. Nothing to do here.
+    """)
+    return
+
+
+@app.cell
+def _(con, fl, pd):
+    categories = pd.DataFrame({"category": list(fl.AIRCRAFT_CATEGORIES),
+                               "description": list(fl.AIRCRAFT_CATEGORIES.values())})
+    con.execute("CREATE OR REPLACE TABLE silver.aircraft_categories AS SELECT * FROM categories")
+    return (categories,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## TODO 5.3 – The lookups in silver
+
+    Extend your silver SELECT from 5.1 with two `LEFT JOIN`s:
+
+    - `silver.airlines` -> `airline_name`. The join key is the airline code you compute – so the condition repeats
+      the rule: `a.airline_icao = substr(s.callsign, 1, 3) AND regexp_matches(s.callsign, '^[A-Z]{3}[0-9]')`.
+    - `silver.aircraft_categories` on `category` -> `aircraft_category` (the `description`).
+
+    **LEFT** join, because a position without a known airline (private aircraft, a code OpenFlights doesn't know) is
+    still a position. And check that the join doesn't add rows: silver must have exactly as many rows as before.
+    """)
+    return
+
+
+@app.cell
+def _(con, mo):
+    # >>> TODO 5.3: silver SELECT + airline_name + aircraft_category (LEFT JOINs)
+    # ?? silver_lookup = mo.sql("SELECT * FROM bronze.states s LIMIT 200", engine=con)
+    silver_lookup = mo.sql(
+        """
+        SELECT
+            to_timestamp(s.time)::TIMESTAMP                   AS snapshot_time,
+            s.icao24, s.region,
+            NULLIF(s.callsign, '')                            AS callsign,
+            CASE WHEN regexp_matches(s.callsign, '^[A-Z]{3}[0-9]') THEN substr(s.callsign, 1, 3) END AS airline_icao,
+            a.airline_name,
+            s.category, c.description                         AS aircraft_category,
+            ROUND(s.baro_altitude * 3.28084)                  AS altitude_ft
+        FROM bronze.states s
+        LEFT JOIN silver.airlines a
+               ON a.airline_icao = substr(s.callsign, 1, 3) AND regexp_matches(s.callsign, '^[A-Z]{3}[0-9]')
+        LEFT JOIN silver.aircraft_categories c ON c.category = s.category
+        WHERE s.latitude IS NOT NULL AND s.longitude IS NOT NULL
+          AND (s.baro_altitude IS NULL OR s.baro_altitude BETWEEN -500 AND 20000)
+        """,
+        engine=con,
+    )
+    # <<< TODO 5.3
+    return (silver_lookup,)
+
+
+@app.cell(hide_code=True)
+def _(check, con, silver_lookup):
+    _valid = con.execute("""SELECT COUNT(*) FROM bronze.states WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+                            AND (baro_altitude IS NULL OR baro_altitude BETWEEN -500 AND 20000)""").fetchone()[0]
+    _cols = set(silver_lookup.columns)
+    _ok = {"airline_name", "aircraft_category"} <= _cols and len(silver_lookup) == _valid
+    _named = silver_lookup["airline_name"].notna().mean() if _ok else 0
+    check(_ok, f"{len(silver_lookup):,} rows – as many as without the joins; {_named:.0%} of the positions have an "
+               f"airline name",
+          f"Need the columns airline_name and aircraft_category, and exactly {_valid:,} rows (no LIMIT, no rows "
+          f"added by the join) – got {len(silver_lookup):,}.")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     ## The trap: incremental with a time watermark
 
     Silver should not be rebuilt from all of bronze every 35 seconds – only **new** rows. The obvious idea: remember
@@ -150,29 +285,33 @@ def _(con):
         ROUND(s.true_track) AS heading, s.vertical_rate,
         CASE WHEN s.on_ground THEN 'on ground' WHEN s.vertical_rate > 2.5 THEN 'climbing'
              WHEN s.vertical_rate < -2.5 THEN 'descending' ELSE 'cruise' END AS flight_phase,
-        s.squawk, s.category"""
+        s.squawk, s.category, a.airline_name, c.description AS aircraft_category"""
+    SILVER_FROM = """bronze.states s
+        LEFT JOIN silver.airlines a
+               ON a.airline_icao = substr(s.callsign, 1, 3) AND regexp_matches(s.callsign, '^[A-Z]{3}[0-9]')
+        LEFT JOIN silver.aircraft_categories c ON c.category = s.category"""
     VALID = ("s.latitude IS NOT NULL AND s.longitude IS NOT NULL "
              "AND (s.baro_altitude IS NULL OR s.baro_altitude BETWEEN -500 AND 20000)")
 
     def fresh_silver(name):
         con.execute(f"DROP TABLE IF EXISTS silver.{name}")
-        con.execute(f"""CREATE TABLE silver.{name} AS SELECT {SILVER_COLUMNS} FROM bronze.states s LIMIT 0""")
+        con.execute(f"""CREATE TABLE silver.{name} AS SELECT {SILVER_COLUMNS} FROM {SILVER_FROM} LIMIT 0""")
         con.execute(f"ALTER TABLE silver.{name} ADD PRIMARY KEY (icao24, snapshot_time)")
 
     # the scenario: "visible" = what bronze contains at that moment (live first, the backfill later)
     newest = con.execute("SELECT MAX(time) FROM bronze.snapshots").fetchone()[0]
     stage_live = f"s.time = {newest}"                      # 1. only the newest snapshot has arrived
     stage_all = "TRUE"                                     # 2. the backfill brought all older ones
-    return SILVER_COLUMNS, VALID, fresh_silver, stage_all, stage_live
+    return SILVER_COLUMNS, SILVER_FROM, VALID, fresh_silver, stage_all, stage_live
 
 
 @app.cell
-def _(SILVER_COLUMNS, VALID, con, fresh_silver, mo, stage_all, stage_live):
+def _(SILVER_COLUMNS, SILVER_FROM, VALID, con, fresh_silver, mo, stage_all, stage_live):
     def update_silver_watermark(visible):
         """Insert bronze rows newer than the newest snapshot_time already in silver."""
         con.execute(f"""
             INSERT INTO silver.flights_watermark
-            SELECT {SILVER_COLUMNS} FROM bronze.states s
+            SELECT {SILVER_COLUMNS} FROM {SILVER_FROM}
             WHERE {visible} AND {VALID}
               AND to_timestamp(s.time)::TIMESTAMP >
                   (SELECT COALESCE(MAX(snapshot_time), TIMESTAMP '1970-01-01') FROM silver.flights_watermark)
@@ -195,7 +334,7 @@ def _(SILVER_COLUMNS, VALID, con, fresh_silver, mo, stage_all, stage_live):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## TODO 5.2 – Incremental per snapshot instead of per time
+    ## TODO 5.4 – Incremental per snapshot instead of per time
 
     Remember **which snapshots** were processed, not up to which time:
 
@@ -220,12 +359,12 @@ def _(mo):
 
 
 @app.cell
-def _(SILVER_COLUMNS, VALID, con, fresh_silver, stage_all, stage_live):
+def _(SILVER_COLUMNS, SILVER_FROM, VALID, con, fresh_silver, stage_all, stage_live):
     fresh_silver("flights_by_snapshot")
     con.execute("DROP TABLE IF EXISTS silver.processed")
     con.execute("CREATE TABLE silver.processed (region VARCHAR, time BIGINT, PRIMARY KEY (region, time))")
 
-    # >>> TODO 5.2: update_silver_by_snapshot(visible) – anti join on silver.processed, insert, mark as processed
+    # >>> TODO 5.4: update_silver_by_snapshot(visible) – anti join on silver.processed, insert, mark as processed
     # ?? def update_silver_by_snapshot(visible):
     # ??     pass
     def update_silver_by_snapshot(visible):
@@ -236,11 +375,11 @@ def _(SILVER_COLUMNS, VALID, con, fresh_silver, stage_all, stage_live):
               AND NOT EXISTS (SELECT 1 FROM silver.processed p WHERE p.region = s.region AND p.time = s.time)""")
         con.execute(f"""
             INSERT INTO silver.flights_by_snapshot
-            SELECT {SILVER_COLUMNS} FROM bronze.states s
+            SELECT {SILVER_COLUMNS} FROM {SILVER_FROM}
             WHERE (s.region, s.time) IN (SELECT region, time FROM todo) AND {VALID}
             ON CONFLICT DO NOTHING""")
         con.execute("INSERT INTO silver.processed SELECT region, time FROM todo ON CONFLICT DO NOTHING")
-    # <<< TODO 5.2
+    # <<< TODO 5.4
 
     update_silver_by_snapshot(stage_live)                  # morning: the collector
     update_silver_by_snapshot(stage_all)                   # afternoon: the backfill
@@ -271,7 +410,10 @@ def _(mo):
       (Hint: the bucket has *switzerland* and *world* – both see the aircraft over Zurich.)
     - `flightlab.build_silver(con)` is the finished version used by the collector and the app – compare it with yours.
 
-    **Next:** [06 – Gold](06_gold.py) – airports, airlines and the views the map reads.
+    - Silver stores the airline name **as it was when the row was inserted**. If OpenFlights renames an airline, old
+      rows keep the old name – rebuild silver, or update it. When is that what you want, and when not?
+
+    **Next:** [06 – Gold](06_gold.py) – airports and the views the map reads.
     """)
     return
 

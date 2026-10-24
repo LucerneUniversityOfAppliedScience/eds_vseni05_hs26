@@ -13,15 +13,17 @@ def _():
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # 06 – Gold: reference data and the views the map reads
+    # 06 – Gold: airports and the views the map reads
 
-    Silver knows *where* an aircraft is. To say *who* it is and *what* it does we join **reference data**:
+    Silver already knows *where* an aircraft is and *who* it is – the airline name and the aircraft category were
+    joined in 05. Gold doesn't map codes any more; it **answers concrete questions**: where is every aircraft right
+    now, who is landing where?
 
-    - **airports** – [OurAirports](https://ourairports.com/data/) (public domain, see "Terms of use" there): name,
-      codes, coordinates, elevation
-    - **airlines** – [OpenFlights](https://openflights.org/data) (Open Database License): ICAO code -> airline name
+    For the second question we need one more reference table: **airports** from
+    [OurAirports](https://ourairports.com/data/) (public domain, see "Terms of use" there) – name, codes, coordinates,
+    elevation. It isn't joined into every position: which airport an aircraft is near is a question, not a lookup.
 
-    **Gold** answers concrete questions. Here as SQL **views**: they are always up to date with silver, nothing to
+    The gold tables are SQL **views**: they are always up to date with silver, nothing to
     refresh – DuckDB computes them when you ask.
     """)
     return
@@ -43,7 +45,7 @@ def _(mo):
     con = fl.practice(6)                            # practice_06.duckdb – continues from the step before
     fl.init_db(con)
     fl.ensure_sample_data(con)               # skipped 02-04? then 2 hours from R2 (or one live call)
-    fl.build_silver(con)                     # silver.flights from your bronze (the finished version of 05)
+    fl.build_silver(con)                     # silver.flights incl. airline names (the finished version of 05)
     _n = con.execute("SELECT COUNT(*), COUNT(DISTINCT icao24) FROM silver.flights").fetchone()
     mo.md(f"silver.flights: **{_n[0]:,} positions** of {_n[1]:,} aircraft")
     return check, con, fl, pd
@@ -95,62 +97,24 @@ def _(airports, check, con):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## TODO 6.2 – Airlines
-
-    `airlines.dat` has **no header**; the columns are `id, name, alias, iata, icao, callsign, country, active`,
-    missing values are written as `\N`. Keep rows whose `icao` is three capital letters, prefer active airlines
-    (`active == "Y"`) when a code appears twice, and store **`silver.airlines`** with `airline_icao`, `airline_iata`,
-    `airline_name`, `callsign`, `country`.
-
-    Careful: [OpenFlights](https://openflights.org/data) itself warns that `active` is not reliable. `SWR` appears twice,
-    both marked `Y`: *Swiss International Air Lines* and *Swissair*. Sort with `kind="stable"`, so the
-    file order decides between equal rows and the result does not change from run to run.
-    """)
-    return
-
-
-@app.cell
-def _(con, fl, pd):
-    airlines_dat = fl.cached(fl.AIRLINES_URL, "airlines.dat")
-
-    # TODO 6.2: silver.airlines (one row per ICAO code, active ones first)
-    airlines = pd.DataFrame()
-    return (airlines,)
-
-
-@app.cell(hide_code=True)
-def _(airlines, check, con):
-    try:
-        _swr = con.execute("SELECT airline_name FROM silver.airlines WHERE airline_icao = 'SWR'").fetchone()
-        _dup = con.execute("SELECT COUNT(*) - COUNT(DISTINCT airline_icao) FROM silver.airlines").fetchone()[0]
-    except Exception:
-        _swr, _dup = None, -1
-    check(len(airlines) > 1000 and _swr is not None and "Swiss International" in _swr[0] and _dup == 0,
-          f"{len(airlines):,} airlines, SWR = {_swr and _swr[0]}",
-          "silver.airlines should contain SWR = Swiss International Air Lines (not Swissair – stable sort?), "
-          "one row per airline_icao.")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## TODO 6.3 – Where is every aircraft right now?
+    ## TODO 6.2 – Where is every aircraft right now?
 
     Create the view **`gold.current_positions`**: the **latest** row of `silver.flights` per aircraft, but only
     aircraft seen in the last **2 minutes** before the newest snapshot (otherwise aircraft that landed an hour ago
-    would stay on the map forever). Add the airline name (`'unknown / private'` when there is none).
+    would stay on the map forever). The airline name is already in silver – show `'unknown / private'` when it is
+    missing.
 
     /// details | Hint
     ```sql
     CREATE OR REPLACE VIEW gold.current_positions AS
     WITH latest AS (SELECT MAX(snapshot_time) AS max_time FROM silver.flights)
-    SELECT f.*, COALESCE(a.airline_name, 'unknown / private') AS airline_name
-    FROM silver.flights f CROSS JOIN latest l LEFT JOIN silver.airlines a USING (airline_icao)
+    SELECT f.* REPLACE (COALESCE(f.airline_name, 'unknown / private') AS airline_name)
+    FROM silver.flights f CROSS JOIN latest l
     WHERE f.snapshot_time >= l.max_time - INTERVAL 2 MINUTE
     QUALIFY ROW_NUMBER() OVER (PARTITION BY f.icao24 ORDER BY f.snapshot_time DESC) = 1
     ```
-    `QUALIFY` filters on a window function – like `HAVING` for `GROUP BY`.
+    `QUALIFY` filters on a window function – like `HAVING` for `GROUP BY`. `* REPLACE (...)` keeps all columns but
+    swaps one expression.
     ///
     """)
     return
@@ -158,7 +122,7 @@ def _(mo):
 
 @app.cell
 def _(con):
-    # TODO 6.3: view gold.current_positions (latest row per aircraft of the last 2 minutes + airline name)
+    # TODO 6.2: view gold.current_positions (latest row per aircraft of the last 2 minutes)
     con.execute("CREATE OR REPLACE VIEW gold.current_positions AS SELECT * FROM silver.flights")   # improve me
     return
 
@@ -180,7 +144,7 @@ def _(check, con):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## TODO 6.4 – Who is landing or taking off?
+    ## TODO 6.3 – Who is landing or taking off?
 
     View **`gold.airport_approaches`**: aircraft of `gold.current_positions` that are in the air, **below 3,000 m**
     and **within 40 km** of an airport – with the nearest airport, the distance and `movement`
@@ -198,7 +162,7 @@ def _(con):
     HAVERSINE_KM = """2 * 6371 * ASIN(SQRT(POWER(SIN(RADIANS(ap.latitude - p.latitude) / 2), 2)
         + COS(RADIANS(p.latitude)) * COS(RADIANS(ap.latitude)) * POWER(SIN(RADIANS(ap.longitude - p.longitude) / 2), 2)))"""
 
-    # TODO 6.4: view gold.airport_approaches (below 3000 m, within 40 km, nearest airport, movement)
+    # TODO 6.3: view gold.airport_approaches (below 3000 m, within 40 km, nearest airport, movement)
     con.execute(f"CREATE OR REPLACE VIEW gold.airport_approaches AS SELECT 1 AS todo")   # replace me
     return
 
