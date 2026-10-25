@@ -533,7 +533,7 @@ def build_gold(con, window_minutes=8):
     con.execute("""
         CREATE OR REPLACE VIEW gold.airport_approaches AS
         WITH candidates AS (
-            SELECT p.*, ap.airport_icao, ap.airport_iata, ap.airport_name, ap.city, ap.country,
+            SELECT p.*, ap.airport_icao, ap.airport_iata, ap.airport_name, ap.airport_type, ap.city, ap.country,
                    2 * 6371 * ASIN(SQRT(POWER(SIN(RADIANS(ap.latitude - p.latitude) / 2), 2)
                        + COS(RADIANS(p.latitude)) * COS(RADIANS(ap.latitude))
                          * POWER(SIN(RADIANS(ap.longitude - p.longitude) / 2), 2))) AS distance_km
@@ -545,7 +545,9 @@ def build_gold(con, window_minutes=8):
         SELECT *, CASE WHEN flight_phase = 'descending' THEN 'arriving'
                        WHEN flight_phase = 'climbing' THEN 'departing' ELSE 'nearby' END AS movement
         FROM candidates WHERE distance_km <= 40
-        QUALIFY ROW_NUMBER() OVER (PARTITION BY icao24 ORDER BY distance_km) = 1""")
+        -- a large airport within 40 km wins, otherwise the nearest: "nearest" alone sends Zurich arrivals to the
+        -- Dübendorf air base (10 km away) and Geneva arrivals to Annemasse
+        QUALIFY ROW_NUMBER() OVER (PARTITION BY icao24 ORDER BY airport_type <> 'large_airport', distance_km) = 1""")
     con.execute("""
         CREATE OR REPLACE VIEW gold.traffic_per_minute AS
         SELECT date_trunc('minute', f.snapshot_time) AS minute, f.region, f.flight_phase,

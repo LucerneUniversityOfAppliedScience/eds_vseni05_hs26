@@ -147,8 +147,12 @@ def _(mo):
     ## TODO 6.3 – Who is landing or taking off?
 
     View **`gold.airport_approaches`**: aircraft of `gold.current_positions` that are in the air, **below 3,000 m**
-    and **within 40 km** of an airport – with the nearest airport, the distance and `movement`
+    and **within 40 km** of an airport – with that airport, the distance and `movement`
     (`arriving` if descending, `departing` if climbing, else `nearby`).
+
+    Which airport? The obvious answer – the nearest – sends many Zurich arrivals to **Dübendorf Air Base**, 10 km
+    southeast of the airport, and Geneva arrivals to Annemasse Airfield. So: if a **large** airport is within the 40 km,
+    it wins; only otherwise the nearest one (`airport_type` in `silver.airports`). Still a heuristic, but a better one.
 
     The distance on a sphere is the **haversine** formula (given below). The `BETWEEN` pre-filter keeps the join
     small: without it, DuckDB would compute the distance from every aircraft to every one of the more than 5,000
@@ -162,7 +166,7 @@ def _(con):
     HAVERSINE_KM = """2 * 6371 * ASIN(SQRT(POWER(SIN(RADIANS(ap.latitude - p.latitude) / 2), 2)
         + COS(RADIANS(p.latitude)) * COS(RADIANS(ap.latitude)) * POWER(SIN(RADIANS(ap.longitude - p.longitude) / 2), 2)))"""
 
-    # TODO 6.3: view gold.airport_approaches (below 3000 m, within 40 km, nearest airport, movement)
+    # TODO 6.3: view gold.airport_approaches (below 3000 m, within 40 km, large airport first, movement)
     con.execute(f"CREATE OR REPLACE VIEW gold.airport_approaches AS SELECT 1 AS todo")   # replace me
     return
 
@@ -201,6 +205,8 @@ def _(mo):
     - Why a **view** for current_positions and not a table? When would a table be better?
     - Which airport has the most traffic in your data? Write the query in a new cell.
     - Some aircraft near Zurich show `nearby` although they are landing. Why? (Look at `vertical_rate` in silver.)
+    - Replace the `ORDER BY` with plain `distance_km` and look at Dübendorf (`LSMD`). What does "large first" get wrong
+      in return? (Hint: the Swiss Air Force flies from Dübendorf.)
 
     That is the whole medallion pipeline: API -> bronze -> silver -> gold. `flightlab.build_gold(con)` holds the
     finished views that the app uses.
