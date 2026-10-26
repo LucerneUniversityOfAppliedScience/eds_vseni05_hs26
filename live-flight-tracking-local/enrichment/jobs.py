@@ -271,7 +271,7 @@ def job_route_efficiency(con):
         q(con, "SELECT icao24, flight_phase, fuel_kg_per_h, speed_kt FROM gold.fuel_burn"),
         q(con, "SELECT icao24, typecode FROM silver.aircraft_types"),
         q(con, "SELECT airline_icao, airline_name FROM silver.airlines"),
-        q(con, "SELECT airport_icao, latitude, longitude FROM silver.airports"))
+        q(con, "SELECT airport_icao, latitude, longitude, airport_type FROM silver.airports"))
     n = write(con, "gold.route_efficiency", df, route_efficiency.SCHEMA)
     tracks = q(con, f"""
         SELECT icao24, trim(callsign) AS callsign, arg_max(snapshot_time, snapshot_time) AS snapshot_time,

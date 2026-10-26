@@ -102,13 +102,17 @@ def observed_track_km(track):
 
 
 def nearest_airport(lat, lon, airports):
-    """ICAO code of the closest airport within AIRPORT_RADIUS_KM, or None. airports: arrays (icao, lat, lon)."""
+    """ICAO code of the airport within AIRPORT_RADIUS_KM – a large airport first, otherwise the closest – or None.
+    airports: arrays (icao, lat, lon, is_large). Plain "closest" lands Zurich arrivals on the Dübendorf air base."""
     if airports is None or lat is None or np.isnan(lat):
         return None
-    codes, alat, alon = airports
+    codes, alat, alon, large = airports
     d = haversine_km(lat, lon, alat, alon)
-    i = int(np.argmin(d))
-    return codes[i] if d[i] <= AIRPORT_RADIUS_KM else None
+    near = d <= AIRPORT_RADIUS_KM
+    if not near.any():
+        return None
+    pool = near & large if (near & large).any() else near
+    return codes[np.where(pool)[0][np.argmin(d[pool])]]
 
 
 def check_route(first, last, latest, adsbdb_origin, adsbdb_destination, airports):
@@ -148,7 +152,8 @@ def build_route_efficiency(pdf_flights, pdf_routes, pdf_burn=None, pdf_types=Non
     airports = None
     if pdf_airports is not None and not pdf_airports.empty:
         a = pdf_airports.dropna(subset=["airport_icao", "latitude", "longitude"])
-        airports = (a["airport_icao"].to_numpy(), a["latitude"].to_numpy(float), a["longitude"].to_numpy(float))
+        large = (a["airport_type"] == "large_airport").to_numpy() if "airport_type" in a else np.zeros(len(a), bool)
+        airports = (a["airport_icao"].to_numpy(), a["latitude"].to_numpy(float), a["longitude"].to_numpy(float), large)
 
     rows = []
     for (icao24, cs), t in f.groupby(["icao24", "callsign"], sort=False):
